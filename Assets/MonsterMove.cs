@@ -9,6 +9,7 @@ public class MonsterFollow : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        agent.Warp(new Vector3(0, 0, 0));
     }
 
     void Update()
