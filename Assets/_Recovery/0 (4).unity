@@ -369,7 +369,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 498792802}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.88
+  m_Radius: 20
   m_Speed: 500
   m_Acceleration: 500
   avoidancePriority: 50
@@ -378,7 +378,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2.97
+  m_Height: 5.79
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -401,7 +401,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.94
+  m_Radius: 0.75
   m_Height: 3.34
   m_Direction: 1
   m_Center: {x: 0, y: 1.3, z: 0.33}
@@ -651,38 +651,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff210ab265f223a4bb7372064c512ada, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1905538353}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff210ab265f223a4bb7372064c512ada, type: 3}
---- !u!1 &1905538351 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ff210ab265f223a4bb7372064c512ada, type: 3}
-  m_PrefabInstance: {fileID: 1734884280}
-  m_PrefabAsset: {fileID: 0}
---- !u!64 &1905538353
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1905538351}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!1001 &2145286086
 PrefabInstance:
   m_ObjectHideFlags: 0
