@@ -2,26 +2,21 @@ using UnityEngine;
 
 public class Transformer : MonoBehaviour
 {
-    public GameObject puzzlePanel; // Inspector에서 드래그로 연결
-    private bool isPuzzleActive = false;
+    public GameObject PuzzlePanel; // 연결할 패널
 
-    public void Interact()
+    // 마우스로 3D 오브젝트 클릭 시 호출됨
+    void OnMouseDown()
     {
-        if (isPuzzleActive) return;
-        Debug.Log("변압기와 상호작용!");
-        puzzlePanel.SetActive(true);
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        isPuzzleActive = true;
-    }
+        Debug.Log("변압기 클릭됨!");
 
-    public void ClosePuzzle()
-    {
-        puzzlePanel.SetActive(false);
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        isPuzzleActive = false;
-        Debug.Log("퍼즐 완료, 변압기 완료 처리!");
-        // 여기에 변압기 작동 애니메이션/사운드/스위치 로직 추가 가능
+        if (PuzzlePanel != null)
+        {
+            PuzzlePanel.SetActive(true);
+            Debug.Log("퍼즐 패널 열림!");
+        }
+        else
+        {
+            Debug.LogWarning("PuzzlePanel이 연결되지 않았습니다!");
+        }
     }
 }
