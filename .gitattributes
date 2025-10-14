@@ -1,0 +1,2 @@
+*.unity filter=lfs diff=lfs merge=unityyamlmerge -text
+*.prefab filter=lfs diff=lfs merge=unityyamlmerge -text
