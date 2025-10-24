@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class MonsterFollow : MonoBehaviour
 {
-    public Transform player;         // 플레이어 Transform
+    public Transform target;         // 플레이어 Transform
     private NavMeshAgent agent;      // 괴물 이동 제어용
 
     void Start()
@@ -14,13 +14,13 @@ public class MonsterFollow : MonoBehaviour
 
     void Update()
     {
-        if (player != null)
+        if (target != null)
         {
-            agent.SetDestination(player.position); // 플레이어 위치 따라감
+            agent.SetDestination(target.position); // 플레이어 위치 따라감
         }
         if (agent.isOnNavMesh) // NavMesh 위에 있을 때만 실행
         {
-            agent.SetDestination(player.position);
+            agent.SetDestination(target.position);
         }
         else
         {
