@@ -6,6 +6,11 @@ public class MonsterFollow : MonoBehaviour
     public Transform target;         // 플레이어 Transform
     private NavMeshAgent agent;      // 괴물 이동 제어용
 
+    public void setTarget(Transform obj)
+    {
+        target = obj;
+    }
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
