@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -5,6 +6,7 @@ public class MonsterFollow : MonoBehaviour
 {
     public Transform target;         // 플레이어 Transform
     private NavMeshAgent agent;      // 괴물 이동 제어용
+    MonoBehaviour obj;
 
     public void setTarget(Transform obj)
     {
@@ -14,22 +16,28 @@ public class MonsterFollow : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        //agent.Warp(new Vector3(0, 0, 0));
+        
     }
 
     void Update()
     {
-        if (target != null)
+        if (target != null && agent.isOnNavMesh)
         {
             agent.SetDestination(target.position); // 플레이어 위치 따라감
-        }
-        if (agent.isOnNavMesh) // NavMesh 위에 있을 때만 실행
-        {
-            agent.SetDestination(target.position);
         }
         else
         {
             Debug.LogWarning("괴물이 NavMesh 위에 있지 않습니다!");
+        }
+
+        Debug.Log(Vector3.Distance(this.transform.position, this.target.transform.position));
+        if (Vector3.Distance(this.transform.position, target.transform.position) < 50)
+        {
+            if (target.CompareTag("Lamp"))
+            {
+                Debug.Log("부심");
+                LampManager.Instance.BreakLamp();
+            }
         }
     }
 }
