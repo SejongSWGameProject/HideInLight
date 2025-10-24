@@ -44,6 +44,7 @@ public class LightManager : MonoBehaviour
 
     void Start()
     {
+
         if (monster == null) return;
 
         SetMonsterTargetToNearestLight();
