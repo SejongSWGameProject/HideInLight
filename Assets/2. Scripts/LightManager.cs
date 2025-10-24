@@ -46,15 +46,27 @@ public class LightManager : MonoBehaviour
     {
         if (monster == null) return;
 
-        Light nearestLight = GetNearestLightToPlayer();
-        if (nearestLight != null)
-            monster.setTarget(nearestLight.transform);
+        SetMonsterTargetToNearestLight();
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            SetMonsterTargetToNearestLight();
+        }
+    }
 
+    void SetMonsterTargetToNearestLight()
+    {
+        if (monster == null || player == null || lights == null || lights.Length == 0)
+            return;
+
+        Light nearestLight = GetNearestLightToPlayer();
+        if (nearestLight != null)
+            monster.setTarget(nearestLight.transform);
     }
 
     Light GetNearestLightToPlayer()
