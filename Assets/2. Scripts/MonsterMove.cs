@@ -7,6 +7,7 @@ public class MonsterFollow : MonoBehaviour
     public Transform target;         // 플레이어 Transform
     private NavMeshAgent agent;      // 괴물 이동 제어용
     MonoBehaviour obj;
+    int breakDistance = 55;
 
     public void setTarget(Transform obj)
     {
@@ -31,7 +32,7 @@ public class MonsterFollow : MonoBehaviour
         }
 
         Debug.Log(Vector3.Distance(this.transform.position, this.target.transform.position));
-        if (Vector3.Distance(this.transform.position, target.transform.position) < 50)
+        if (Vector3.Distance(this.transform.position, target.transform.position) < breakDistance)
         {
             if (target.CompareTag("Lamp"))
             {
