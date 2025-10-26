@@ -32,6 +32,24 @@ public class PuzzleManager : MonoBehaviour
 
     void Update()
     {
+        // ▼▼▼ 여기 추가됨 ▼▼▼
+        // ESC 키를 누르면 퍼즐 패널을 닫습니다.
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (puzzlePanel != null)
+            {
+                puzzlePanel.SetActive(false);
+            }
+            else
+            {
+                // 혹시 puzzlePanel이 연결 안됐으면 이 스크립트가 붙은 오브젝트라도 끈다.
+                gameObject.SetActive(false); 
+            }
+        }
+        // ▲▲▲ 여기까지 추가됨 ▲▲▲
+
+
+        // --- 기존 Update 내용 ---
         if (startConnector != null && currentDrawingWire != null)
         {
             currentDrawingWire.SetProperties(startConnector.transform.position, Input.mousePosition, wireColors[startConnector.ConnectorId]);
