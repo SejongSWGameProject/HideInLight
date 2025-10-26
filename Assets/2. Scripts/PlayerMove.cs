@@ -20,8 +20,7 @@ public class Player_Ctrl : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;   // 마우스 커서를 화면 안에서 고정
-        Cursor.visible = false;                     // 마우스 커서를 보이지 않도록 설정
+        hiddenMouseCursor();
 
         rb = GetComponent<Rigidbody>();             // Rigidbody 컴포넌트 가져오기
         rb.freezeRotation = true;                   // Rigidbody의 회전을 고정하여 물리 연산에 영향을 주지 않도록 설정
@@ -33,6 +32,18 @@ public class Player_Ctrl : MonoBehaviour
     {
         Rotate();
         Move();
+
+        if (Input.GetMouseButtonDown(0)) // 왼쪽 클릭
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.gameObject == gameObject)
+                {
+                    Debug.Log("클릭됨!");
+                }
+            }
+        }
     }
 
     void Rotate()
@@ -44,6 +55,7 @@ public class Player_Ctrl : MonoBehaviour
         xRotation -= mouseY;    // 마우스 Y축 입력에 따라 수직 회전 값을 조정
 
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);  // 수직 회전 값을 -90도에서 90도 사이로 제한
+
 
         cam.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0); // 카메라의 회전을 조절
         transform.rotation = Quaternion.Euler(0, yRotation, 0);             // 플레이어 캐릭터의 회전을 조절
@@ -59,5 +71,11 @@ public class Player_Ctrl : MonoBehaviour
 
         // 이동 벡터를 정규화하여 이동 속도와 시간 간격을 곱한 후 현재 위치에 더함
         transform.position += moveVec.normalized * moveSpeed * Time.deltaTime;
+    }
+
+    void hiddenMouseCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;   // 마우스 커서를 화면 안에서 고정
+        Cursor.visible = false;                     // 마우스 커서를 보이지 않도록 설정
     }
 }
