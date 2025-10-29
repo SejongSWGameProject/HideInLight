@@ -14,7 +14,7 @@ public class LampController : MonoBehaviour
     }
     void Update()
     {
-
+        
     }
 
     public void BreakLamp()
