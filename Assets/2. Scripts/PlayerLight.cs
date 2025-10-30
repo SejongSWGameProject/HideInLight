@@ -5,13 +5,13 @@ public class FlashlightCtrl : MonoBehaviour
     public Light flashlight;          // Spot Light 연결
     public Transform cameraTransform; // 카메라 Transform
 
-    [SerializeField] private float flashlightAngular = 30F;
-    [SerializeField] private float flashlightRange = 20F;
+    [SerializeField] private float angle;
+    [SerializeField] private float range;
 
     void Start()
     {
-        //flashlight.range = flashlightRange;
-        //flashlight.spotAngle = flashlightAngular;
+        flashlight.range = range;
+        flashlight.spotAngle = angle;
         flashlight.enabled = false; // 시작할 때 손전등 끄기
     }
 
