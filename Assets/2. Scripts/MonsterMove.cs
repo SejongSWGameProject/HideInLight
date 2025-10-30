@@ -22,18 +22,19 @@ public class MonsterFollow : MonoBehaviour
 
     void Update()
     {
+        //Debug.Log(Vector3.Distance(this.transform.position, this.target.transform.position));
+        Vector3 targetPosWithoutY = new Vector3(target.position.x, 0f, target.position.z);
+        Vector3 monsterPosWithoutY = new Vector3(this.transform.position.x, 0f, this.transform.position.z);
         if (target != null && agent.isOnNavMesh)
         {
-            agent.SetDestination(target.position); // 플레이어 위치 따라감
+            agent.SetDestination(targetPosWithoutY); // 플레이어 위치 따라감
         }
         else
         {
             Debug.LogWarning("괴물이 NavMesh 위에 있지 않습니다!");
         }
 
-        //Debug.Log(Vector3.Distance(this.transform.position, this.target.transform.position));
-        Vector3 targetPosWithoutY = new Vector3(target.position.x, 0f, target.position.z);
-        Vector3 monsterPosWithoutY = new Vector3(this.transform.position.x, 0f, this.transform.position.z);
+        
         if (Vector3.Distance(targetPosWithoutY, monsterPosWithoutY) < breakDistance)
         {
             if (target.CompareTag("Lamp"))
