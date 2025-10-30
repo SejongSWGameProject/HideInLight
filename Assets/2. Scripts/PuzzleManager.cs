@@ -21,54 +21,104 @@ public class PuzzleManager : MonoBehaviour
     public int connectorCount = 4;
     public Color[] wireColors;
 
+    // ▼▼▼ 이 퍼즐의 고유 ID (PlayerPrefs 키로 사용) ▼▼▼
+    // 만약 나중에 다른 변압기 퍼즐을 또 만든다면, "TransformerPuzzle_02" 처럼 바꿔줘야 합니다.
+    private string puzzleSaveKey = "IsTransformerPuzzleSolved_01";
+
+
     private List<Connector> leftConnectors = new List<Connector>();
     private Wire currentDrawingWire;
     private Connector startConnector;
 
-    // Start()는 한 번만 실행되지만, OnEnable()은 SetActive(true)가 될 때마다 실행됩니다.
+    private Camera uiCamera; 
+
     void OnEnable()
     {
+        // ▼▼▼ 1. "이미 풀었는지" 확인 (가장 먼저 실행) ▼▼▼
+        // PlayerPrefs에서 이 퍼즐의 저장된 값을 가져옴 (없으면 기본값 0)
+        if (PlayerPrefs.GetInt(puzzleSaveKey, 0) == 1)
+        {
+            Debug.Log($"이 퍼즐({puzzleSaveKey})은 이미 해결되었습니다. 패널을 열지 않습니다.");
+            
+            // 즉시 다시 닫아버림
+            if (puzzlePanel != null)
+            {
+                puzzlePanel.SetActive(false);
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
+            return; // OnEnable의 나머지(ClearPuzzle, SetupPuzzle)를 실행하지 않음
+        }
+        // ▲▲▲ 1. 확인 끝 ▲▲▲
+
+
+        // ▼▼▼ 캔버스 렌더 모드 확인 로직 (기존) ▼▼▼
+        Canvas canvas = null;
+        if (puzzlePanel != null)
+        {
+            canvas = puzzlePanel.GetComponentInParent<Canvas>();
+        }
+        else
+        {
+            canvas = GetComponentInParent<Canvas>(); 
+        }
+
+        if (canvas != null)
+        {
+            if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+            {
+                uiCamera = null; 
+            }
+            else
+            {
+                uiCamera = canvas.worldCamera; 
+                if (uiCamera == null) 
+                {
+                    uiCamera = Camera.main;
+                    Debug.LogWarning("PuzzleManager: 캔버스에 worldCamera가 설정되지 않아 Camera.main을 사용합니다.");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("PuzzleManager: 캔버스를 찾을 수 없습니다! UI가 정상 작동하지 않을 수 있습니다.");
+            uiCamera = null; 
+        }
+        // ▲▲▲ 캔버스 로직 끝 ▲▲▲
+
         // 퍼즐을 켜기 전에, 이전에 있던 커넥터와 와이어를 모두 삭제합니다.
         ClearPuzzle();
         // 그리고 퍼즐을 새로 설치합니다.
         SetupPuzzle();
     }
     
-    // (선택 사항) 비활성화될 때 미리 지우는 것도 좋습니다.
     void OnDisable()
     {
         ClearPuzzle();
     }
     
-    /// <summary>
-    /// 이전에 생성된 커넥터와 와이어를 모두 파괴하고 리스트를 비웁니다.
-    /// </summary>
     void ClearPuzzle()
     {
+        // ... (이하 ClearPuzzle 내용은 동일) ...
         Debug.Log("--- PuzzleManager: ClearPuzzle (이전 퍼즐 삭제) ---");
         
-        // 1. 왼쪽 커넥터 삭제
         foreach (Transform child in leftConnectorsParent)
         {
             Destroy(child.gameObject);
         }
-        
-        // 2. 오른쪽 커넥터 삭제
         foreach (Transform child in rightConnectorsParent)
         {
             Destroy(child.gameObject);
         }
-        
-        // 3. 와이어 삭제
         foreach (Transform child in wireContainer)
         {
             Destroy(child.gameObject);
         }
         
-        // 4. 리스트 비우기
         leftConnectors.Clear();
         
-        // 5. 그리기 상태 초기화
         startConnector = null;
         if (currentDrawingWire != null)
         {
@@ -80,48 +130,80 @@ public class PuzzleManager : MonoBehaviour
 
     void Update()
     {
-        // ESC 키를 누르면 퍼즐 패널을 닫습니다.
+        // ... (Update 내용은 동일) ...
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (puzzlePanel != null)
-            {
-                puzzlePanel.SetActive(false);
-            }
-            else
-            {
-                gameObject.SetActive(false);
-            }
+            // ESC 키는 퍼즐을 풀지 못했을 때만 작동해야 하므로
+            // OnEnable에서 이미 클리어 여부를 체크해서 닫아주기 때문에
+            // 여기서는 특별히 수정할 필요가 없습니다.
+            // (만약의 경우를 대비해 ClosePuzzlePanel()을 호출하는 것도 좋음)
+            ClosePuzzlePanel(false); // '풀지 않고' 닫기
         }
         
-        // --- 기존 Update 내용 ---
         if (startConnector != null && currentDrawingWire != null)
         {
-            currentDrawingWire.SetProperties(startConnector.transform.position, Input.mousePosition, wireColors[startConnector.ConnectorId]);
+            Vector3 startPos = startConnector.transform.position;
+            Vector3 endPos; 
+
+            if (uiCamera == null) 
+            {
+                endPos = Input.mousePosition;
+            }
+            else 
+            {
+                Vector3 screenMousePos = Input.mousePosition;
+                Vector3 startScreenPos = uiCamera.WorldToScreenPoint(startPos);
+                screenMousePos.z = startScreenPos.z;
+                endPos = uiCamera.ScreenToWorldPoint(screenMousePos);
+            }
+            
+            currentDrawingWire.SetProperties(startPos, endPos, wireColors[startConnector.ConnectorId]);
         }
     }
 
-    // ▼▼▼ 'X' 버튼 연결용 함수 (여기에 추가됨) ▼▼▼
     /// <summary>
     /// UI의 'X' 버튼을 클릭했을 때 호출될 함수
     /// </summary>
     public void ClosePuzzlePanel()
     {
-        Debug.Log("'X' 버튼 클릭됨. 퍼즐 패널을 닫습니다.");
+        // 'X' 버튼을 누른 것은 퍼즐을 풀지 않은 것이므로 false 전달
+        ClosePuzzlePanel(false);
+    }
+
+    /// <summary>
+    /// 퍼즐 패널을 닫는 내부 함수
+    /// </summary>
+    /// <param name="isCompleted">퍼즐을 '성공해서' 닫는 것인지 여부</param>
+    private void ClosePuzzlePanel(bool isCompleted)
+    {
+        if (isCompleted)
+        {
+             Debug.Log("<color=cyan>---!!! 퍼즐 클리어 !!!---</color>");
+             
+             // ▼▼▼ 2. 퍼즐 해결 상태를 영구 저장 (추가) ▼▼▼
+             PlayerPrefs.SetInt(puzzleSaveKey, 1);
+             PlayerPrefs.Save(); // 확실하게 지금 저장
+             // ▲▲▲ 2. 저장 끝 ▲▲▲
+        }
+        else
+        {
+            Debug.Log("퍼즐을 풀지 않고 닫습니다 (X 버튼 또는 ESC).");
+        }
+
         if (puzzlePanel != null)
         {
             puzzlePanel.SetActive(false);
         }
         else
         {
-            // puzzlePanel이 연결 안됐을 경우, 이 스크립트가 붙은 게임오브젝트를 끔
             gameObject.SetActive(false);
         }
     }
-    // ▲▲▲ 여기까지 추가됨 ▲▲▲
 
 
     void SetupPuzzle()
     {
+        // ... (SetupPuzzle 내용은 동일) ...
         Debug.Log("--- PuzzleManager: SetupPuzzle 시작 ---");
         List<int> rightSideIds = Enumerable.Range(0, connectorCount).ToList();
         Shuffle(rightSideIds);
@@ -129,14 +211,12 @@ public class PuzzleManager : MonoBehaviour
 
         for (int i = 0; i < connectorCount; i++)
         {
-            // 왼쪽 커넥터 생성
             GameObject leftObj = Instantiate(connectorPrefab, leftConnectorsParent);
             Connector leftConn = leftObj.GetComponent<Connector>();
             leftConn.Initialize(this, i, true);
             leftObj.GetComponent<Image>().color = wireColors[i];
             leftConnectors.Add(leftConn);
 
-            // 오른쪽 커넥터 생성
             GameObject rightObj = Instantiate(connectorPrefab, rightConnectorsParent);
             Connector rightConn = rightObj.GetComponent<Connector>();
             int randomId = rightSideIds[i];
@@ -148,6 +228,7 @@ public class PuzzleManager : MonoBehaviour
 
     public void StartDrawingWire(Connector startConn)
     {
+        // ... (StartDrawingWire 내용은 동일) ...
         Debug.Log($"StartDrawingWire: ID {startConn.ConnectorId}번 커넥터에서 그리기 시작.");
         startConnector = startConn;
         GameObject wireObj = Instantiate(wirePrefab, wireContainer);
@@ -156,27 +237,24 @@ public class PuzzleManager : MonoBehaviour
     
     public void DropWireOnConnector(Connector endConnector)
     {
-        // 1. 빈 공간에 놓았는지 확인
+        // ... (DropWireOnConnector 내용은 동일) ...
         if (endConnector == null)
         {
-            Debug.Log("<color=orange>연결 실패: 커넥터가 아닌 빈 공간에 놓았습니다.</color> (Wire 프리팹의 Raycast Target을 껐는지 확인하세요)");
-            if(currentDrawingWire != null) Destroy(currentDrawingWire.gameObject); // 널 체크 추가
+            Debug.Log("<color=orange>연결 실패: 커넥터가 아닌 빈 공간에 놓았습니다.</color>");
+            if(currentDrawingWire != null) Destroy(currentDrawingWire.gameObject);
         }
-        else // 2. 커넥터 위에 놓았을 때, 조건 확인
+        else
         {
-            // ▼▼▼ 널 체크 추가: startConnector가 null일 수 있음 (OnDisable 등에서 초기화된 경우) ▼▼▼
             if (startConnector == null)
             {
-                Debug.LogWarning("DropWireOnConnector: startConnector가 null입니다. (아마도 비활성화?)");
+                Debug.LogWarning("DropWireOnConnector: startConnector가 null입니다.");
                 if (currentDrawingWire != null) Destroy(currentDrawingWire.gameObject);
                 currentDrawingWire = null;
                 return;
             }
-            // ▲▲▲ 널 체크 끝 ▲▲▲
 
             Debug.Log($"연결 시도: 시작 ID({startConnector.ConnectorId}) -> 도착 ID({endConnector.ConnectorId})");
 
-            // 성공 조건 체크
             bool isRightSide = !endConnector.IsLeft;
             bool isNotConnected = !endConnector.IsConnected;
             bool isIdMatched = startConnector.ConnectorId == endConnector.ConnectorId;
@@ -187,20 +265,18 @@ public class PuzzleManager : MonoBehaviour
                 startConnector.IsConnected = true;
                 endConnector.IsConnected = true;
                 currentDrawingWire.SetProperties(startConnector.transform.position, endConnector.transform.position, wireColors[startConnector.ConnectorId]);
-                CheckForCompletion();
+                CheckForCompletion(); // ▼▼▼ 성공 시 여기 호출 ▼▼▼
             }
             else
             {
-                // 실패 원인을 하나씩 로그로 출력
                 Debug.Log("<color=red>연결 실패 원인:</color>");
                 if (!isRightSide) Debug.Log("- 도착점이 오른쪽 커넥터가 아닙니다.");
                 if (!isNotConnected) Debug.Log("- 도착점이 이미 다른 선과 연결되어 있습니다.");
                 if (!isIdMatched) Debug.Log("- 시작점과 도착점의 ID(색상)가 다릅니다.");
-                if(currentDrawingWire != null) Destroy(currentDrawingWire.gameObject); // 널 체크 추가
+                if(currentDrawingWire != null) Destroy(currentDrawingWire.gameObject);
             }
         }
 
-        // 그리기 상태 초기화
         startConnector = null;
         currentDrawingWire = null;
     }
@@ -209,19 +285,16 @@ public class PuzzleManager : MonoBehaviour
 
     void CheckForCompletion()
     {
-        // ▼▼▼ leftConnectors가 비어있지 않은지 확인 (ClearPuzzle 직후 호출 방지) ▼▼▼
         if (leftConnectors.Count > 0 && leftConnectors.All(conn => conn.IsConnected))
         {
-            Debug.Log("<color=cyan>---!!! 퍼즐 클리어 !!!---</color>");
-            if (puzzlePanel != null)
-            {
-                puzzlePanel.SetActive(false);
-            }
+            // ▼▼▼ 퍼즐을 '성공해서' 닫도록 true 값 전달 ▼▼▼
+            ClosePuzzlePanel(true);
         }
     }
 
     void Shuffle<T>(List<T> list)
     {
+        // ... (Shuffle 내용은 동일) ...
         System.Random rng = new System.Random();
         int n = list.Count;
         while (n > 1) { n--; int k = rng.Next(n + 1); T value = list[k]; list[k] = list[n]; list[n] = value; }
