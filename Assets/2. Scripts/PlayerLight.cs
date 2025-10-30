@@ -5,13 +5,13 @@ public class FlashlightCtrl : MonoBehaviour
     public Light flashlight;          // Spot Light 연결
     public Transform cameraTransform; // 카메라 Transform
 
-    [SerializeField] private float angle;
-    [SerializeField] private float range;
+    [SerializeField] private float flashlightAngular = 30F;
+    [SerializeField] private float flashlightRange = 20F;
 
     void Start()
     {
-        flashlight.range = range;
-        flashlight.spotAngle = angle;
+        //flashlight.range = flashlightRange;
+        //flashlight.spotAngle = flashlightAngular;
         flashlight.enabled = false; // 시작할 때 손전등 끄기
     }
 
@@ -24,19 +24,6 @@ public class FlashlightCtrl : MonoBehaviour
 
     void Update()
     {
-        RaycastHit hit;
-        if (flashlight.enabled)
-        {
-            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, range))
-            {
-                if (hit.collider.CompareTag("Monster"))
-                {
-                    Debug.Log("괴물이 빛을 받았다!");
-                }
-            }
-        }
-        
-
         // 마우스 왼쪽 클릭 시 토글
         if (Input.GetMouseButtonDown(0)) // 0 = 왼쪽 버튼
         {
