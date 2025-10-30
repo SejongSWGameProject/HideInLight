@@ -5,8 +5,9 @@ public class FlashlightCtrl : MonoBehaviour
     public Light flashlight;          // Spot Light 연결
     public Transform cameraTransform; // 카메라 Transform
 
-    [SerializeField] private float angle;
-    [SerializeField] private float range;
+    [SerializeField] private float angle = 50F;
+    [SerializeField] private float range = 90F;
+
 
     void Start()
     {
@@ -30,6 +31,20 @@ public class FlashlightCtrl : MonoBehaviour
             flashlight.enabled = !flashlight.enabled; // 켜져있으면 끄고, 꺼져있으면 켬
         }
 
-        
+        RaycastHit hit;
+
+        // 전등 앞쪽 방향으로 Raycast
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, range))
+        {
+            if (flashlight.enabled)
+            {
+                // 특정 태그 예시
+                if (hit.collider.CompareTag("Monster"))
+                {
+                    Debug.Log("적이 빛을 받았다!");
+                }
+            }
+            
+        }
     }
 }
