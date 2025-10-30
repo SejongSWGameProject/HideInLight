@@ -66,8 +66,7 @@ public class LampManager : MonoBehaviour
             targetLamp = SetMonsterTargetToNearestLight();
         }
         if (lamps.Count == 0)
-        {
-            Debug.Log("모든 전등 깨짐");
+        {   
             monster.setTarget(player.transform);
         }
 
