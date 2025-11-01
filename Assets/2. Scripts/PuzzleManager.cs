@@ -96,8 +96,21 @@ public class PuzzleManager : MonoBehaviour
         // --- 기존 Update 내용 ---
         if (startConnector != null && currentDrawingWire != null)
         {
-            currentDrawingWire.SetProperties(startConnector.transform.position, Input.mousePosition, wireColors[startConnector.ConnectorId]);
+            // 1. 마우스의 '픽셀 좌표(Input.mousePosition)'를 'UI 월드 좌표'로 변환합니다.
+            Vector3 worldMousePosition;
+            RectTransformUtility.ScreenPointToWorldPointInRectangle(
+                wireContainerRect,   // 좌표가 속할 기준 UI (와이어 컨테이너)
+                Input.mousePosition, // 변환할 마우스 픽셀 위치
+                (puzzleCanvas.renderMode == RenderMode.ScreenSpaceOverlay) ? null : puzzleCanvas.worldCamera, // 캔버스 모드에 맞는 카메라
+                out worldMousePosition); // 변환된 월드 좌표
+
+            // 2. SetProperties에는 변환된 '월드 좌표'를 넘겨줍니다.
+            currentDrawingWire.SetProperties(
+                startConnector.transform.position, // (월드 좌표 1)
+                worldMousePosition,                // (월드 좌표 2 - 변환 완료)
+                wireColors[startConnector.ConnectorId]);
         }
+        // --- ▲▲▲ 여기까지 수정됨 ▲▲▲ ---
     }
 
     // ▼▼▼ 'X' 버튼 연결용 함수 (여기에 추가됨) ▼▼▼
@@ -212,11 +225,18 @@ public class PuzzleManager : MonoBehaviour
         // ▼▼▼ leftConnectors가 비어있지 않은지 확인 (ClearPuzzle 직후 호출 방지) ▼▼▼
         if (leftConnectors.Count > 0 && leftConnectors.All(conn => conn.IsConnected))
         {
-            Debug.Log("<color=cyan>---!!! 퍼즐 클리어 !!!---</color>");
-            if (puzzlePanel != null)
-            {
-                puzzlePanel.SetActive(false);
-            }
+            Debug.LogWarning("CheckForCompletion: leftConnectors 리스트가 비어있습니다.");
+            return;
+        }
+
+        // 모든 leftConnectors가 IsConnected 상태인지 확인
+        bool allConnected = leftConnectors.All(conn => conn.IsConnected);
+        
+        if (allConnected)
+        {
+            Debug.Log("<color=cyan>===== 퍼즐 성공! =====</color>");
+            // (참고) 0.5초 뒤에 패널을 끄고 싶다면 Invoke("DelayClosePanel", 0.5f);
+            ClosePuzzlePanel(); 
         }
     }
 
@@ -224,6 +244,13 @@ public class PuzzleManager : MonoBehaviour
     {
         System.Random rng = new System.Random();
         int n = list.Count;
-        while (n > 1) { n--; int k = rng.Next(n + 1); T value = list[k]; list[k] = list[n]; list[n] = value; }
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
     }
 }
