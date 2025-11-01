@@ -25,6 +25,9 @@ public class PuzzleManager : MonoBehaviour
     private Wire currentDrawingWire;
     private Connector startConnector;
 
+    [SerializeField] private RectTransform wireContainerRect;
+    [SerializeField] private Canvas puzzleCanvas;
+
     // Start()는 한 번만 실행되지만, OnEnable()은 SetActive(true)가 될 때마다 실행됩니다.
     void OnEnable()
     {
