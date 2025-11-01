@@ -25,19 +25,9 @@ public class PuzzleManager : MonoBehaviour
     private Wire currentDrawingWire;
     private Connector startConnector;
 
-    // ▼▼▼ 캔버스 정보 저장을 위해 2줄 추가 ▼▼▼
-    private Canvas puzzleCanvas;
-    private RectTransform wireContainerRect;
-    // ▲▲▲ 여기까지 ▲▲▲
-
     // Start()는 한 번만 실행되지만, OnEnable()은 SetActive(true)가 될 때마다 실행됩니다.
     void OnEnable()
     {
-        // ▼▼▼ 캔버스 정보 찾기 (2줄 추가) ▼▼▼
-        puzzleCanvas = GetComponentInParent<Canvas>();
-        wireContainerRect = wireContainer.GetComponent<RectTransform>();
-        // ▲▲▲ 여기까지 ▲▲▲
-
         // 퍼즐을 켜기 전에, 이전에 있던 커넥터와 와이어를 모두 삭제합니다.
         ClearPuzzle();
         // 그리고 퍼즐을 새로 설치합니다.
@@ -103,24 +93,11 @@ public class PuzzleManager : MonoBehaviour
             }
         }
         
-        // --- ▼▼▼ 기존 Update 내용 (여기가 수정됨) ▼▼▼ ---
+        // --- 기존 Update 내용 ---
         if (startConnector != null && currentDrawingWire != null)
         {
-            // 1. 마우스의 '픽셀 좌표(Input.mousePosition)'를 'UI 월드 좌표'로 변환합니다.
-            Vector3 worldMousePosition;
-            RectTransformUtility.ScreenPointToWorldPointInRectangle(
-                wireContainerRect,   // 좌표가 속할 기준 UI (와이어 컨테이너)
-                Input.mousePosition, // 변환할 마우스 픽셀 위치
-                (puzzleCanvas.renderMode == RenderMode.ScreenSpaceOverlay) ? null : puzzleCanvas.worldCamera, // 캔버스 모드에 맞는 카메라
-                out worldMousePosition); // 변환된 월드 좌표
-
-            // 2. SetProperties에는 변환된 '월드 좌표'를 넘겨줍니다.
-            currentDrawingWire.SetProperties(
-                startConnector.transform.position, // (월드 좌표 1)
-                worldMousePosition,                // (월드 좌표 2 - 변환 완료)
-                wireColors[startConnector.ConnectorId]);
+            currentDrawingWire.SetProperties(startConnector.transform.position, Input.mousePosition, wireColors[startConnector.ConnectorId]);
         }
-        // --- ▲▲▲ 여기까지 수정됨 ▲▲▲ ---
     }
 
     // ▼▼▼ 'X' 버튼 연결용 함수 (여기에 추가됨) ▼▼▼
@@ -232,49 +209,21 @@ public class PuzzleManager : MonoBehaviour
 
     void CheckForCompletion()
     {
-        // ▼▼▼ leftConnectors가 비어있지 않은지 확인 (Null 레퍼런스 방지) ▼▼▼
-        if (leftConnectors == null || leftConnectors.Count == 0)
+        // ▼▼▼ leftConnectors가 비어있지 않은지 확인 (ClearPuzzle 직후 호출 방지) ▼▼▼
+        if (leftConnectors.Count > 0 && leftConnectors.All(conn => conn.IsConnected))
         {
-            Debug.LogWarning("CheckForCompletion: leftConnectors 리스트가 비어있습니다.");
-            return;
-        }
-
-        // 모든 leftConnectors가 IsConnected 상태인지 확인
-        bool allConnected = leftConnectors.All(conn => conn.IsConnected);
-        
-        if (allConnected)
-        {
-            Debug.Log("<color=cyan>===== 퍼즐 성공! =====</color>");
-            // (참고) 0.5초 뒤에 패널을 끄고 싶다면 Invoke("DelayClosePanel", 0.5f);
-            ClosePuzzlePanel(); 
+            Debug.Log("<color=cyan>---!!! 퍼즐 클리어 !!!---</color>");
+            if (puzzlePanel != null)
+            {
+                puzzlePanel.SetActive(false);
+            }
         }
     }
 
-    // (참고) 만약 딜레이를 주고 끄고 싶다면 이 함수를 사용하세요.
-    void DelayClosePanel()
-    {
-        if (puzzlePanel != null)
-        {
-            puzzlePanel.SetActive(false);
-        }
-        else
-        {
-            gameObject.SetActive(false);
-        }
-    }
-
-    // 리스트 셔플 유틸리티 함수
     void Shuffle<T>(List<T> list)
     {
         System.Random rng = new System.Random();
         int n = list.Count;
-        while (n > 1)
-        {
-            n--;
-            int k = rng.Next(n + 1);
-            T value = list[k];
-            list[k] = list[n];
-            list[n] = value;
-        }
+        while (n > 1) { n--; int k = rng.Next(n + 1); T value = list[k]; list[k] = list[n]; list[n] = value; }
     }
 }
