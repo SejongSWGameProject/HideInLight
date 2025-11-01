@@ -1,7 +1,7 @@
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UI; // Image 사용
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq; // Linq 사용
 
 public class PuzzleManager : MonoBehaviour
 {
@@ -72,7 +72,6 @@ public class PuzzleManager : MonoBehaviour
         currentDrawingWire = wireObj.GetComponent<Wire>();
     }
 
-    // ▼▼▼ 여기가 핵심 디버깅 부분입니다 ▼▼▼
     public void DropWireOnConnector(Connector endConnector)
     {
         // 1. 빈 공간에 놓았는지 확인
@@ -128,6 +127,25 @@ public class PuzzleManager : MonoBehaviour
         }
     }
     
+    // ▼▼▼ 여기에 추가되었습니다! ▼▼▼
+    /// <summary>
+    /// 'X' 닫기 버튼을 눌렀을 때 호출될 함수
+    /// </summary>
+    public void ClosePuzzlePanel()
+    {
+        // puzzlePanel 변수는 이미 스크립트 상단에 선언되어 있습니다.
+        if (puzzlePanel != null)
+        {
+            puzzlePanel.SetActive(false); // 퍼즐 패널을 끈다
+            Debug.Log("사용자가 'X' 버튼을 눌러 퍼즐을 닫았습니다.");
+        }
+        else
+        {
+            Debug.LogWarning("PuzzleManager: 닫을 puzzlePanel 변수가 연결되지 않았습니다.");
+        }
+    }
+    // ▲▲▲ 여기까지 입니다 ▲▲▲
+
     void Shuffle<T>(List<T> list)
     {
         System.Random rng = new System.Random();
