@@ -18,64 +18,153 @@ public class Player_Ctrl : MonoBehaviour
     float h;
     float v;
 
+    [Header("Flashlight")]
+    public Light flashlight;             
+    public float flashlightRotateSpeed = 10f; // ì ì ˆíˆ ì¡°ì ˆ
+    Vector3 flashlightRotation; // ëˆ„ì  íšŒì „ì„ ìœ„í•´
+
+    bool canLook = false;  // ë§ˆìš°ìŠ¤ ì…ë ¥ ê°€ëŠ¥ ì—¬ë¶€
+
+    [Header("Crouch Settings")]
+    public KeyCode crouchKey = KeyCode.Z; // ì•‰ê¸° í‚¤
+    private float originalY; // ì´ˆê¸° y ìœ„ì¹˜ ì €ì¥
+
+    private bool isCrouched = false;
+
     void Start()
     {
         hiddenMouseCursor();
 
-        rb = GetComponent<Rigidbody>();             // Rigidbody ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
-        rb.freezeRotation = true;                   // RigidbodyÀÇ È¸ÀüÀ» °íÁ¤ÇÏ¿© ¹°¸® ¿¬»ê¿¡ ¿µÇâÀ» ÁÖÁö ¾Êµµ·Ï ¼³Á¤
+        rb = GetComponent<Rigidbody>();             
+        rb.freezeRotation = true;                  
 
-        cam = Camera.main;                          // ¸ŞÀÎ Ä«¸Ş¶ó¸¦ ÇÒ´ç
+        cam = Camera.main;                          
+
+        if (cam != null)
+        {
+            Vector3 camAngles = cam.transform.eulerAngles;
+            xRotation = cam.transform.eulerAngles.x;
+            yRotation = cam.transform.eulerAngles.y; 
+        }
+
+        if (flashlight != null)
+            flashlightRotation = flashlight.transform.localEulerAngles;
+
+        // ì´ˆê¸° y ìœ„ì¹˜ ì €ì¥
+        originalY = transform.position.y;
+
+        // ê²Œì„ ì‹œì‘ í›„ 0.5ì´ˆ ë’¤ë¶€í„° ë§ˆìš°ìŠ¤ ì…ë ¥ í—ˆìš©
+        Invoke(nameof(EnableMouseLook), 0.5f);
+    }
+
+    void EnableMouseLook()
+    {
+        canLook = true;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
-        Rotate();
-        Move();
+        Getinput();
 
-        if (Input.GetMouseButtonDown(0)) // ¿ŞÂÊ Å¬¸¯
+        // ì•‰ê¸° ì²˜ë¦¬
+        HandleCrouch();
+
+        // í‰ì†Œ ë§ˆìš°ìŠ¤ â†’ Player íšŒì „
+        if (!Input.GetMouseButton(1) && canLook)
+            Rotate();
+
+        // ìš°í´ë¦­ ì‹œ â†’ ì†ì „ë“± íšŒì „
+        if (Input.GetMouseButton(1))
+            RotateFlashlight();
+
+        if (Input.GetMouseButtonDown(0)) 
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 if (hit.collider.gameObject == gameObject)
                 {
-                    Debug.Log("Å¬¸¯µÊ!");
+                    Debug.Log("Å¬ï¿½ï¿½ï¿½ï¿½!");
                 }
             }
         }
     }
 
+    void HandleCrouch()
+    {
+        Vector3 pos = transform.position;
+
+        if (Input.GetKey(crouchKey))
+        {
+            // í‚¤ë¥¼ ëˆ„ë¥´ê³  ìˆìœ¼ë©´ ì ˆë°˜ ë†’ì´
+            pos.y = originalY * 0.5f;
+        }
+        else
+        {
+            // í‚¤ë¥¼ ë–¼ë©´ ì›ë˜ ë†’ì´
+            pos.y = originalY;
+        }
+
+        transform.position = pos;
+    }
+
+    void FixedUpdate()
+    {
+        Vector3 moveVec = transform.forward * v + transform.right * h;
+        rb.linearVelocity = moveVec.normalized * moveSpeed;
+    }
+
+    void Getinput()
+    {
+        h = Input.GetAxis("Horizontal");
+        v = Input.GetAxis("Vertical");
+    }
+
     void Rotate()
     {
+        if (!canLook) return; // ë¡œë”© ì¤‘ì—ëŠ” ë§ˆìš°ìŠ¤ ì…ë ¥ ë¬´ì‹œ
+
         float mouseX = Input.GetAxisRaw("Mouse X") * mouseSpeed * Time.deltaTime;
         float mouseY = Input.GetAxisRaw("Mouse Y") * mouseSpeed * Time.deltaTime;
 
-        yRotation += mouseX;    // ¸¶¿ì½º XÃà ÀÔ·Â¿¡ µû¶ó ¼öÆò È¸Àü °ªÀ» Á¶Á¤
-        xRotation -= mouseY;    // ¸¶¿ì½º YÃà ÀÔ·Â¿¡ µû¶ó ¼öÁ÷ È¸Àü °ªÀ» Á¶Á¤
+        yRotation += mouseX;    // ï¿½ï¿½ï¿½ì½º Xï¿½ï¿½ ï¿½Ô·Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        xRotation -= mouseY;    // ï¿½ï¿½ï¿½ì½º Yï¿½ï¿½ ï¿½Ô·Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);  // ¼öÁ÷ È¸Àü °ªÀ» -90µµ¿¡¼­ 90µµ »çÀÌ·Î Á¦ÇÑ
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);  // ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ -90ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 90ï¿½ï¿½ ï¿½ï¿½ï¿½Ì·ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 
-        cam.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0); // Ä«¸Ş¶óÀÇ È¸ÀüÀ» Á¶Àı
-        transform.rotation = Quaternion.Euler(0, yRotation, 0);             // ÇÃ·¹ÀÌ¾î Ä³¸¯ÅÍÀÇ È¸ÀüÀ» Á¶Àı
+        cam.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0); 
+        transform.rotation = Quaternion.Euler(0, yRotation, 0);             
     }
 
     void Move()
     {
-        h = Input.GetAxis("Horizontal"); // ¼öÆò ÀÌµ¿ ÀÔ·Â °ª
-        v = Input.GetAxis("Vertical");   // ¼öÁ÷ ÀÌµ¿ ÀÔ·Â °ª
-
-        // ÀÔ·Â¿¡ µû¶ó ÀÌµ¿ ¹æÇâ º¤ÅÍ °è»ê
+        
         Vector3 moveVec = transform.forward * v + transform.right * h;
 
-        // ÀÌµ¿ º¤ÅÍ¸¦ Á¤±ÔÈ­ÇÏ¿© ÀÌµ¿ ¼Óµµ¿Í ½Ã°£ °£°İÀ» °öÇÑ ÈÄ ÇöÀç À§Ä¡¿¡ ´õÇÔ
-        transform.position += moveVec.normalized * moveSpeed * Time.deltaTime;
+        
+        rb.MovePosition(rb.position + moveVec.normalized * moveSpeed * Time.fixedDeltaTime);
+    }
+
+    void RotateFlashlight()
+    {
+        if (flashlight == null) return;
+
+        float mouseX = Input.GetAxis("Mouse X") * flashlightRotateSpeed * 0.05f;
+        float mouseY = Input.GetAxis("Mouse Y") * flashlightRotateSpeed * 0.05f;
+
+        // ëˆ„ì  íšŒì „
+        flashlightRotation.x -= mouseY;
+        flashlightRotation.y += mouseX;
+        flashlightRotation.x = Mathf.Clamp(flashlightRotation.x, -90f, 90f);
+
+        flashlight.transform.localRotation = Quaternion.Euler(flashlightRotation);
     }
 
     void hiddenMouseCursor()
     {
-        Cursor.lockState = CursorLockMode.Locked;   // ¸¶¿ì½º Ä¿¼­¸¦ È­¸é ¾È¿¡¼­ °íÁ¤
-        Cursor.visible = false;                     // ¸¶¿ì½º Ä¿¼­¸¦ º¸ÀÌÁö ¾Êµµ·Ï ¼³Á¤
+        Cursor.lockState = CursorLockMode.Locked;  
+        Cursor.visible = false;                     
     }
 }
