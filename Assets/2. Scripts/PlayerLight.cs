@@ -43,7 +43,7 @@ public class FlashlightCtrl : MonoBehaviour
         if (scroll != 0)
         {
             // range 증가/감소 (최소값 50)
-            if(angle != 15f)
+            if (angle != 15f)
                 range = Mathf.Max(50f, range + scroll * scrollSpeed);
 
             // spotAngle 증가/감소 (최소값 15)
