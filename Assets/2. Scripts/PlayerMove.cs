@@ -31,6 +31,13 @@ public class Player_Ctrl : MonoBehaviour
 
     private bool isCrouched = false;
 
+    float currentX;
+    float currentY;
+    float xVelocity;
+    float yVelocity;
+    public float smoothTime = 0.05f; // 원하는 부드러움
+
+
     void Start()
     {
         hiddenMouseCursor();
@@ -123,19 +130,22 @@ public class Player_Ctrl : MonoBehaviour
 
     void Rotate()
     {
-        if (!canLook) return; // 로딩 중에는 마우스 입력 무시
+        if (!canLook) return;
 
         float mouseX = Input.GetAxisRaw("Mouse X") * mouseSpeed * Time.deltaTime;
         float mouseY = Input.GetAxisRaw("Mouse Y") * mouseSpeed * Time.deltaTime;
 
         yRotation += mouseX;
         xRotation -= mouseY;
-
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
+        // 목표 회전값 → 실제 회전값으로 스무딩
+        currentX = Mathf.SmoothDampAngle(currentX, xRotation, ref xVelocity, smoothTime);
+        currentY = Mathf.SmoothDampAngle(currentY, yRotation, ref yVelocity, smoothTime);
 
-        cam.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        transform.rotation = Quaternion.Euler(0, yRotation, 0);
+        // 카메라 상하 회전, 플레이어 좌우 회전
+        cam.transform.rotation = Quaternion.Euler(currentX, currentY, 0);
+        transform.rotation = Quaternion.Euler(0, currentY, 0);
     }
 
     void Move()
