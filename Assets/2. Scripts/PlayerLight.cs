@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class FlashlightCtrl : MonoBehaviour
 {
-    public Light flashlight;          // Spot Light ì—°ê²°
-    public Transform cameraTransform; // ì¹´ë©”ë¼ Transform
+    public Light flashlight;          // Spot Light ¿¬°á
+    public Transform cameraTransform; // Ä«¸Ş¶ó Transform
 
     [Header("Initial Settings")]
-    public float initialRange = 150f;  // Inspectorì—ì„œ ì´ˆê¸°ê°’ ì„¤ì •
-    public float initialAngle = 45f;   // Inspectorì—ì„œ ì´ˆê¸°ê°’ ì„¤ì •
+    public float initialRange = 150f;  // Inspector¿¡¼­ ÃÊ±â°ª ¼³Á¤
+    public float initialAngle = 45f;   // Inspector¿¡¼­ ÃÊ±â°ª ¼³Á¤
 
     [Header("Scroll Settings")]
-    public float scrollSpeed = 30f;         // ë§ˆìš°ìŠ¤ íœ  ê°ë„
-    [Range(0f, 1f)] public float angleRangeFactor = 0.5f; // range ì¦ê°€ ì‹œ angle ê°ì†Œ ë¹„ìœ¨
+    public float scrollSpeed = 30f;         // ¸¶¿ì½º ÈÙ °¨µµ
+    [Range(0f, 1f)] public float angleRangeFactor = 0.5f; // range Áõ°¡ ½Ã angle °¨¼Ò ºñÀ²
 
     private float range;
     private float angle;
@@ -20,7 +20,7 @@ public class FlashlightCtrl : MonoBehaviour
     {
         if (flashlight == null) return;
 
-        range = initialRange;  // Inspector ê°’ ê·¸ëŒ€ë¡œ ì´ˆê¸°ê°’ìœ¼ë¡œ ì‚¬ìš©
+        range = initialRange;  // Inspector °ª ±×´ë·Î ÃÊ±â°ªÀ¸·Î »ç¿ë
         angle = initialAngle;
 
         flashlight.range = range;
@@ -32,21 +32,21 @@ public class FlashlightCtrl : MonoBehaviour
 
     void Update()
     {
-        // ë§ˆìš°ìŠ¤ ì™¼ìª½ í´ë¦­ ì‹œ í† ê¸€
-        if (Input.GetMouseButtonDown(0)) // 0 = ì™¼ìª½ ë²„íŠ¼
+        // ¸¶¿ì½º ¿ŞÂÊ Å¬¸¯ ½Ã Åä±Û
+        if (Input.GetMouseButtonDown(0)) // 0 = ¿ŞÂÊ ¹öÆ°
         {
-            flashlight.enabled = !flashlight.enabled; // ì¼œì ¸ìˆìœ¼ë©´ ë„ê³ , êº¼ì ¸ìˆìœ¼ë©´ ì¼¬
+            flashlight.enabled = !flashlight.enabled; // ÄÑÁ®ÀÖÀ¸¸é ²ô°í, ²¨Á®ÀÖÀ¸¸é ÄÔ
         }
 
-        // ë§ˆìš°ìŠ¤ íœ  ì…ë ¥ ì²˜ë¦¬
-        float scroll = Input.GetAxis("Mouse ScrollWheel"); // ìœ„ë¡œ ìŠ¤í¬ë¡¤: +, ì•„ë˜ë¡œ: -
+        // ¸¶¿ì½º ÈÙ ÀÔ·Â Ã³¸®
+        float scroll = Input.GetAxis("Mouse ScrollWheel"); // À§·Î ½ºÅ©·Ñ: +, ¾Æ·¡·Î: -
         if (scroll != 0)
         {
-            // range ì¦ê°€/ê°ì†Œ (ìµœì†Œê°’ 50)
+            // range Áõ°¡/°¨¼Ò (ÃÖ¼Ò°ª 50)
             if (angle != 15f)
                 range = Mathf.Max(50f, range + scroll * scrollSpeed);
 
-            // spotAngle ì¦ê°€/ê°ì†Œ (ìµœì†Œê°’ 15)
+            // spotAngle Áõ°¡/°¨¼Ò (ÃÖ¼Ò°ª 15)
             if (range != 50f)
                 angle = Mathf.Max(15f, angle - scroll * scrollSpeed * angleRangeFactor);
 
@@ -56,15 +56,15 @@ public class FlashlightCtrl : MonoBehaviour
 
         RaycastHit hit;
 
-        // ì „ë“± ì•ìª½ ë°©í–¥ìœ¼ë¡œ Raycast
+        // Àüµî ¾ÕÂÊ ¹æÇâÀ¸·Î Raycast
         if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, range))
         {
             if (flashlight.enabled)
             {
-                // íŠ¹ì • íƒœê·¸ ì˜ˆì‹œ
+                // Æ¯Á¤ ÅÂ±× ¿¹½Ã
                 if (hit.collider.CompareTag("Monster"))
                 {
-                    Debug.Log("ì ì´ ë¹›ì„ ë°›ì•˜ë‹¤!");
+                    Debug.Log("ÀûÀÌ ºûÀ» ¹Ş¾Ò´Ù!");
                 }
             }
         }
