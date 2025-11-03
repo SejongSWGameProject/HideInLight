@@ -3,3 +3,4 @@
 first_stage_no_texture.fbx filter=lfs diff=lfs merge=lfs -text
 merged_stage_textured.fbx filter=lfs diff=lfs merge=lfs -text
 merged_stage1103.fbx filter=lfs diff=lfs merge=lfs -text
+merged_stage.fbx filter=lfs diff=lfs merge=lfs -text
