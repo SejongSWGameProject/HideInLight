@@ -59,12 +59,13 @@ public class MonsterSight : MonoBehaviour
         {
             // 장애물에 가려짐
             canSeePlayer = false;
+            Debug.Log("플레이어 안보임");
         }
         else
         {
             // 장애물 없이 플레이어를 봄!
             canSeePlayer = true;
-            Debug.Log("플레이어 발견!");
+            Debug.Log("발견!");
             // 여기에 플레이어를 발견했을 때의 로직을 추가 (예: 추격 시작)
         }
     }
