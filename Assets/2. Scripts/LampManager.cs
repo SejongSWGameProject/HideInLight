@@ -17,7 +17,7 @@ public class LampManager : MonoBehaviour
     public Transform player;
 
     [Header("크리쳐")]
-    [SerializeField] private MonsterFollow monster;
+    [SerializeField] private MonsterAI monster;
     LampController targetLamp;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -43,7 +43,7 @@ public class LampManager : MonoBehaviour
         // Monster 안전 체크
         if (monster == null)
         {
-            monster = GameObject.FindAnyObjectByType<MonsterFollow>();
+            monster = GameObject.FindAnyObjectByType<MonsterAI>();
             if (monster == null)
                 Debug.LogError("MonsterFollow 객체를 찾을 수 없습니다!");
         }
@@ -114,7 +114,7 @@ public class LampManager : MonoBehaviour
         LampController randomLamp = GetRandomLamp();
         if (randomLamp != null)
             monster.setTarget(randomLamp.transform);
-
+        targetLamp = randomLamp;
         return randomLamp;
     }
 
