@@ -9,6 +9,8 @@ public class MonsterFollow : MonoBehaviour
     MonoBehaviour obj;
     int breakDistance = 5;
 
+    int monsterState = 1;           //1:평상시(전등깨고다니는중)   2:플레이어쫓는중   3:스턴맞음
+
     public void setTarget(Transform obj)
     {
         target = obj;
