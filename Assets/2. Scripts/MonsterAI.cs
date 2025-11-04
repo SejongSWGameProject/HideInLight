@@ -134,12 +134,6 @@ public class MonsterAI : MonoBehaviour
         {
             monsterState = NORMAL;
             lampManager.SetMonsterTargetToRandomLamp();
-            Debug.Log("스턴 후 안보임");
-        }
-        else
-        {
-            Debug.Log("스턴 후 보임");
-
         }
     }
 
