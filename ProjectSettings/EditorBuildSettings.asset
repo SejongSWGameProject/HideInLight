@@ -4,7 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/1. Scenes/GameScene.unity
+    guid: 2bd44a73a888ebd438efc5ca7f6faf51
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 357234d2e26fab44d844df4162013a0b, type: 2}
   m_UseUCBPForAssetBundles: 0

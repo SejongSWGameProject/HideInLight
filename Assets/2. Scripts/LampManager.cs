@@ -98,7 +98,7 @@ public class LampManager : MonoBehaviour
     {
         if (targetLamp != null)
         {
-            Debug.Log("램프매니저 BreakLamp()");
+            //Debug.Log("램프매니저 BreakLamp()");
             targetLamp.BreakLamp();
             lamps.Remove(targetLamp);
 
