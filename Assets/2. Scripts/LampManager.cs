@@ -17,7 +17,7 @@ public class LampManager : MonoBehaviour
     public Transform player;
 
     [Header("크리쳐")]
-    [SerializeField] private MonsterFollow monster;
+    [SerializeField] private MonsterAI monster;
     LampController targetLamp;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -43,7 +43,7 @@ public class LampManager : MonoBehaviour
         // Monster 안전 체크
         if (monster == null)
         {
-            monster = GameObject.FindAnyObjectByType<MonsterFollow>();
+            monster = GameObject.FindAnyObjectByType<MonsterAI>();
             if (monster == null)
                 Debug.LogError("MonsterFollow 객체를 찾을 수 없습니다!");
         }
@@ -54,7 +54,7 @@ public class LampManager : MonoBehaviour
 
         if (monster == null) return;
 
-        targetLamp = SetMonsterTargetToNearestLight();
+        targetLamp = SetMonsterTargetToRandomLamp();
 
     }
 
@@ -63,14 +63,13 @@ public class LampManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            targetLamp = SetMonsterTargetToNearestLight();
+            targetLamp = SetMonsterTargetToRandomLamp();
         }
         if (lamps.Count == 0)
         {
             Debug.Log("모든 전등 깨짐");
             monster.setTarget(player.transform);
         }
-
     }
 
     public void RegisterLamp(LampController lamp)
@@ -102,9 +101,23 @@ public class LampManager : MonoBehaviour
             targetLamp.BreakLamp();
             lamps.Remove(targetLamp);
 
-            targetLamp = SetMonsterTargetToNearestLight();
+            targetLamp = SetMonsterTargetToRandomLamp();
         }
     }
+
+    public LampController SetMonsterTargetToRandomLamp()
+    {
+        //남은 lamp가 하나도 없을 때 예외처리 해줘야함
+        if (monster == null || player == null || lamps == null || lamps.Count == 0)
+            return null;
+
+        LampController randomLamp = GetRandomLamp();
+        if (randomLamp != null)
+            monster.setTarget(randomLamp.transform);
+        targetLamp = randomLamp;
+        return randomLamp;
+    }
+
     public LampController SetMonsterTargetToNearestLight()
     {
         //남은 lamp가 하나도 없을 때 예외처리 해줘야함
@@ -136,5 +149,25 @@ public class LampManager : MonoBehaviour
             }
         }
         return nearest;
+    }
+
+    LampController GetRandomLamp()
+    {
+        if (lamps.Count > 0)
+        {
+            // 0부터 (리스트 크기 - 1) 사이의 랜덤한 정수 인덱스를 가져옵니다.
+            int randomIndex = Random.Range(0, lamps.Count);
+
+            // 해당 인덱스의 LampController를 가져옵니다.
+            LampController randomLamp = lamps[randomIndex];
+
+            return randomLamp;
+        }
+        else
+        {
+            Debug.LogWarning("램프 리스트가 비어있습니다!");
+            return null;
+        }
+
     }
 }
