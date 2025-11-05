@@ -49,12 +49,6 @@ public class MonsterAI : MonoBehaviour
     void Update()
     {
 
-        if (target == null)
-        {
-            Debug.Log("Å¸°Ù ¼³Á¤ÇÔ");
-            lampManager.SetMonsterTargetToRandomLamp();
-        }
-
         Vector3 targetPosWithoutY = new Vector3(target.position.x, 0f, target.position.z);
         Vector3 monsterPosWithoutY = new Vector3(this.transform.position.x, 0f, this.transform.position.z);
         if (target != null && monster.isOnNavMesh)
