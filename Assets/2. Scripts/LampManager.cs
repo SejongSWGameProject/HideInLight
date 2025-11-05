@@ -29,7 +29,7 @@ public class LampManager : MonoBehaviour
         // Lights 배열 안전 체크
         if (lamps == null || lamps.Count == 0)
         {
-            //Debug.Log("Lights 배열이 비어 있습니다!");
+            Debug.Log("Lights 배열이 비어 있습니다!");
         }
 
         // Player 안전 체크

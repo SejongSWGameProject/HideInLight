@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Player_Ctrl : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
     Rigidbody rb;
 

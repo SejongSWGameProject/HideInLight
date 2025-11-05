@@ -39,7 +39,10 @@ public class MonsterAI : MonoBehaviour
     void Start()
     {
         monster = GetComponent<NavMeshAgent>();
-        
+        if (target == null)
+        {
+            lampManager.SetMonsterTargetToRandomLamp();
+        }
     }
 
     void Update()
@@ -54,7 +57,6 @@ public class MonsterAI : MonoBehaviour
         {
             Debug.LogWarning("괴물이 NavMesh 위에 있지 않습니다!");
         }
-        Debug.Log(monsterState);
         if (monsterState == NORMAL)
         {
             monster.speed = 15;

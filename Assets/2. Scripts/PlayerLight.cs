@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FlashlightCtrl : MonoBehaviour
+public class PlayerLight : MonoBehaviour
 {
     public Light flashlight;          // Spot Light 연결
     public Transform cameraTransform; // 카메라 Transform
