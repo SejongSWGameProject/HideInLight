@@ -15,9 +15,9 @@ public class MonsterAI : MonoBehaviour
     int monsterState = NORMAL;           //1:평상시(전등깨고다니는중)   2:플레이어쫓는중   3:스턴맞음
 
     public Transform player;         // 플레이어 Transform
-    public float viewRadius = 10f; // 시야 반경 (거리)
+    public float viewRadius = 80f; // 시야 반경 (거리)
     [Range(0, 360)]
-    public float viewAngle = 90f;  // 시야각
+    public float viewAngle = 300f;  // 시야각
     public LayerMask obstacleMask; // 장애물 레이어 마스크
 
     [SerializeField] LampManager lampManager;
@@ -39,11 +39,7 @@ public class MonsterAI : MonoBehaviour
     void Start()
     {
         monster = GetComponent<NavMeshAgent>();
-        if (target == null)
-        {
-            Debug.Log("타겟 설정함");
-            lampManager.SetMonsterTargetToRandomLamp();
-        }
+        
     }
 
     void Update()
@@ -53,7 +49,7 @@ public class MonsterAI : MonoBehaviour
         Vector3 monsterPosWithoutY = new Vector3(this.transform.position.x, 0f, this.transform.position.z);
         if (target != null && monster.isOnNavMesh)
         {
-            monster.SetDestination(targetPosWithoutY); // 플레이어 위치 따라감
+            monster.SetDestination(targetPosWithoutY);
         }
         else
         {
@@ -63,6 +59,7 @@ public class MonsterAI : MonoBehaviour
         {
             monster.speed = 15;
             CheckSight();
+            Debug.Log(Vector3.Distance(targetPosWithoutY, monsterPosWithoutY));
             if (Vector3.Distance(targetPosWithoutY, monsterPosWithoutY) < breakDistance)
             {
                 if (target.CompareTag("Lamp"))

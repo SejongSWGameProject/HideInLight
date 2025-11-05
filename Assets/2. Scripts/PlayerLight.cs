@@ -6,7 +6,7 @@ public class PlayerLight : MonoBehaviour
     public Transform cameraTransform; // 카메라 Transform
 
     [Header("Initial Settings")]
-    public float initialRange = 150f;  // Inspector에서 초기값 설정
+    public float initialRange = 100f;  // Inspector에서 초기값 설정
     public float initialAngle = 45f;   // Inspector에서 초기값 설정
 
     [Header("Scroll Settings")]

@@ -48,7 +48,6 @@ public class LampManager : MonoBehaviour
                 Debug.LogError("MonsterFollow 객체를 찾을 수 없습니다!");
         }
 
-        targetLamp = SetMonsterTargetToRandomLamp();
     }
 
     void Start()
@@ -56,6 +55,7 @@ public class LampManager : MonoBehaviour
 
         if (monster == null) return;
 
+        targetLamp = SetMonsterTargetToRandomLamp();
         
 
     }
