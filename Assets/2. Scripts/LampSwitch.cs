@@ -17,7 +17,7 @@ public class LampSwitch : MonoBehaviour
         // 1. 배열이 비어있는지, 또는 첫 번째 항목이 비어있는지 확인합니다.
         if (targetLights == null || targetLights.Length == 0 || targetLights[0] == null)
         {
-            Debug.LogError("LightSwitch 스크립트에 'Target Lights'가 하나 이상 연결되어야 합니다!");
+            Debug.Log("LightSwitch 스크립트에 'Target Lights'가 하나 이상 연결되어야 합니다!");
         }
         else
         {
