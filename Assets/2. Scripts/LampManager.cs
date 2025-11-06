@@ -20,6 +20,10 @@ public class LampManager : MonoBehaviour
     [SerializeField] private MonsterAI monster;
     LampController targetLamp;
 
+    [Header("전등 스위치 배열")]
+    public List<LampSwitch> switches = new List<LampSwitch>();
+    public LampSwitch nearSwitch;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()
@@ -30,6 +34,11 @@ public class LampManager : MonoBehaviour
         if (lamps == null || lamps.Count == 0)
         {
             Debug.Log("Lights 배열이 비어 있습니다!");
+        }
+
+        if (switches == null || switches.Count == 0)
+        {
+            Debug.Log("LightSwitch 배열이 비어 있습니다!");
         }
 
         // Player 안전 체크
@@ -63,14 +72,24 @@ public class LampManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             targetLamp = SetMonsterTargetToRandomLamp();
+        }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            targetLamp = SetMonsterTargetToNearestLight();
         }
         if (lamps.Count == 0)
         {
             Debug.Log("모든 전등 깨짐");
             monster.setTarget(player.transform);
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("스위치 개수" + switches.Count);
+            nearSwitch = GetNearSwitch();
+            nearSwitch.ToggleLights();
         }
     }
 
@@ -172,5 +191,33 @@ public class LampManager : MonoBehaviour
             return null;
         }
 
+    }
+
+    public void RegisterLampSwitch(LampSwitch ls)
+    {
+        if (!switches.Contains(ls))
+        {
+            switches.Add(ls);
+        }
+    }
+
+    public LampSwitch GetNearSwitch()
+    {
+        if (switches == null || switches.Count == 0 || player == null)
+            return null;
+
+        float minDistance = float.MaxValue;
+        LampSwitch nearest = switches[0];
+
+        foreach (LampSwitch ls in switches)
+        {
+            float dist = Vector3.Distance(player.position, ls.transform.position);
+            if (dist < minDistance)
+            {
+                minDistance = dist;
+                nearest = ls;
+            }
+        }
+        return nearest;
     }
 }

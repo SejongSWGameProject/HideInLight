@@ -3,7 +3,7 @@ using UnityEngine;
 public class LampController : MonoBehaviour
 {
     public Light lamp;
-    private bool isBroken = false;
+    public bool isBroken = false;
     public AudioSource breakSound;       // ¼Ò¸® (¼±ÅÃ)
     public ParticleSystem sparkEffect;   // ºÒ²É (¼±ÅÃ)
     void Start()
@@ -22,6 +22,26 @@ public class LampController : MonoBehaviour
         //Debug.Log("²ö´Ù");
         if (isBroken) return;
         StartCoroutine(BreakLightRoutine());
+    }
+
+    public void TurnOn()
+    {
+        if (isBroken) return;
+        lamp.enabled = true;
+    }
+
+    public void TurnOff()
+    {
+        if (isBroken) return;
+        lamp.enabled = false;
+
+    }
+
+    public void Toggle()
+    {
+        if (isBroken) return;
+        lamp.enabled = !lamp.enabled;
+
     }
 
     System.Collections.IEnumerator BreakLightRoutine()

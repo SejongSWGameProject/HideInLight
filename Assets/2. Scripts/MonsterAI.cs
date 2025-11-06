@@ -58,8 +58,8 @@ public class MonsterAI : MonoBehaviour
         if (monsterState == NORMAL)
         {
             monster.speed = 15;
-            CheckSight();
-            Debug.Log(Vector3.Distance(targetPosWithoutY, monsterPosWithoutY));
+            //CheckSight();
+            //Debug.Log(Vector3.Distance(targetPosWithoutY, monsterPosWithoutY));
             if (Vector3.Distance(targetPosWithoutY, monsterPosWithoutY) < breakDistance)
             {
                 if (target.CompareTag("Lamp"))
