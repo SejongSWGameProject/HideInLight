@@ -133,6 +133,7 @@ public class MonsterAI : MonoBehaviour
 
         if (CheckSight() == false)
         {
+            Debug.Log("스턴 후 안보임");
             monsterState = NORMAL;
             lampManager.SetMonsterTargetToRandomLamp();
         }
@@ -169,6 +170,8 @@ public class MonsterAI : MonoBehaviour
         if (Physics.Raycast(eyePos, directionToPlayer, distanceToPlayer, obstacleMask))
         {
             // 장애물에 가려짐
+            Debug.Log("가려짐");
+
             canSeePlayer = false;
             return false;
         }
