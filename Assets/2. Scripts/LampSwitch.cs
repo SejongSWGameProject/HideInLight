@@ -7,8 +7,7 @@ public class LampSwitch : MonoBehaviour
     [Header("연결할 전등 (여러 개)")]
     public LampController[] targetLights; // ★★★ 변경점: 단일 Light에서 Light[] 배열로 변경!
 
-    private bool isPlayerNearby = false;
-    private bool isLightOn = false;
+    public bool isLightOn = false;
 
     void Start()
     {
@@ -23,7 +22,18 @@ public class LampSwitch : MonoBehaviour
         {
             // 2. 첫 번째 전등의 상태를 기준으로 초기 상태(isLightOn)를 정합니다.
             // (모든 전등이 처음에 같은 상태라고 가정)
-            isLightOn = targetLights[0].enabled;
+            foreach(LampController l in targetLights)
+            {
+                if (isLightOn)
+                {
+                    l.TurnOn();
+                    LampManager.Instance.RegisterLamp(l);
+                }
+                else
+                {
+                    l.TurnOff();
+                }
+            }
         }
     }
 
@@ -42,7 +52,6 @@ public class LampSwitch : MonoBehaviour
 
         // 2. 마스터 전등 상태를 반전시킵니다.
         isLightOn = !isLightOn;
-        Debug.Log("ToggleLights()");
         // 3. ★★★ 변경점: foreach 반복문으로 배열의 '모든' 전등을 순회합니다.
         foreach (LampController light in targetLights)
         {
@@ -50,28 +59,21 @@ public class LampSwitch : MonoBehaviour
             if (light != null && !light.isBroken)
             {
                 light.Toggle();
+                if (isLightOn)
+                {
+                    Debug.Log("Toggle켜짐");
+                    LampManager.Instance.RegisterLamp(light);
+                }
+                else if (!isLightOn)
+                {
+                    Debug.Log("Toggle끔");
+                    LampManager.Instance.QuitLamp(light);
+
+                }
             }
+            
         }
 
         // 4. (선택 사항) 상태를 콘솔에 출력
-        Debug.Log("모든 전등 상태: " + (isLightOn ? "ON" : "OFF"));
-    }
-
-    // --- OnTriggerEnter / OnTriggerExit 함수는 이전과 동일합니다 ---
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            isPlayerNearby = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            isPlayerNearby = false;
-        }
     }
 }

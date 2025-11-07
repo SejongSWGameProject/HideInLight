@@ -22,7 +22,7 @@ public class LampManager : MonoBehaviour
 
     [Header("전등 스위치 배열")]
     public List<LampSwitch> switches = new List<LampSwitch>();
-    public LampSwitch nearSwitch;
+    private LampSwitch nearSwitch;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -65,7 +65,7 @@ public class LampManager : MonoBehaviour
         if (monster == null) return;
 
         targetLamp = SetMonsterTargetToRandomLamp();
-        
+        Debug.Log("켜져있는 전등 개수: "+lamps.Count);
 
     }
 
@@ -87,9 +87,10 @@ public class LampManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("스위치 개수" + switches.Count);
             nearSwitch = GetNearSwitch();
             nearSwitch.ToggleLights();
+            Debug.Log("켜져있는 전등 개수: " + lamps.Count);
+
         }
     }
 
@@ -100,6 +101,15 @@ public class LampManager : MonoBehaviour
             lamps.Add(lamp);
         }
     }
+
+    public void QuitLamp(LampController lamp)
+    {
+        if (lamps.Contains(lamp))
+        {
+            lamps.Remove(lamp);
+        }
+    }
+
     public void BreakLamp(LampController lamp)
     {
         if (System.Object.ReferenceEquals(lamp, targetLamp))

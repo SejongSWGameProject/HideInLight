@@ -7,7 +7,6 @@ public class MonsterAI : MonoBehaviour
 {
     public Transform target;         // 플레이어 Transform
     private NavMeshAgent monster;      // 괴물 이동 제어용
-    int breakDistance = 5;
 
     public const int NORMAL = 1;
     public const int CHASE = 2;
@@ -24,7 +23,7 @@ public class MonsterAI : MonoBehaviour
 
     private bool isPaused = false;
     private float deltatDistance = 10f;
-    private Transform prevPosition;
+    private Vector3 prevPosition;
 
     // "눈"의 위치 (옵션, 정확도를 높임)
     // 비워두면 이 스크립트가 붙은 오브젝트의 transform.position을 사용합니다.
@@ -41,7 +40,7 @@ public class MonsterAI : MonoBehaviour
     void Start()
     {
         monster = GetComponent<NavMeshAgent>();
-        
+        StartCoroutine(CalculateDeltaDistance(0.5f));
     }
 
     void Update()
@@ -61,11 +60,12 @@ public class MonsterAI : MonoBehaviour
         {
             monster.speed = 15;
             //CheckSight();
-            Debug.Log(Vector3.Distance(targetPosWithoutY, monsterPosWithoutY));
-            if (Vector3.Distance(targetPosWithoutY, monsterPosWithoutY) < breakDistance)
+                
+            if (deltatDistance < 0.1f && Vector3.Distance(this.transform.position, this.target.transform.position)<20)
             {
                 if (target.CompareTag("Lamp"))
                 {
+                    Debug.Log("부숨");
                     LampManager.Instance.BreakLamp();
                 }
             }
@@ -80,7 +80,6 @@ public class MonsterAI : MonoBehaviour
                 StartCoroutine(PauseMonster(3.0f));
             }
         }
-        
         //Debug.Log(Vector3.Distance(this.transform.position, this.target.transform.position));
     }
 
@@ -173,7 +172,6 @@ public class MonsterAI : MonoBehaviour
         if (Physics.Raycast(eyePos, directionToPlayer, distanceToPlayer, obstacleMask))
         {
             // 장애물에 가려짐
-            Debug.Log("가려짐");
 
             canSeePlayer = false;
             return false;
@@ -207,6 +205,23 @@ public class MonsterAI : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(eyePos, player.position);
+        }
+    }
+
+    public IEnumerator CalculateDeltaDistance(float delta)
+    {
+        while (true)
+        {
+            deltatDistance = Vector3.Distance(transform.position, prevPosition);
+            // 4. 현재 위치(transform.position)를 변수에 저장합니다.
+            prevPosition = transform.position;
+
+            // (선택 사항) 콘솔에 로그를 찍어 확인합니다.
+            //Debug.Log(deltatDistance);
+
+            // 5. 코루틴을 0.5초(게임 시간 기준) 동안 '일시 정지' 시킵니다.
+            // 0.5초가 지나면 while 루프의 처음으로 돌아가 4번부터 다시 실행합니다.
+            yield return new WaitForSeconds(delta);
         }
     }
 }

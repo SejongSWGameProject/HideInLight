@@ -11,8 +11,10 @@ public class LampController : MonoBehaviour
     {
         if (lamp == null)
             lamp = GetComponentInChildren<Light>();
-        lamp.enabled = isTurnedOn;
-        LampManager.Instance.RegisterLamp(this);
+        if (lamp.enabled)
+        {
+            LampManager.Instance.RegisterLamp(this);
+        }
     }
     void Update()
     {
@@ -29,12 +31,14 @@ public class LampController : MonoBehaviour
     public void TurnOn()
     {
         if (isBroken) return;
+        Debug.Log(this.name+"ÄÑ´Ù");
         lamp.enabled = true;
     }
 
     public void TurnOff()
     {
         if (isBroken) return;
+        Debug.Log(this.name + "²ô´Ù");
         lamp.enabled = false;
 
     }
