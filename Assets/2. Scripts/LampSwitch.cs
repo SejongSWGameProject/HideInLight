@@ -61,12 +61,12 @@ public class LampSwitch : MonoBehaviour
                 light.Toggle();
                 if (isLightOn)
                 {
-                    Debug.Log("ToggleÄÑÁü");
+                    Debug.Log(this.name+light.name+"ToggleÄÑÁü");
                     LampManager.Instance.RegisterLamp(light);
                 }
                 else if (!isLightOn)
                 {
-                    Debug.Log("Toggle²û");
+                    Debug.Log(this.name + light.name+"Toggle²û");
                     LampManager.Instance.QuitLamp(light);
 
                 }

@@ -222,6 +222,7 @@ public class LampManager : MonoBehaviour
         foreach (LampSwitch ls in switches)
         {
             float dist = Vector3.Distance(player.position, ls.transform.position);
+            Debug.Log(ls.name + dist);
             if (dist < minDistance)
             {
                 minDistance = dist;
