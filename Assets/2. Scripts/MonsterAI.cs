@@ -7,6 +7,7 @@ public class MonsterAI : MonoBehaviour
 {
     public Transform target;         // 플레이어 Transform
     private NavMeshAgent monster;      // 괴물 이동 제어용
+    private Animator animator;
 
     public const int NORMAL = 1;
     public const int CHASE = 2;
@@ -40,6 +41,7 @@ public class MonsterAI : MonoBehaviour
     void Start()
     {
         monster = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
         StartCoroutine(CalculateDeltaDistance(0.5f));
     }
 
@@ -50,19 +52,31 @@ public class MonsterAI : MonoBehaviour
         Vector3 monsterPosWithoutY = new Vector3(this.transform.position.x, 0f, this.transform.position.z);
         if (target != null && monster.isOnNavMesh)
         {
+
             monster.SetDestination(targetPosWithoutY);
         }
         else
         {
             Debug.LogWarning("괴물이 NavMesh 위에 있지 않습니다!");
         }
+        if (monster.velocity.magnitude > 0.1f)
+        {
+            animator.SetBool("isWalking", true);
+        }
+        else
+        {
+            animator.SetBool("isWalking", false);
+        }
         if (monsterState == NORMAL)
         {
             monster.speed = 15;
-            //CheckSight();
+            animator.SetFloat("animSpeed", 1.0f);
+            CheckSight();
                 
             if (deltatDistance < 0.1f && Vector3.Distance(this.transform.position, this.target.transform.position)<20)
             {
+                animator.SetBool("isWalking", false);
+
                 if (target.CompareTag("Lamp"))
                 {
                     Debug.Log("부숨");
@@ -72,6 +86,7 @@ public class MonsterAI : MonoBehaviour
         }
         else if(monsterState == CHASE)
         {
+            animator.SetFloat("animSpeed", 3.0f);
             monster.speed = 30;
             target = player;
 
