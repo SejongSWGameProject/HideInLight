@@ -3,6 +3,7 @@ using UnityEngine;
 public class LampController : MonoBehaviour
 {
     public Light lamp;
+    public bool isTurnedOn = false;
     public bool isBroken = false;
     public AudioSource breakSound;       // 소리 (선택)
     public ParticleSystem sparkEffect;   // 불꽃 (선택)
@@ -10,6 +11,7 @@ public class LampController : MonoBehaviour
     {
         if (lamp == null)
             lamp = GetComponentInChildren<Light>();
+        lamp.enabled = isTurnedOn;
         LampManager.Instance.RegisterLamp(this);
     }
     void Update()

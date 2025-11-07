@@ -23,6 +23,8 @@ public class MonsterAI : MonoBehaviour
     [SerializeField] LampManager lampManager;
 
     private bool isPaused = false;
+    private float deltatDistance = 10f;
+    private Transform prevPosition;
 
     // "눈"의 위치 (옵션, 정확도를 높임)
     // 비워두면 이 스크립트가 붙은 오브젝트의 transform.position을 사용합니다.
@@ -59,7 +61,7 @@ public class MonsterAI : MonoBehaviour
         {
             monster.speed = 15;
             //CheckSight();
-            //Debug.Log(Vector3.Distance(targetPosWithoutY, monsterPosWithoutY));
+            Debug.Log(Vector3.Distance(targetPosWithoutY, monsterPosWithoutY));
             if (Vector3.Distance(targetPosWithoutY, monsterPosWithoutY) < breakDistance)
             {
                 if (target.CompareTag("Lamp"))
@@ -135,6 +137,7 @@ public class MonsterAI : MonoBehaviour
         {
             Debug.Log("스턴 후 안보임");
             monsterState = NORMAL;
+            deltatDistance = 10.0f;
             lampManager.SetMonsterTargetToRandomLamp();
         }
     }
