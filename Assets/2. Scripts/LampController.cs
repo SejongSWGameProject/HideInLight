@@ -19,7 +19,7 @@ public class LampController : MonoBehaviour
 
     public void BreakLamp()
     {
-        Debug.Log("²ö´Ù");
+        //Debug.Log("²ö´Ù");
         if (isBroken) return;
         StartCoroutine(BreakLightRoutine());
     }
