@@ -7,7 +7,7 @@ public class MonsterAI : MonoBehaviour
 {
     public Transform target;         // 플레이어 Transform
     private NavMeshAgent monster;      // 괴물 이동 제어용
-    int breakDistance = 5;
+    private Animator animator;
 
     public const int NORMAL = 1;
     public const int CHASE = 2;
@@ -15,14 +15,16 @@ public class MonsterAI : MonoBehaviour
     int monsterState = NORMAL;           //1:평상시(전등깨고다니는중)   2:플레이어쫓는중   3:스턴맞음
 
     public Transform player;         // 플레이어 Transform
-    public float viewRadius = 10f; // 시야 반경 (거리)
+    public float viewRadius = 80f; // 시야 반경 (거리)
     [Range(0, 360)]
-    public float viewAngle = 90f;  // 시야각
+    public float viewAngle = 300f;  // 시야각
     public LayerMask obstacleMask; // 장애물 레이어 마스크
 
     [SerializeField] LampManager lampManager;
 
     private bool isPaused = false;
+    private float deltatDistance = 10f;
+    private Vector3 prevPosition;
 
     // "눈"의 위치 (옵션, 정확도를 높임)
     // 비워두면 이 스크립트가 붙은 오브젝트의 transform.position을 사용합니다.
@@ -39,36 +41,52 @@ public class MonsterAI : MonoBehaviour
     void Start()
     {
         monster = GetComponent<NavMeshAgent>();
-        
+        animator = GetComponent<Animator>();
+        StartCoroutine(CalculateDeltaDistance(0.5f));
     }
 
     void Update()
     {
+
         Vector3 targetPosWithoutY = new Vector3(target.position.x, 0f, target.position.z);
         Vector3 monsterPosWithoutY = new Vector3(this.transform.position.x, 0f, this.transform.position.z);
         if (target != null && monster.isOnNavMesh)
         {
-            monster.SetDestination(targetPosWithoutY); // 플레이어 위치 따라감
+
+            monster.SetDestination(targetPosWithoutY);
         }
         else
         {
             Debug.LogWarning("괴물이 NavMesh 위에 있지 않습니다!");
         }
-        Debug.Log(monsterState);
+        if (monster.velocity.magnitude > 0.1f)
+        {
+            animator.SetBool("isWalking", true);
+        }
+        else
+        {
+            animator.SetBool("isWalking", false);
+        }
         if (monsterState == NORMAL)
         {
             monster.speed = 15;
+            animator.SetFloat("animSpeed", 1.0f);
             CheckSight();
-            if (Vector3.Distance(targetPosWithoutY, monsterPosWithoutY) < breakDistance)
+                
+            if (deltatDistance < 0.1f && Vector3.Distance(this.transform.position, this.target.transform.position)<20)
             {
+                animator.SetBool("isWalking", false);
+
                 if (target.CompareTag("Lamp"))
                 {
+                    Debug.Log("부숨");
                     LampManager.Instance.BreakLamp();
                 }
             }
         }
         else if(monsterState == CHASE)
         {
+            animator.SetFloat("animSpeed", 3.0f);
             monster.speed = 30;
             target = player;
 
@@ -77,7 +95,6 @@ public class MonsterAI : MonoBehaviour
                 StartCoroutine(PauseMonster(3.0f));
             }
         }
-        
         //Debug.Log(Vector3.Distance(this.transform.position, this.target.transform.position));
     }
 
@@ -132,7 +149,9 @@ public class MonsterAI : MonoBehaviour
 
         if (CheckSight() == false)
         {
+            Debug.Log("스턴 후 안보임");
             monsterState = NORMAL;
+            deltatDistance = 10.0f;
             lampManager.SetMonsterTargetToRandomLamp();
         }
     }
@@ -168,6 +187,7 @@ public class MonsterAI : MonoBehaviour
         if (Physics.Raycast(eyePos, directionToPlayer, distanceToPlayer, obstacleMask))
         {
             // 장애물에 가려짐
+
             canSeePlayer = false;
             return false;
         }
@@ -200,6 +220,23 @@ public class MonsterAI : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(eyePos, player.position);
+        }
+    }
+
+    public IEnumerator CalculateDeltaDistance(float delta)
+    {
+        while (true)
+        {
+            deltatDistance = Vector3.Distance(transform.position, prevPosition);
+            // 4. 현재 위치(transform.position)를 변수에 저장합니다.
+            prevPosition = transform.position;
+
+            // (선택 사항) 콘솔에 로그를 찍어 확인합니다.
+            //Debug.Log(deltatDistance);
+
+            // 5. 코루틴을 0.5초(게임 시간 기준) 동안 '일시 정지' 시킵니다.
+            // 0.5초가 지나면 while 루프의 처음으로 돌아가 4번부터 다시 실행합니다.
+            yield return new WaitForSeconds(delta);
         }
     }
 }
