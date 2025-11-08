@@ -1,20 +1,33 @@
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.Events; // UnityEvent를 사용하기 위해 필요합니다.
 
+/// <summary>
+/// 3D 오브젝트와 F키로 상호작용하여,
+/// 1. "PRESS F" UI를 띄우고
+/// 2. 지정된 패널(3D 또는 2D)을 엽니다.
+/// 3. 퍼즐이 풀리면 상호작용을 영구적으로 비활성화합니다.
+/// </summary>
 public class InteractableObject : MonoBehaviour
 {
     [Header("상호작용 설정")]
-    public KeyCode interactionKey = KeyCode.F;
+    [Tooltip("상호작용에 사용할 키")]
+    public KeyCode interactionKey = KeyCode.F; // F 키로 설정
 
     [Header("연결")]
+    [Tooltip("상호작용 시 켤 UI 패널 (SwitchPuzzle_Panel 또는 PopupAnchor)")]
     public GameObject panelToOpen;
+
+    [Tooltip("가까이 갔을 때 켤 상호작용 UI (예: 'F키' 텍스트)")]
     public GameObject interactionPromptUI;
 
-    private bool isPlayerNear = false;
-    
-    // ▼▼▼ 1. 퍼즐이 풀렸는지 기억할 변수 추가 ▼▼▼
-    private bool isPuzzleSolved = false; 
+    [Header("퍼즐 상태")]
+    [Tooltip("퍼즐이 이미 해결되었는지 여부")]
+    private bool isPuzzleSolved = false; // 퍼즐이 풀리면 true가 됨
 
+    // 플레이어가 범위 안에 있는지 여부
+    private bool isPlayerNear = false;
+
+    // 1. 시작할 때 UI 숨기기
     void Start()
     {
         if (interactionPromptUI != null)
@@ -23,62 +36,83 @@ public class InteractableObject : MonoBehaviour
         }
     }
 
+    // 2. 플레이어가 범위(Trigger) 안에 들어왔을 때
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        // 들어온 오브젝트가 "Player" 태그를 가졌는지 확인
+        // 그리고 퍼즐이 아직 풀리지 않았는지 확인
+        if (other.CompareTag("Player") && !isPuzzleSolved)
         {
             isPlayerNear = true;
+            
+            // 패널이 닫혀 있을 때만 "PRESS F" 텍스트를 켭니다.
+            if (panelToOpen != null && !panelToOpen.activeSelf)
+            {
+                UpdatePromptUI(true); // "PRESS F" UI 켜기
+            }
         }
     }
 
+    // 3. 플레이어가 범위(Trigger) 밖으로 나갔을 때
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             isPlayerNear = false;
-            if (interactionPromptUI != null)
-            {
-                interactionPromptUI.SetActive(false);
-            }
+            UpdatePromptUI(false); // "F키" UI 끄기
         }
     }
 
+    // 4. 매 프레임마다 키 입력 및 상태 확인
     private void Update()
     {
-        // F키 입력 확인
-        if (isPlayerNear && Input.GetKeyDown(interactionKey))
+        // 플레이어가 범위 안에 있고 퍼즐이 풀리지 않았을 때
+        if (isPlayerNear && !isPuzzleSolved)
         {
-            // ▼▼▼ 2. 퍼즐이 아직 안 풀렸을 때만 패널이 열리도록 수정 ▼▼▼
-            if (panelToOpen != null && !isPuzzleSolved) 
+            // F키를 눌렀다면
+            if (Input.GetKeyDown(interactionKey))
             {
-                panelToOpen.SetActive(true);
+                // 패널을 켠다!
+                if (panelToOpen != null)
+                {
+                    panelToOpen.SetActive(true);
+                }
             }
-        }
 
-        // "PRESS F" UI 텍스트 관리
-        if (interactionPromptUI != null)
-        {
+            // (1번 문제 해결) 패널이 열려있는지 매번 확인
             bool isPanelOpen = (panelToOpen != null && panelToOpen.activeSelf);
-
-            // ▼▼▼ 3. "PRESS F"는 [가깝고] [패널이 닫혀있고] [아직 안 풀었을 때]만 켜져야 함 ▼▼▼
-            if (isPlayerNear && !isPanelOpen && !isPuzzleSolved)
-            {
-                interactionPromptUI.SetActive(true);
-            }
-            else
-            {
-                interactionPromptUI.SetActive(false);
-            }
+            
+            // "PRESS F" 텍스트 갱신
+            // (패널이 닫혀있고, 퍼즐이 안 풀렸을 때만 true)
+            UpdatePromptUI(!isPanelOpen);
+        }
+        else
+        {
+            // 플레이어가 범위 밖이거나 퍼즐이 풀렸으면 무조건 끔
+            UpdatePromptUI(false);
         }
     }
 
-    // ▼▼▼ 4. (가장 중요) "퍼즐이 풀렸다"는 신호를 받을 공개 '슬롯' 함수 추가 ▼▼▼
     /// <summary>
-    /// SwitchPuzzleManager의 OnPuzzleSolved 이벤트에 연결할 함수입니다.
+    /// "PRESS F" 텍스트 UI의 활성화 상태를 안전하게 변경합니다.
+    /// </summary>
+    void UpdatePromptUI(bool show)
+    {
+        if (interactionPromptUI != null && interactionPromptUI.activeSelf != show)
+        {
+            interactionPromptUI.SetActive(show);
+        }
+    }
+    
+    // 5. (가장 중요) 퍼즐 매니저가 "퍼즐 풀렸다!"고 호출해줄 함수
+    /// <summary>
+    /// (UnityEvent용) 퍼즐이 풀렸다고 표시하고, 이 상호작용을 영구적으로 비활성화합니다.
     /// </summary>
     public void OnPuzzleHasBeenSolved()
     {
-        this.isPuzzleSolved = true;
-        Debug.Log(this.gameObject.name + "의 퍼즐이 풀렸음으로 표시합니다.");
+        isPuzzleSolved = true;
+        
+        // F키 텍스트가 켜져있다면 즉시 끈다.
+        UpdatePromptUI(false);
     }
 }
