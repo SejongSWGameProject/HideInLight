@@ -78,7 +78,7 @@ public class LampManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.N))
         {
-            targetLamp = SetMonsterTargetToNearestLight();
+            targetLamp = SetMonsterTargetToRandomLamp();
         }
         if (lamps.Count == 0)
         {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -20,36 +21,38 @@ public class PlayerMove : MonoBehaviour
 
     [Header("Flashlight")]
     public Light flashlight;
-    public float flashlightRotateSpeed = 10f; // ÀûÀıÈ÷ Á¶Àı
-    Vector3 flashlightRotation; // ´©Àû È¸ÀüÀ» À§ÇØ
+    public float flashlightRotateSpeed = 10f; // ì ì ˆíˆ ì¡°ì ˆ
+    Vector3 flashlightRotation; // ëˆ„ì  íšŒì „ì„ ìœ„í•´
 
-    bool canLook = false;  // ¸¶¿ì½º ÀÔ·Â °¡´É ¿©ºÎ
+    bool canLook = false;  // ë§ˆìš°ìŠ¤ ì…ë ¥ ê°€ëŠ¥ ì—¬ë¶€
 
     [Header("Crouch Settings")]
-    public KeyCode crouchKey = KeyCode.Z; // ¾É±â Å°
-    private float originalY; // ÃÊ±â y À§Ä¡ ÀúÀå
-
+    public KeyCode crouchKey = KeyCode.Z; // ì•‰ê¸° í‚¤
+    private float originalY; // ì´ˆê¸° y ìœ„ì¹˜ ì €ì¥
     private bool isCrouched = false;
 
     float currentX;
     float currentY;
     float xVelocity;
     float yVelocity;
-    public float smoothTime = 0.05f; // ¿øÇÏ´Â ºÎµå·¯¿ò
+    public float smoothTime = 0.1f; // ì›í•˜ëŠ” ë¶€ë“œëŸ¬ì›€
 
+    [Header("Flash Effect")]
+    public Image flashImage;          // Canvasì˜ í°ìƒ‰ Image ì—°ê²°
+    public float flashDuration = 0.5f; // í”Œë˜ì‹œ ì§€ì† ì‹œê°„
+
+    Vector3 originalScale;
 
     void Start()
     {
         hiddenMouseCursor();
-
+        
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
         cam = Camera.main;
-
         if (cam != null)
         {
-            Vector3 camAngles = cam.transform.eulerAngles;
             xRotation = cam.transform.eulerAngles.x;
             yRotation = cam.transform.eulerAngles.y;
         }
@@ -57,11 +60,33 @@ public class PlayerMove : MonoBehaviour
         if (flashlight != null)
             flashlightRotation = flashlight.transform.localEulerAngles;
 
-        // ÃÊ±â y À§Ä¡ ÀúÀå
         originalY = transform.position.y;
 
-        // °ÔÀÓ ½ÃÀÛ ÈÄ 0.5ÃÊ µÚºÎÅÍ ¸¶¿ì½º ÀÔ·Â Çã¿ë
         Invoke(nameof(EnableMouseLook), 0.5f);
+
+        originalScale = transform.localScale; // ì›ë˜ ìŠ¤ì¼€ì¼ ì €ì¥
+    }
+
+    // --- í”Œë˜ì‹œ ì½”ë£¨í‹´ ---
+    public IEnumerator FlashScreen()
+    {
+        // Imageë¥¼ í°ìƒ‰ìœ¼ë¡œ ë¶ˆíˆ¬ëª…í•˜ê²Œ
+        Color c = flashImage.color;
+        c.a = 1f;
+        flashImage.color = c;
+
+        float elapsed = 0f;
+        while (elapsed < flashDuration)
+        {
+            elapsed += Time.deltaTime;
+            c.a = Mathf.Lerp(1f, 0f, elapsed / flashDuration);
+            flashImage.color = c;
+            yield return null;
+        }
+
+        // ë§ˆì§€ë§‰ìœ¼ë¡œ ì™„ì „íˆ íˆ¬ëª…
+        c.a = 0f;
+        flashImage.color = c;
     }
 
     void EnableMouseLook()
@@ -73,53 +98,71 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
         Getinput();
-
-        // ¾É±â Ã³¸®
         HandleCrouch();
 
-        // Æò¼Ò ¸¶¿ì½º ¡æ Player È¸Àü
         if (!Input.GetMouseButton(1) && canLook)
             Rotate();
 
-        // ¿ìÅ¬¸¯ ½Ã ¡æ ¼ÕÀüµî È¸Àü
         if (Input.GetMouseButton(1))
-            RotateFlashlight();
-
-        if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                if (hit.collider.gameObject == gameObject)
-                {
-                    Debug.Log("Å¬¸¯µÊ!");
-                }
-            }
+            //RotateFlashlight();
+            
+        }
+
+        // --- ì¶”ê°€: ìŠ¤í˜ì´ìŠ¤ë°” ì…ë ¥ ì‹œ í”Œë˜ì‹œ íš¨ê³¼ ---
+        if (Input.GetKeyDown(KeyCode.Space) && flashImage != null)
+        {
+            //StopAllCoroutines();  // í˜¹ì‹œ ì¤‘ë³µ ì‹¤í–‰ ë°©ì§€
+            //StartCoroutine(FlashScreen());
         }
     }
 
     void HandleCrouch()
     {
-        Vector3 pos = transform.position;
-
         if (Input.GetKey(crouchKey))
         {
-            // Å°¸¦ ´©¸£°í ÀÖÀ¸¸é Àı¹İ ³ôÀÌ
-            pos.y = originalY * 0.5f;
+            if (!isCrouched)
+            {
+                isCrouched = true;
+
+                // ìœ„ì¹˜ yê°’ ì ˆë°˜
+                Vector3 pos = transform.position;
+                pos.y = originalY * 0.5f;
+                transform.position = pos;
+
+                // yì¶• ìŠ¤ì¼€ì¼ ì ˆë°˜, x/zëŠ” ê·¸ëŒ€ë¡œ
+                Vector3 scale = transform.localScale;
+                scale.y = originalScale.y * 0.5f;
+                transform.localScale = scale;
+            }
         }
         else
         {
-            // Å°¸¦ ¶¼¸é ¿ø·¡ ³ôÀÌ
-            pos.y = originalY;
-        }
+            if (isCrouched)
+            {
+                isCrouched = false;
 
-        transform.position = pos;
+                // ìœ„ì¹˜ ì›ë˜ëŒ€ë¡œ
+                Vector3 pos = transform.position;
+                pos.y = originalY;
+                transform.position = pos;
+
+                // yì¶• ìŠ¤ì¼€ì¼ ì›ë˜ëŒ€ë¡œ
+                Vector3 scale = transform.localScale;
+                scale.y = originalScale.y;
+                transform.localScale = scale;
+            }
+        }
     }
 
     void FixedUpdate()
     {
+        // ì´ë™ ì…ë ¥
         Vector3 moveVec = transform.forward * v + transform.right * h;
-        rb.linearVelocity = moveVec.normalized * moveSpeed;
+        moveVec = moveVec.normalized * moveSpeed;
+
+        // Rigidbodyì— ì´ë™ ì ìš©, yì¶• ì†ë„ ìœ ì§€
+        rb.linearVelocity = new Vector3(moveVec.x, rb.linearVelocity.y, moveVec.z);
     }
 
     void Getinput()
@@ -139,21 +182,16 @@ public class PlayerMove : MonoBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        // ¸ñÇ¥ È¸Àü°ª ¡æ ½ÇÁ¦ È¸Àü°ªÀ¸·Î ½º¹«µù
         currentX = Mathf.SmoothDampAngle(currentX, xRotation, ref xVelocity, smoothTime);
         currentY = Mathf.SmoothDampAngle(currentY, yRotation, ref yVelocity, smoothTime);
 
-        // Ä«¸Ş¶ó »óÇÏ È¸Àü, ÇÃ·¹ÀÌ¾î ÁÂ¿ì È¸Àü
         cam.transform.rotation = Quaternion.Euler(currentX, currentY, 0);
         transform.rotation = Quaternion.Euler(0, currentY, 0);
     }
 
     void Move()
     {
-
         Vector3 moveVec = transform.forward * v + transform.right * h;
-
-
         rb.MovePosition(rb.position + moveVec.normalized * moveSpeed * Time.fixedDeltaTime);
     }
 
@@ -164,7 +202,6 @@ public class PlayerMove : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * flashlightRotateSpeed * 0.05f;
         float mouseY = Input.GetAxis("Mouse Y") * flashlightRotateSpeed * 0.05f;
 
-        // ´©Àû È¸Àü
         flashlightRotation.x -= mouseY;
         flashlightRotation.y += mouseX;
         flashlightRotation.x = Mathf.Clamp(flashlightRotation.x, -90f, 90f);
@@ -176,5 +213,20 @@ public class PlayerMove : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    // --- ë°˜ë°œë ¥ ë¬´ì‹œ ì½”ë“œ ---
+    private void OnCollisionEnter(Collision collision)
+    {
+        Vector3 vel = rb.linearVelocity;
+        if (vel.y > 0f) vel.y = 0f;
+        rb.linearVelocity = vel;
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        Vector3 vel = rb.linearVelocity;
+        if (vel.y > 0f) vel.y = 0f;
+        rb.linearVelocity = vel;
     }
 }

@@ -5,20 +5,20 @@ using System.Collections;
 
 public class MonsterAI : MonoBehaviour
 {
-    public Transform target;         // ÇÃ·¹ÀÌ¾î Transform
-    private NavMeshAgent monster;      // ±«¹° ÀÌµ¿ Á¦¾î¿ë
+    public Transform target;         // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Transform
+    private NavMeshAgent monster;      // ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
     private Animator animator;
 
     public const int NORMAL = 1;
     public const int CHASE = 2;
     public const int STUN = 3;
-    int monsterState = NORMAL;           //1:Æò»ó½Ã(Àüµî±ú°í´Ù´Ï´ÂÁß)   2:ÇÃ·¹ÀÌ¾îÂÑ´ÂÁß   3:½ºÅÏ¸ÂÀ½
+    int monsterState = NORMAL;           //1:ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù´Ï´ï¿½ï¿½ï¿½)   2:ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½Ñ´ï¿½ï¿½ï¿½   3:ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½ï¿½
 
-    public Transform player;         // ÇÃ·¹ÀÌ¾î Transform
-    public float viewRadius = 80f; // ½Ã¾ß ¹Ý°æ (°Å¸®)
+    public Transform player;         // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Transform
+    public float viewRadius = 80f; // ï¿½Ã¾ï¿½ ï¿½Ý°ï¿½ (ï¿½Å¸ï¿½)
     [Range(0, 360)]
-    public float viewAngle = 300f;  // ½Ã¾ß°¢
-    public LayerMask obstacleMask; // Àå¾Ö¹° ·¹ÀÌ¾î ¸¶½ºÅ©
+    public float viewAngle = 300f;  // ï¿½Ã¾ß°ï¿½
+    public LayerMask obstacleMask; // ï¿½ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½Å©
 
     [SerializeField] LampManager lampManager;
 
@@ -26,11 +26,11 @@ public class MonsterAI : MonoBehaviour
     private float deltatDistance = 10f;
     private Vector3 prevPosition;
 
-    // "´«"ÀÇ À§Ä¡ (¿É¼Ç, Á¤È®µµ¸¦ ³ôÀÓ)
-    // ºñ¿öµÎ¸é ÀÌ ½ºÅ©¸³Æ®°¡ ºÙÀº ¿ÀºêÁ§Æ®ÀÇ transform.positionÀ» »ç¿ëÇÕ´Ï´Ù.
+    // "ï¿½ï¿½"ï¿½ï¿½ ï¿½ï¿½Ä¡ (ï¿½É¼ï¿½, ï¿½ï¿½È®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+    // ï¿½ï¿½ï¿½ï¿½Î¸ï¿½ ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ transform.positionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
     public Transform eyePosition;
 
-    // ÇÃ·¹ÀÌ¾î¸¦ ºÃ´ÂÁö ¿©ºÎ
+    // ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½Ã´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public bool canSeePlayer { get; private set; }
 
     public void setTarget(Transform obj)
@@ -47,7 +47,6 @@ public class MonsterAI : MonoBehaviour
 
     void Update()
     {
-
         Vector3 targetPosWithoutY = new Vector3(target.position.x, 0f, target.position.z);
         Vector3 monsterPosWithoutY = new Vector3(this.transform.position.x, 0f, this.transform.position.z);
         if (target != null && monster.isOnNavMesh)
@@ -57,7 +56,7 @@ public class MonsterAI : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("±«¹°ÀÌ NavMesh À§¿¡ ÀÖÁö ¾Ê½À´Ï´Ù!");
+            Debug.LogWarning("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ NavMesh ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½!");
         }
         if (monster.velocity.magnitude > 0.1f)
         {
@@ -79,7 +78,7 @@ public class MonsterAI : MonoBehaviour
 
                 if (target.CompareTag("Lamp"))
                 {
-                    Debug.Log("ºÎ¼û");
+                    Debug.Log("ï¿½Î¼ï¿½");
                     LampManager.Instance.BreakLamp();
                 }
             }
@@ -103,53 +102,53 @@ public class MonsterAI : MonoBehaviour
         monsterState = state;
     }
 
-    // 4. ¸ó½ºÅÍ¸¦ ÀÏÁ¤ ½Ã°£ ¸ØÃß°Ô ÇÏ´Â ÄÚ·çÆ¾
+    // 4. ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ß°ï¿½ ï¿½Ï´ï¿½ ï¿½Ú·ï¿½Æ¾
     public IEnumerator PauseMonster(float duration)
     {
-        // 5. ¸ØÃã »óÅÂ·Î º¯°æ
+        // 5. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½
         isPaused = true;
 
-        // 6. NavMeshAgentÀÇ ÀÌµ¿À» ÁßÁö
-        //    (agent.enabled = false; º¸´Ù ÀÌ ¹æ¹ýÀÌ ´õ ¾ÈÀüÇÕ´Ï´Ù)
-        if (monster.isOnNavMesh) // NavMesh À§¿¡ ÀÖÀ» ¶§¸¸
+        // 6. NavMeshAgentï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        //    (agent.enabled = false; ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½)
+        if (monster.isOnNavMesh) // NavMesh ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
             monster.isStopped = true;
         }
 
-        // --- (¼±ÅÃ) ¾Ö´Ï¸ÞÀÌ¼Çµµ ¸ØÃß±â ---
+        // --- (ï¿½ï¿½ï¿½ï¿½) ï¿½Ö´Ï¸ï¿½ï¿½Ì¼Çµï¿½ ï¿½ï¿½ï¿½ß±ï¿½ ---
         // Animator animator = GetComponent<Animator>();
         // if (animator != null)
         // {
-        //     animator.speed = 0; // ¾Ö´Ï¸ÞÀÌ¼Ç ¼Óµµ¸¦ 0À¸·Î ¸¸µé¾î ¸ØÃã
+        //     animator.speed = 0; // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½Óµï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         // }
         // ---------------------------------
 
-        Debug.Log("¸ó½ºÅÍ ¸ØÃã!");
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!");
 
-        // 7. ÁöÁ¤µÈ ½Ã°£(duration)¸¸Å­ ´ë±â
+        // 7. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½(duration)ï¿½ï¿½Å­ ï¿½ï¿½ï¿½
         yield return new WaitForSeconds(duration);
 
-        // 8. 3ÃÊ°¡ Áö³­ ÈÄ, NavMeshAgentÀÇ ÀÌµ¿À» ´Ù½Ã ½ÃÀÛ
+        // 8. 3ï¿½Ê°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, NavMeshAgentï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (monster.isOnNavMesh)
         {
             monster.isStopped = false;
         }
 
-        // --- (¼±ÅÃ) ¾Ö´Ï¸ÞÀÌ¼Ç ´Ù½Ã Àç»ý ---
+        // --- (ï¿½ï¿½ï¿½ï¿½) ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ ---
         // if (animator != null)
         // {
-        //     animator.speed = 1; // ¾Ö´Ï¸ÞÀÌ¼Ç ¼Óµµ¸¦ ´Ù½Ã 1·Î
+        //     animator.speed = 1; // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ 1ï¿½ï¿½
         // }
         // ---------------------------------
 
-        Debug.Log("¸ó½ºÅÍ ´Ù½Ã ¿òÁ÷ÀÓ!");
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!");
 
-        // 9. ¸ØÃã »óÅÂ ÇØÁ¦
+        // 9. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         isPaused = false;
 
         if (CheckSight() == false)
         {
-            Debug.Log("½ºÅÏ ÈÄ ¾Èº¸ÀÓ");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Èºï¿½ï¿½ï¿½");
             monsterState = NORMAL;
             deltatDistance = 10.0f;
             lampManager.SetMonsterTargetToRandomLamp();
@@ -158,10 +157,10 @@ public class MonsterAI : MonoBehaviour
 
     bool CheckSight()
     {
-        // "´«" À§Ä¡°¡ ¼³Á¤µÇÁö ¾Ê¾ÒÀ¸¸é ±âº» transform.position »ç¿ë
+        // "ï¿½ï¿½" ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº» transform.position ï¿½ï¿½ï¿½
         Vector3 eyePos = (eyePosition != null) ? eyePosition.position : this.transform.position;
 
-        // 1. °Å¸® Ã¼Å©
+        // 1. ï¿½Å¸ï¿½ Ã¼Å©
         float distanceToPlayer = Vector3.Distance(eyePos, player.position);
         if (distanceToPlayer > viewRadius)
         {
@@ -169,7 +168,7 @@ public class MonsterAI : MonoBehaviour
             return false;
         }
 
-        // 2. ½Ã¾ß°¢ Ã¼Å©
+        // 2. ï¿½Ã¾ß°ï¿½ Ã¼Å©
         Vector3 directionToPlayer = (player.position - eyePos).normalized;
         float angle = Vector3.Angle(transform.forward, directionToPlayer);
 
@@ -180,29 +179,28 @@ public class MonsterAI : MonoBehaviour
         }
 
 
-        // 3. Àå¾Ö¹°(½Ã¼±) Ã¼Å©
-        // Physics.Raycast¸¦ »ç¿ëÇØ "´«" À§Ä¡¿¡¼­ ÇÃ·¹ÀÌ¾î ¹æÇâÀ¸·Î ±¤¼±À» ½õ´Ï´Ù.
-        // ÀÌ ±¤¼±ÀÌ ÇÃ·¹ÀÌ¾î¿¡°Ô µµ´ÞÇÏ±â Àü¿¡ 'obstacleMask'¿¡ ÇØ´çÇÏ´Â Àå¾Ö¹°°ú ºÎµúÈ÷¸é,
-        // ÇÃ·¹ÀÌ¾î¸¦ º¼ ¼ö ¾ø´Â °ÍÀÔ´Ï´Ù.
+        // 3. ï¿½ï¿½Ö¹ï¿½(ï¿½Ã¼ï¿½) Ã¼Å©
+        // Physics.Raycastï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ï¿½" ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ 'obstacleMask'ï¿½ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½,
+        // ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ô´Ï´ï¿½.
         if (Physics.Raycast(eyePos, directionToPlayer, distanceToPlayer, obstacleMask))
         {
-            // Àå¾Ö¹°¿¡ °¡·ÁÁü
-
+            // ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             canSeePlayer = false;
             return false;
         }
         else
         {
-            // Àå¾Ö¹° ¾øÀÌ ÇÃ·¹ÀÌ¾î¸¦ º½!
+            // ï¿½ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ï¿½!
             canSeePlayer = true;
-            Debug.Log("¹ß°ß!");
+            Debug.Log("ï¿½ß°ï¿½!");
             setMonsterState(CHASE);
             return true;
-            // ¿©±â¿¡ ÇÃ·¹ÀÌ¾î¸¦ ¹ß°ßÇßÀ» ¶§ÀÇ ·ÎÁ÷À» Ãß°¡ (¿¹: Ãß°Ý ½ÃÀÛ)
+            // ï¿½ï¿½ï¿½â¿¡ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ß°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ (ï¿½ï¿½: ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½)
         }
     }
 
-    // (ÆÁ) ±âÁî¸ð¸¦ »ç¿ëÇÏ¸é ¾À(Scene) ºä¿¡¼­ ½Ã¾ß°¢À» ½Ã°¢ÀûÀ¸·Î È®ÀÎÇÒ ¼ö ÀÖ½À´Ï´Ù.
+    // (ï¿½ï¿½) ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½(Scene) ï¿½ä¿¡ï¿½ï¿½ ï¿½Ã¾ß°ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.white;
@@ -228,14 +226,14 @@ public class MonsterAI : MonoBehaviour
         while (true)
         {
             deltatDistance = Vector3.Distance(transform.position, prevPosition);
-            // 4. ÇöÀç À§Ä¡(transform.position)¸¦ º¯¼ö¿¡ ÀúÀåÇÕ´Ï´Ù.
+            // 4. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡(transform.position)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
             prevPosition = transform.position;
 
-            // (¼±ÅÃ »çÇ×) ÄÜ¼Ö¿¡ ·Î±×¸¦ Âï¾î È®ÀÎÇÕ´Ï´Ù.
+            // (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) ï¿½Ü¼Ö¿ï¿½ ï¿½Î±×¸ï¿½ ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
             //Debug.Log(deltatDistance);
 
-            // 5. ÄÚ·çÆ¾À» 0.5ÃÊ(°ÔÀÓ ½Ã°£ ±âÁØ) µ¿¾È 'ÀÏ½Ã Á¤Áö' ½ÃÅµ´Ï´Ù.
-            // 0.5ÃÊ°¡ Áö³ª¸é while ·çÇÁÀÇ Ã³À½À¸·Î µ¹¾Æ°¡ 4¹øºÎÅÍ ´Ù½Ã ½ÇÇàÇÕ´Ï´Ù.
+            // 5. ï¿½Ú·ï¿½Æ¾ï¿½ï¿½ 0.5ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½) ï¿½ï¿½ï¿½ï¿½ 'ï¿½Ï½ï¿½ ï¿½ï¿½ï¿½ï¿½' ï¿½ï¿½Åµï¿½Ï´ï¿½.
+            // 0.5ï¿½Ê°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ while ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ°ï¿½ 4ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
             yield return new WaitForSeconds(delta);
         }
     }
