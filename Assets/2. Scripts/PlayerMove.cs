@@ -68,7 +68,7 @@ public class PlayerMove : MonoBehaviour
     }
 
     // --- 플래시 코루틴 ---
-    IEnumerator FlashScreen()
+    public IEnumerator FlashScreen()
     {
         // Image를 흰색으로 불투명하게
         Color c = flashImage.color;
@@ -104,13 +104,16 @@ public class PlayerMove : MonoBehaviour
             Rotate();
 
         if (Input.GetMouseButton(1))
-            RotateFlashlight();
+        {
+            //RotateFlashlight();
+            
+        }
 
         // --- 추가: 스페이스바 입력 시 플래시 효과 ---
         if (Input.GetKeyDown(KeyCode.Space) && flashImage != null)
         {
-            StopAllCoroutines();  // 혹시 중복 실행 방지
-            StartCoroutine(FlashScreen());
+            //StopAllCoroutines();  // 혹시 중복 실행 방지
+            //StartCoroutine(FlashScreen());
         }
     }
 
