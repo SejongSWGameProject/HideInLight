@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/4. Prefabs/FlashCanvas.prefab.meta
 guid: 7982ca09038d3e64c921e71022b3ca0f
+========
+guid: d8f3e4e1f984b274b8c6e2ae86167119
+>>>>>>>> main:Assets/4. Prefabs/FirstStageLamps.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

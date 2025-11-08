@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/5. Model(.fbx, .obj)/merged_stage.fbx.meta
 guid: 41e0467e4dea0cc4781b21370d82dff2
+========
+guid: fcb2d04f7193c9944bc46578971d164c
+>>>>>>>> main:Assets/5. Model(.fbx, .obj)/door_size.fbx.meta
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []

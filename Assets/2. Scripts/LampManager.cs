@@ -20,6 +20,10 @@ public class LampManager : MonoBehaviour
     [SerializeField] private MonsterAI monster;
     LampController targetLamp;
 
+    [Header("전등 스위치 배열")]
+    public List<LampSwitch> switches = new List<LampSwitch>();
+    private LampSwitch nearSwitch;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()
@@ -29,7 +33,12 @@ public class LampManager : MonoBehaviour
         // Lights 배열 안전 체크
         if (lamps == null || lamps.Count == 0)
         {
-            //Debug.Log("Lights 배열이 비어 있습니다!");
+            Debug.Log("Lights 배열이 비어 있습니다!");
+        }
+
+        if (switches == null || switches.Count == 0)
+        {
+            Debug.Log("LightSwitch 배열이 비어 있습니다!");
         }
 
         // Player 안전 체크
@@ -47,6 +56,7 @@ public class LampManager : MonoBehaviour
             if (monster == null)
                 Debug.LogError("MonsterFollow 객체를 찾을 수 없습니다!");
         }
+
     }
 
     void Start()
@@ -55,13 +65,18 @@ public class LampManager : MonoBehaviour
         if (monster == null) return;
 
         targetLamp = SetMonsterTargetToRandomLamp();
+        Debug.Log("켜져있는 전등 개수: "+lamps.Count);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            targetLamp = SetMonsterTargetToRandomLamp();
+        }
+        if (Input.GetKeyDown(KeyCode.N))
         {
             targetLamp = SetMonsterTargetToRandomLamp();
         }
@@ -69,6 +84,13 @@ public class LampManager : MonoBehaviour
         {
             Debug.Log("모든 전등 깨짐");
             monster.setTarget(player.transform);
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            nearSwitch = GetNearSwitch();
+            nearSwitch.ToggleLights();
+            Debug.Log("켜져있는 전등 개수: " + lamps.Count);
+
         }
     }
 
@@ -79,6 +101,15 @@ public class LampManager : MonoBehaviour
             lamps.Add(lamp);
         }
     }
+
+    public void QuitLamp(LampController lamp)
+    {
+        if (lamps.Contains(lamp))
+        {
+            lamps.Remove(lamp);
+        }
+    }
+
     public void BreakLamp(LampController lamp)
     {
         if (System.Object.ReferenceEquals(lamp, targetLamp))
@@ -115,6 +146,7 @@ public class LampManager : MonoBehaviour
         if (randomLamp != null)
             monster.setTarget(randomLamp.transform);
         targetLamp = randomLamp;
+        Debug.Log("랜덤 전등 타겟설정");
         return randomLamp;
     }
 
@@ -169,5 +201,34 @@ public class LampManager : MonoBehaviour
             return null;
         }
 
+    }
+
+    public void RegisterLampSwitch(LampSwitch ls)
+    {
+        if (!switches.Contains(ls))
+        {
+            switches.Add(ls);
+        }
+    }
+
+    public LampSwitch GetNearSwitch()
+    {
+        if (switches == null || switches.Count == 0 || player == null)
+            return null;
+
+        float minDistance = float.MaxValue;
+        LampSwitch nearest = switches[0];
+
+        foreach (LampSwitch ls in switches)
+        {
+            float dist = Vector3.Distance(player.position, ls.transform.position);
+            Debug.Log(ls.name + dist);
+            if (dist < minDistance)
+            {
+                minDistance = dist;
+                nearest = ls;
+            }
+        }
+        return nearest;
     }
 }

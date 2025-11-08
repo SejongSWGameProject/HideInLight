@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Player_Ctrl : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
     Rigidbody rb;
 
