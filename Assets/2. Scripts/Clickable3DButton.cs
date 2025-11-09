@@ -4,9 +4,9 @@ using System.Collections; // 코루틴(애니메이션)을 사용하기 위해 �
 
 /// <summary>
 /// 3D 오브젝트(자신)를 클릭했을 때,
-/// 지정된 'movablePart'(부모)의 각도(Rotation)를 '현재 각도 + 오프셋'만큼 애니메이션시키고
+/// 지정된 'movablePart'(부모)의 각도(Rotation)를 'Up'과 'Down' 각도 사이에서 애니메이션시키고
 /// 'targetToggle'(UI)의 상태를 뒤집습니다.
-/// (모델의 원래 각도를 '올라온' 상태로 자동 인식합니다)
+/// (모델의 원래 각도를 '중심'으로 자동 인식합니다)
 /// </summary>
 public class Clickable3DButton : MonoBehaviour
 {
@@ -24,13 +24,17 @@ public class Clickable3DButton : MonoBehaviour
     [Tooltip("버튼이 회전하는 애니메이션 시간 (초)")]
     public float animationDuration = 0.15f;
 
-    // ▼▼▼ 'Up/Down' 절대 각도 대신 '회전 오프셋'으로 변경 ▼▼▼
-    [Tooltip("버튼이 '눌렸을 때' 적용할 '상대적인' 회전 오프셋 (예: X축 30도)")]
-    public Vector3 rotationOffset = new Vector3(30, 0, 0); 
+    // ▼▼▼ 'rotationOffset' 대신 'Up/Down' 오프셋으로 변경 ▼▼▼
+    [Tooltip("버튼이 '올라온' 상태일 때 적용할 '상대적인' 회전 오프셋 (예: X축 -15도)")]
+    public Vector3 upRotationOffset = new Vector3(-15, 0, 0); 
+
+    [Tooltip("버튼이 '눌린' 상태일 때 적용할 '상대적인' 회전 오프셋 (예: X축 15도)")]
+    public Vector3 downRotationOffset = new Vector3(15, 0, 0); 
 
     // 애니메이션 상태 변수
-    private Quaternion originalRotation; // '올라온' 각도 (모델의 원래 각도)
-    private Quaternion downRotationQ;    // '눌린' 각도 (원래 각도 + 오프셋)
+    private Quaternion baseRotation;      // 모델의 '원래(중심)' 각도
+    private Quaternion upRotationQ;       // '올라온' 목표 각도
+    private Quaternion downRotationQ;     // '눌린' 목표 각도
     private bool isAnimating = false;
     private bool hasRotationBeenSet = false; // 각도 설정 여부 확인
 
@@ -44,12 +48,15 @@ public class Clickable3DButton : MonoBehaviour
         // '올라온' 각도와 '눌린' 각도를 Quaternion으로 변환하여 저장
         if (!hasRotationBeenSet) 
         {
-            // 1. movablePart의 '현재 로컬 각도'를 '올라온' 상태(originalRotation)로 저장합니다.
+            // 1. movablePart의 '현재 로컬 각도'를 '중심' 각도로 저장합니다.
             //    (이제 (0,0,0)으로 강제로 뒤집히지 않습니다!)
-            originalRotation = movablePart.localRotation; 
+            baseRotation = movablePart.localRotation; 
             
-            // 2. '눌린' 상태(downRotationQ)는 '올라온' 상태 + '회전 오프셋'입니다.
-            downRotationQ = originalRotation * Quaternion.Euler(rotationOffset);
+            // 2. '올라온' 상태는 '중심' 각도 + 'Up 오프셋'입니다.
+            upRotationQ = baseRotation * Quaternion.Euler(upRotationOffset);
+            
+            // 3. '눌린' 상태는 '중심' 각도 + 'Down 오프셋'입니다.
+            downRotationQ = baseRotation * Quaternion.Euler(downRotationOffset);
             
             hasRotationBeenSet = true;
         }
@@ -63,7 +70,7 @@ public class Clickable3DButton : MonoBehaviour
             }
             else
             {
-                movablePart.localRotation = originalRotation; // '올라온' 각도로 시작
+                movablePart.localRotation = upRotationQ; // '올라온' 각도로 시작
             }
         }
     }
@@ -106,8 +113,8 @@ public class Clickable3DButton : MonoBehaviour
     // 애니메이션 시작 함수
     private void StartAnimation(bool isNowOn)
     {
-        // 목표 각도를 설정
-        Quaternion targetRotation = isNowOn ? downRotationQ : originalRotation;
+        // 목표 각도를 설정 (켜졌으면 Down, 꺼졌으면 Up)
+        Quaternion targetRotation = isNowOn ? downRotationQ : upRotationQ;
         StopAllCoroutines();
         // 새 코루틴(애니메이션) 시작
         StartCoroutine(AnimateButtonRotation(targetRotation));
