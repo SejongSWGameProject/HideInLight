@@ -4,7 +4,7 @@ using UnityEngine.Events; // UnityEvent를 사용하기 위해 필요합니다.
 /// <summary>
 /// 3D 오브젝트와 F키로 상호작용하여,
 /// 1. "PRESS F" UI를 띄우고
-/// 2. 지정된 패널(3D 또는 2D)을 엽니다.
+/// 2. "OnInteract" 이벤트를 실행합니다. (SwitchPuzzleManager의 OpenPuzzlePopup 호출용)
 /// 3. 퍼즐이 풀리면 상호작용을 영구적으로 비활성화합니다.
 /// </summary>
 public class InteractableObject : MonoBehaviour
@@ -13,12 +13,18 @@ public class InteractableObject : MonoBehaviour
     [Tooltip("상호작용에 사용할 키")]
     public KeyCode interactionKey = KeyCode.F; // F 키로 설정
 
+    // ▼▼▼ 수정: 'panelToOpen' 대신 'OnInteract' 이벤트를 사용합니다. ▼▼▼
     [Header("연결")]
-    [Tooltip("상호작용 시 켤 UI 패널 (SwitchPuzzle_Panel 또는 PopupAnchor)")]
-    public GameObject panelToOpen;
+    [Tooltip("F키를 눌렀을 때 실행할 이벤트 (SwitchPuzzleManager.OpenPuzzlePopup 연결)")]
+    public UnityEvent OnInteract;
 
     [Tooltip("가까이 갔을 때 켤 상호작용 UI (예: 'F키' 텍스트)")]
     public GameObject interactionPromptUI;
+
+    // ▼▼▼ 추가: 퍼즐이 열려있는지 확인하기 위함 ▼▼▼
+    // (이 변수는 SwitchPuzzleManager가 관리하는 3D 모델을 연결해야 합니다)
+    [Tooltip("퍼즐 UI의 활성 상태를 체크할 게임 오브젝트 (PopupAnchor)")]
+    public GameObject puzzlePopupModel_Check; // 3D 팝업 모델을 연결할 변수
 
     [Header("퍼즐 상태")]
     [Tooltip("퍼즐이 이미 해결되었는지 여부")]
@@ -39,14 +45,12 @@ public class InteractableObject : MonoBehaviour
     // 2. 플레이어가 범위(Trigger) 안에 들어왔을 때
     private void OnTriggerEnter(Collider other)
     {
-        // 들어온 오브젝트가 "Player" 태그를 가졌는지 확인
-        // 그리고 퍼즐이 아직 풀리지 않았는지 확인
         if (other.CompareTag("Player") && !isPuzzleSolved)
         {
             isPlayerNear = true;
             
             // 패널이 닫혀 있을 때만 "PRESS F" 텍스트를 켭니다.
-            if (panelToOpen != null && !panelToOpen.activeSelf)
+            if (puzzlePopupModel_Check != null && !puzzlePopupModel_Check.activeSelf)
             {
                 UpdatePromptUI(true); // "PRESS F" UI 켜기
             }
@@ -66,21 +70,21 @@ public class InteractableObject : MonoBehaviour
     // 4. 매 프레임마다 키 입력 및 상태 확인
     private void Update()
     {
-        // 플레이어가 범위 안에 있고 퍼즐이 풀리지 않았을 때
         if (isPlayerNear && !isPuzzleSolved)
         {
             // F키를 눌렀다면
             if (Input.GetKeyDown(interactionKey))
             {
-                // 패널을 켠다!
-                if (panelToOpen != null)
+                // ▼▼▼ 수정: panelToOpen.SetActive(true) 대신 OnInteract.Invoke() 호출 ▼▼▼
+                // 이 이벤트에 SwitchPuzzleManager의 OpenPuzzlePopup()이 연결되어야 합니다.
+                if (OnInteract != null)
                 {
-                    panelToOpen.SetActive(true);
+                    OnInteract.Invoke();
                 }
             }
 
-            // (1번 문제 해결) 패널이 열려있는지 매번 확인
-            bool isPanelOpen = (panelToOpen != null && panelToOpen.activeSelf);
+            // (1번 문제 해결) 퍼즐이 열려있는지 매번 확인
+            bool isPanelOpen = (puzzlePopupModel_Check != null && puzzlePopupModel_Check.activeSelf);
             
             // "PRESS F" 텍스트 갱신
             // (패널이 닫혀있고, 퍼즐이 안 풀렸을 때만 true)
