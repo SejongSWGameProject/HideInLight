@@ -42,12 +42,11 @@ public class PlayerLight : MonoBehaviour
         {
             flashlight.enabled = !flashlight.enabled; // 켜져있으면 끄고, 꺼져있으면 켬
         }
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButtonDown(1))
         {
             //RotateFlashlight();
-            StopAllCoroutines();  // 혹시 중복 실행 방지
+            //StopAllCoroutines();  // 혹시 중복 실행 방지
                                   // 전등 앞쪽 방향으로 Raycast
-
 
             Vector3 viewportPos = mainCamera.WorldToViewportPoint(monster.transform.position);
             // 2. 화면 안에 있는지 3가지 조건을 모두 검사
@@ -86,14 +85,14 @@ public class PlayerLight : MonoBehaviour
             if (isVisible)
             {
                 Debug.Log(monster.name + "이(가) 화면에 보입니다. (벽 없음)");
-                StartCoroutine(monster.PauseMonster(3.0f));
+                monster.RequestPause(3.0f);
             }
             else
             {
                 Debug.Log(monster.name + "이(가) 안 보입니다. (화면 밖이거나 벽에 가려짐)");
             }
 
-            StartCoroutine(playerMove.FlashScreen());
+            playerMove.StartCoroutine(playerMove.FlashScreen());
         }
 
         // 마우스 휠 입력 처리

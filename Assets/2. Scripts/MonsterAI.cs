@@ -30,6 +30,8 @@ public class MonsterAI : MonoBehaviour
     // ����θ� �� ��ũ��Ʈ�� ���� ������Ʈ�� transform.position�� ����մϴ�.
     public Transform eyePosition;
 
+    private Coroutine currentPauseCoroutine;
+
     // �÷��̾ �ô��� ����
     public bool canSeePlayer { get; private set; }
 
@@ -103,7 +105,7 @@ public class MonsterAI : MonoBehaviour
     }
 
     // 4. ���͸� ���� �ð� ���߰� �ϴ� �ڷ�ƾ
-    public IEnumerator PauseMonster(float duration)
+    private IEnumerator PauseMonster(float duration)
     {
         // 5. ���� ���·� ����
         isPaused = true;
@@ -153,6 +155,8 @@ public class MonsterAI : MonoBehaviour
             deltatDistance = 10.0f;
             lampManager.SetMonsterTargetToRandomLamp();
         }
+
+        currentPauseCoroutine = null;
     }
 
     bool CheckSight()
@@ -236,5 +240,14 @@ public class MonsterAI : MonoBehaviour
             // 0.5�ʰ� ������ while ������ ó������ ���ư� 4������ �ٽ� �����մϴ�.
             yield return new WaitForSeconds(delta);
         }
+    }
+
+    public void RequestPause(float duration)
+    {
+        if (currentPauseCoroutine != null)
+        {
+            StopCoroutine(currentPauseCoroutine);
+        }
+        currentPauseCoroutine = StartCoroutine(PauseMonster(duration));
     }
 }
