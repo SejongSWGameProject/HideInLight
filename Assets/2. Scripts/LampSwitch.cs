@@ -1,11 +1,11 @@
-using System.Collections.Generic; // List¸¦ »ç¿ëÇÒ °æ¿ì ÇÊ¿ä (Áö±İÀº ¹è¿­ »ç¿ë)
+ï»¿using System.Collections.Generic; // Listë¥¼ ì‚¬ìš©í•  ê²½ìš° í•„ìš” (ì§€ê¸ˆì€ ë°°ì—´ ì‚¬ìš©)
 using UnityEngine;
 
 public class LampSwitch : MonoBehaviour
 {
-    // [Tooltip("Á¦¾îÇÒ ¸ğµç Àüµî ¿ÀºêÁ§Æ®¸¦ ¿©±â¿¡ ¿¬°áÇÏ¼¼¿ä.")]
-    [Header("¿¬°áÇÒ Àüµî (¿©·¯ °³)")]
-    public LampController[] targetLights; // ¡Ú¡Ú¡Ú º¯°æÁ¡: ´ÜÀÏ Light¿¡¼­ Light[] ¹è¿­·Î º¯°æ!
+    // [Tooltip("ì œì–´í•  ëª¨ë“  ì „ë“± ì˜¤ë¸Œì íŠ¸ë¥¼ ì—¬ê¸°ì— ì—°ê²°í•˜ì„¸ìš”.")]
+    [Header("ì—°ê²°í•  ì „ë“± (ì—¬ëŸ¬ ê°œ)")]
+    public LampController[] targetLights; // â˜…â˜…â˜… ë³€ê²½ì : ë‹¨ì¼ Lightì—ì„œ Light[] ë°°ì—´ë¡œ ë³€ê²½!
 
     public bool isLightOn = false;
 
@@ -13,15 +13,15 @@ public class LampSwitch : MonoBehaviour
     {
         
         LampManager.Instance.RegisterLampSwitch(this);
-        // 1. ¹è¿­ÀÌ ºñ¾îÀÖ´ÂÁö, ¶Ç´Â Ã¹ ¹øÂ° Ç×¸ñÀÌ ºñ¾îÀÖ´ÂÁö È®ÀÎÇÕ´Ï´Ù.
+        // 1. ë°°ì—´ì´ ë¹„ì–´ìˆëŠ”ì§€, ë˜ëŠ” ì²« ë²ˆì§¸ í•­ëª©ì´ ë¹„ì–´ìˆëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤.
         if (targetLights == null || targetLights.Length == 0 || targetLights[0] == null)
         {
-            Debug.Log("LightSwitch ½ºÅ©¸³Æ®¿¡ 'Target Lights'°¡ ÇÏ³ª ÀÌ»ó ¿¬°áµÇ¾î¾ß ÇÕ´Ï´Ù!");
+            Debug.Log("LightSwitch ìŠ¤í¬ë¦½íŠ¸ì— 'Target Lights'ê°€ í•˜ë‚˜ ì´ìƒ ì—°ê²°ë˜ì–´ì•¼ í•©ë‹ˆë‹¤!");
         }
         else
         {
-            // 2. Ã¹ ¹øÂ° ÀüµîÀÇ »óÅÂ¸¦ ±âÁØÀ¸·Î ÃÊ±â »óÅÂ(isLightOn)¸¦ Á¤ÇÕ´Ï´Ù.
-            // (¸ğµç ÀüµîÀÌ Ã³À½¿¡ °°Àº »óÅÂ¶ó°í °¡Á¤)
+            // 2. ì²« ë²ˆì§¸ ì „ë“±ì˜ ìƒíƒœë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì´ˆê¸° ìƒíƒœ(isLightOn)ë¥¼ ì •í•©ë‹ˆë‹¤.
+            // (ëª¨ë“  ì „ë“±ì´ ì²˜ìŒì— ê°™ì€ ìƒíƒœë¼ê³  ê°€ì •)
             foreach(LampController l in targetLights)
             {
                 if (isLightOn)
@@ -43,30 +43,30 @@ public class LampSwitch : MonoBehaviour
     }
 
     /// <summary>
-    /// ¿¬°áµÈ '¸ğµç' ÀüµîÀÇ »óÅÂ¸¦ ¹İÀü½ÃÅµ´Ï´Ù.
+    /// ì—°ê²°ëœ 'ëª¨ë“ ' ì „ë“±ì˜ ìƒíƒœë¥¼ ë°˜ì „ì‹œí‚µë‹ˆë‹¤.
     /// </summary>
     public void ToggleLights()
     {
-        // 1. ¹è¿­ ÀÚÃ¼¿¡ ¹®Á¦°¡ ¾ø´ÂÁö ´Ù½Ã ÇÑ¹ø È®ÀÎ
+        // 1. ë°°ì—´ ìì²´ì— ë¬¸ì œê°€ ì—†ëŠ”ì§€ ë‹¤ì‹œ í•œë²ˆ í™•ì¸
         if (targetLights == null || targetLights.Length == 0) return;
 
-        // 2. ¸¶½ºÅÍ Àüµî »óÅÂ¸¦ ¹İÀü½ÃÅµ´Ï´Ù.
+        // 2. ë§ˆìŠ¤í„° ì „ë“± ìƒíƒœë¥¼ ë°˜ì „ì‹œí‚µë‹ˆë‹¤.
         isLightOn = !isLightOn;
-        // 3. ¡Ú¡Ú¡Ú º¯°æÁ¡: foreach ¹İº¹¹®À¸·Î ¹è¿­ÀÇ '¸ğµç' ÀüµîÀ» ¼øÈ¸ÇÕ´Ï´Ù.
+        // 3. â˜…â˜…â˜… ë³€ê²½ì : foreach ë°˜ë³µë¬¸ìœ¼ë¡œ ë°°ì—´ì˜ 'ëª¨ë“ ' ì „ë“±ì„ ìˆœíšŒí•©ë‹ˆë‹¤.
         foreach (LampController light in targetLights)
         {
-            // (È¤½Ã ¹è¿­ Áß°£¿¡ ºñ¾îÀÖ´Â(null) Ç×¸ñÀÌ ÀÖÀ» °æ¿ì¸¦ ´ëºñ)
+            // (í˜¹ì‹œ ë°°ì—´ ì¤‘ê°„ì— ë¹„ì–´ìˆëŠ”(null) í•­ëª©ì´ ìˆì„ ê²½ìš°ë¥¼ ëŒ€ë¹„)
             if (light != null && !light.isBroken)
             {
                 light.Toggle();
                 if (isLightOn)
                 {
-                    Debug.Log(this.name+light.name+"ToggleÄÑÁü");
+                    //Debug.Log(this.name+light.name+"Toggleì¼œì§");
                     LampManager.Instance.RegisterLamp(light);
                 }
                 else if (!isLightOn)
                 {
-                    Debug.Log(this.name + light.name+"Toggle²û");
+                    //Debug.Log(this.name + light.name+"Toggleë”");
                     LampManager.Instance.QuitLamp(light);
 
                 }
@@ -74,6 +74,6 @@ public class LampSwitch : MonoBehaviour
             
         }
 
-        // 4. (¼±ÅÃ »çÇ×) »óÅÂ¸¦ ÄÜ¼Ö¿¡ Ãâ·Â
+        // 4. (ì„ íƒ ì‚¬í•­) ìƒíƒœë¥¼ ì½˜ì†”ì— ì¶œë ¥
     }
 }
