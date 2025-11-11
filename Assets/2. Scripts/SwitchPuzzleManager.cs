@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Linq;
@@ -153,13 +153,13 @@ public class SwitchPuzzleManager : MonoBehaviour
         {
             OnPuzzleSolved.Invoke();
         }
+        Invoke("ClosePuzzlePopup", 1.0f);
 
         foreach (Toggle sw in switches)
         {
             sw.interactable = false;
         }
 
-        Invoke("ClosePuzzlePopup", 1.0f);
     }
 
      /// <summary>
