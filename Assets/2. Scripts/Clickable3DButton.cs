@@ -49,7 +49,6 @@ public class Clickable3DButton : MonoBehaviour
         if (!hasRotationBeenSet) 
         {
             // 1. movablePart의 '현재 로컬 각도'를 '중심' 각도로 저장합니다.
-            //    (이제 (0,0,0)으로 강제로 뒤집히지 않습니다!)
             baseRotation = movablePart.localRotation; 
             
             // 2. '올라온' 상태는 '중심' 각도 + 'Up 오프셋'입니다.
@@ -73,6 +72,16 @@ public class Clickable3DButton : MonoBehaviour
                 movablePart.localRotation = upRotationQ; // '올라온' 각도로 시작
             }
         }
+
+        // ▼▼▼ [디버그 1] ▼▼▼
+        if (targetToggle == null)
+        {
+            Debug.LogError($"[Clickable3DButton] '{gameObject.name}': 'Target Toggle'이 비어있습니다! 클릭이 작동하지 않습니다.", this);
+        }
+        else
+        {
+            Debug.Log($"[Clickable3DButton] '{gameObject.name}': OnEnable. 'Target Toggle'({targetToggle.name}) 연결됨.", this);
+        }
     }
 
 
@@ -80,6 +89,8 @@ public class Clickable3DButton : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && !isAnimating)
         {
+            // ▼▼▼ [디버그 2] ▼▼▼
+            Debug.Log("[Clickable3DButton] 마우스 왼쪽 버튼 클릭 감지! Raycast를 시작합니다.");
             HandleClickRaycast();
         }
     }
@@ -89,13 +100,22 @@ public class Clickable3DButton : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (!hasRotationBeenSet) return; 
+        if (!hasRotationBeenSet)
+        {
+             // ▼▼▼ [디버그 3] ▼▼▼
+            Debug.LogWarning("[Clickable3DButton] 각도(Rotation)가 아직 설정되지 않아 Raycast를 무시합니다.");
+            return; 
+        }
 
         if (Physics.Raycast(ray, out hit, 50f, clickableLayerMask))
         {
+            // ▼▼▼ [디버그 4] ▼▼▼
+            Debug.Log($"[Clickable3DButton] Raycast가 '{hit.collider.gameObject.name}' 오브젝트에 맞았습니다!");
+
             if (hit.collider.gameObject == this.gameObject)
             {
-                Debug.Log($"[클릭 성공 - Raycast] {gameObject.name}이 감지되었습니다!");
+                // ▼▼▼ [디버그 5 - 성공!] ▼▼▼
+                Debug.Log($"<color=green>[클릭 성공 - Raycast] {gameObject.name}이 감지되었습니다!</color>");
 
                 if (targetToggle != null)
                 {
@@ -107,6 +127,16 @@ public class Clickable3DButton : MonoBehaviour
                     Debug.LogWarning(gameObject.name + "에 'targetToggle'이 연결되지 않았습니다.");
                 }
             }
+            else
+            {
+                // ▼▼▼ [디버그 6] ▼▼▼
+                Debug.LogWarning($"[Clickable3DButton] Raycast가 이 오브젝트({this.gameObject.name})가 아닌 다른 오브젝트({hit.collider.gameObject.name})에 맞았습니다. (LayerMask 확인 필요)");
+            }
+        }
+        else
+        {
+            // ▼▼▼ [디버그 7] ▼▼▼
+            Debug.Log("<color=orange>[Clickable3DButton] Raycast가 아무것에도 맞지 않았습니다. (Collider 또는 LayerMask 문제)</color>");
         }
     }
     
