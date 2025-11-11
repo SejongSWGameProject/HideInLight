@@ -6,8 +6,8 @@ public class PlayerLight : MonoBehaviour
     public Transform cameraTransform; // 카메라 Transform
     public Camera mainCamera;
     [Header("Initial Settings")]
-    public float initialRange = 100f;  // Inspector에서 초기값 설정
-    public float initialAngle = 45f;   // Inspector에서 초기값 설정
+    public float initialRange = 80f;  // Inspector에서 초기값 설정
+    public float initialAngle = 70f;   // Inspector에서 초기값 설정
 
     [Header("Scroll Settings")]
     public float scrollSpeed = 30f;         // 마우스 휠 감도
@@ -95,6 +95,16 @@ public class PlayerLight : MonoBehaviour
             playerMove.StartCoroutine(playerMove.FlashScreen());
         }
 
+        
+
+
+
+        
+
+    }
+
+    public void ScrollableLight()
+    {
         // 마우스 휠 입력 처리
         float scroll = Input.GetAxis("Mouse ScrollWheel"); // 위로 스크롤: +, 아래로: -
         if (scroll != 0)
@@ -110,10 +120,5 @@ public class PlayerLight : MonoBehaviour
             flashlight.range = range;
             flashlight.spotAngle = angle;
         }
-
-
-
-        
-
     }
 }
