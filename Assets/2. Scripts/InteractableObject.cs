@@ -34,6 +34,8 @@ public class InteractableObject : MonoBehaviour
     // 플레이어가 범위 안에 있는지 여부
     private bool isPlayerNear = false;
 
+    private string curTag;
+
     // 1. 시작할 때 UI 숨기기
     void Start()
     {
@@ -41,6 +43,8 @@ public class InteractableObject : MonoBehaviour
         {
             interactionPromptUI.SetActive(false);
         }
+        curTag = this.transform.tag;
+        //Debug.Log(curTag);
     }
 
     // 2. 플레이어가 범위(Trigger) 안에 들어왔을 때
@@ -49,13 +53,26 @@ public class InteractableObject : MonoBehaviour
         if (other.CompareTag("Player") && !isPuzzleSolved)
         {
             isPlayerNear = true;
-            Debug.Log("감지");
+            //Debug.Log("감지");
             // 패널이 닫혀 있을 때만 "PRESS F" 텍스트를 켭니다.
             if (puzzlePopupModel_Check != null && !puzzlePopupModel_Check.activeSelf)
             {
                 UpdatePromptUI(true); // "PRESS F" UI 켜기
             }
         }
+    }
+
+    public void Interact()
+    {
+        if (curTag.Equals("WirePuzzle"))
+        {
+
+        }
+        else if (curTag.Equals("LampSwitch"))
+        {
+            OnInteract.Invoke();
+        }
+
     }
 
     // 3. 플레이어가 범위(Trigger) 밖으로 나갔을 때

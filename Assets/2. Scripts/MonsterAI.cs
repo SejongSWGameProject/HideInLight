@@ -80,7 +80,7 @@ public class MonsterAI : MonoBehaviour
 
                 if (target.CompareTag("Lamp"))
                 {
-                    Debug.Log("�μ�");
+                    //Debug.Log("�μ�");
                     LampManager.Instance.BreakLamp();
                 }
             }

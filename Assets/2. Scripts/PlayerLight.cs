@@ -1,17 +1,17 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PlayerLight : MonoBehaviour
 {
-    public Light flashlight;          // Spot Light ¿¬°á
-    public Transform cameraTransform; // Ä«¸Þ¶ó Transform
+    public Light flashlight;          // Spot Light ì—°ê²°
+    public Transform cameraTransform; // ì¹´ë©”ë¼ Transform
     public Camera mainCamera;
     [Header("Initial Settings")]
-    public float initialRange = 80f;  // Inspector¿¡¼­ ÃÊ±â°ª ¼³Á¤
-    public float initialAngle = 70f;   // Inspector¿¡¼­ ÃÊ±â°ª ¼³Á¤
+    public float initialRange = 80f;  // Inspectorì—ì„œ ì´ˆê¸°ê°’ ì„¤ì •
+    public float initialAngle = 70f;   // Inspectorì—ì„œ ì´ˆê¸°ê°’ ì„¤ì •
 
     [Header("Scroll Settings")]
-    public float scrollSpeed = 30f;         // ¸¶¿ì½º ÈÙ °¨µµ
-    [Range(0f, 1f)] public float angleRangeFactor = 0.5f; // range Áõ°¡ ½Ã angle °¨¼Ò ºñÀ²
+    public float scrollSpeed = 30f;         // ë§ˆìš°ìŠ¤ íœ  ê°ë„
+    [Range(0f, 1f)] public float angleRangeFactor = 0.5f; // range ì¦ê°€ ì‹œ angle ê°ì†Œ ë¹„ìœ¨
 
     public PlayerMove playerMove;
     public MonsterAI monster;
@@ -25,7 +25,7 @@ public class PlayerLight : MonoBehaviour
     {
         if (flashlight == null) return;
 
-        range = initialRange;  // Inspector °ª ±×´ë·Î ÃÊ±â°ªÀ¸·Î »ç¿ë
+        range = initialRange;  // Inspector ê°’ ê·¸ëŒ€ë¡œ ì´ˆê¸°ê°’ìœ¼ë¡œ ì‚¬ìš©
         angle = initialAngle;
 
         flashlight.range = range;
@@ -37,19 +37,19 @@ public class PlayerLight : MonoBehaviour
 
     void Update()
     {
-        // ¸¶¿ì½º ¿ÞÂÊ Å¬¸¯ ½Ã Åä±Û
-        if (Input.GetMouseButtonDown(0)) // 0 = ¿ÞÂÊ ¹öÆ°
+        // ë§ˆìš°ìŠ¤ ì™¼ìª½ í´ë¦­ ì‹œ í† ê¸€
+        if (Input.GetMouseButtonDown(0)) // 0 = ì™¼ìª½ ë²„íŠ¼
         {
-            flashlight.enabled = !flashlight.enabled; // ÄÑÁ®ÀÖÀ¸¸é ²ô°í, ²¨Á®ÀÖÀ¸¸é ÄÔ
+            flashlight.enabled = !flashlight.enabled; // ì¼œì ¸ìžˆìœ¼ë©´ ë„ê³ , êº¼ì ¸ìžˆìœ¼ë©´ ì¼¬
         }
         if (Input.GetMouseButtonDown(1))
         {
             //RotateFlashlight();
-            //StopAllCoroutines();  // È¤½Ã Áßº¹ ½ÇÇà ¹æÁö
-                                  // Àüµî ¾ÕÂÊ ¹æÇâÀ¸·Î Raycast
+            //StopAllCoroutines();  // í˜¹ì‹œ ì¤‘ë³µ ì‹¤í–‰ ë°©ì§€
+                                  // ì „ë“± ì•žìª½ ë°©í–¥ìœ¼ë¡œ Raycast
 
             Vector3 viewportPos = mainCamera.WorldToViewportPoint(monster.transform.position);
-            // 2. È­¸é ¾È¿¡ ÀÖ´ÂÁö 3°¡Áö Á¶°ÇÀ» ¸ðµÎ °Ë»ç
+            // 2. í™”ë©´ ì•ˆì— ìžˆëŠ”ì§€ 3ê°€ì§€ ì¡°ê±´ì„ ëª¨ë‘ ê²€ì‚¬
             bool isInView = viewportPos.z > 0 &&
                             viewportPos.x >= 0 && viewportPos.x <= 1 &&
                             viewportPos.y >= 0 && viewportPos.y <= 1;
@@ -58,38 +58,38 @@ public class PlayerLight : MonoBehaviour
 
             if (isInView)
             {
-                // Ä«¸Þ¶ó À§Ä¡¿¡¼­ ¸ó½ºÅÍ À§Ä¡·Î ÇâÇÏ´Â ¹æÇâ°ú °Å¸® °è»ê
+                // ì¹´ë©”ë¼ ìœ„ì¹˜ì—ì„œ ëª¬ìŠ¤í„° ìœ„ì¹˜ë¡œ í–¥í•˜ëŠ” ë°©í–¥ê³¼ ê±°ë¦¬ ê³„ì‚°
                 Vector3 directionToMonster = (monster.eyePosition.position - mainCamera.transform.position);
                 float distanceToMonster = directionToMonster.magnitude;
 
-                // Raycast ½ÇÇà
-                // Physics.Raycast()°¡ 'true'¸¦ ¹ÝÈ¯ÇÏ¸é "Àå¾Ö¹°À» ¸ÂÃè´Ù"´Â ÀÇ¹Ì
+                // Raycast ì‹¤í–‰
+                // Physics.Raycast()ê°€ 'true'ë¥¼ ë°˜í™˜í•˜ë©´ "ìž¥ì• ë¬¼ì„ ë§žì·„ë‹¤"ëŠ” ì˜ë¯¸
                 if (Physics.Raycast(mainCamera.transform.position,
                                     directionToMonster.normalized,
-                                    distanceToMonster, // ¸ó½ºÅÍ±îÁö¸¸ÀÇ °Å¸®
-                                    obstacleLayerMask)) // "Obstacle" ·¹ÀÌ¾î¸¸ °¨Áö
+                                    distanceToMonster, // ëª¬ìŠ¤í„°ê¹Œì§€ë§Œì˜ ê±°ë¦¬
+                                    obstacleLayerMask)) // "Obstacle" ë ˆì´ì–´ë§Œ ê°ì§€
                 {
-                    // Àå¾Ö¹°ÀÌ °¨ÁöµÊ (º®¿¡ °¡·ÁÁü)
+                    // ìž¥ì• ë¬¼ì´ ê°ì§€ë¨ (ë²½ì— ê°€ë ¤ì§)
                     isVisible = false;
                 }
                 else
                 {
-                    // Àå¾Ö¹°ÀÌ °¨ÁöµÇÁö ¾ÊÀ½ (º¸ÀÓ)
+                    // ìž¥ì• ë¬¼ì´ ê°ì§€ë˜ì§€ ì•ŠìŒ (ë³´ìž„)
                     isVisible = true;
                 }
             }
-            // (else: 1´Ü°è(È­¸é ¹Û)¿¡¼­ Å»¶ôÇßÀ¸¹Ç·Î isVisibleÀº ¾îÂ÷ÇÇ false)
+            // (else: 1ë‹¨ê³„(í™”ë©´ ë°–)ì—ì„œ íƒˆë½í–ˆìœ¼ë¯€ë¡œ isVisibleì€ ì–´ì°¨í”¼ false)
 
 
-            // --- ÃÖÁ¾ °á°ú ---
+            // --- ìµœì¢… ê²°ê³¼ ---
             if (isVisible)
             {
-                Debug.Log(monster.name + "ÀÌ(°¡) È­¸é¿¡ º¸ÀÔ´Ï´Ù. (º® ¾øÀ½)");
+                Debug.Log(monster.name + "ì´(ê°€) í™”ë©´ì— ë³´ìž…ë‹ˆë‹¤. (ë²½ ì—†ìŒ)");
                 monster.RequestPause(3.0f);
             }
             else
             {
-                Debug.Log(monster.name + "ÀÌ(°¡) ¾È º¸ÀÔ´Ï´Ù. (È­¸é ¹ÛÀÌ°Å³ª º®¿¡ °¡·ÁÁü)");
+                Debug.Log(monster.name + "ì´(ê°€) ì•ˆ ë³´ìž…ë‹ˆë‹¤. (í™”ë©´ ë°–ì´ê±°ë‚˜ ë²½ì— ê°€ë ¤ì§)");
             }
 
             playerMove.StartCoroutine(playerMove.FlashScreen());
@@ -105,15 +105,15 @@ public class PlayerLight : MonoBehaviour
 
     public void ScrollableLight()
     {
-        // ¸¶¿ì½º ÈÙ ÀÔ·Â Ã³¸®
-        float scroll = Input.GetAxis("Mouse ScrollWheel"); // À§·Î ½ºÅ©·Ñ: +, ¾Æ·¡·Î: -
+        // ë§ˆìš°ìŠ¤ íœ  ìž…ë ¥ ì²˜ë¦¬
+        float scroll = Input.GetAxis("Mouse ScrollWheel"); // ìœ„ë¡œ ìŠ¤í¬ë¡¤: +, ì•„ëž˜ë¡œ: -
         if (scroll != 0)
         {
-            // range Áõ°¡/°¨¼Ò (ÃÖ¼Ò°ª 50)
+            // range ì¦ê°€/ê°ì†Œ (ìµœì†Œê°’ 50)
             if (angle != 15f)
                 range = Mathf.Max(50f, range + scroll * scrollSpeed);
 
-            // spotAngle Áõ°¡/°¨¼Ò (ÃÖ¼Ò°ª 15)
+            // spotAngle ì¦ê°€/ê°ì†Œ (ìµœì†Œê°’ 15)
             if (range != 50f)
                 angle = Mathf.Max(15f, angle - scroll * scrollSpeed * angleRangeFactor);
 
