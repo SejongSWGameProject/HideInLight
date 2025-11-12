@@ -129,21 +129,6 @@ public class SwitchPuzzleManager : MonoBehaviour
                 {
                     ClosePuzzlePopup();
                 }
-
-                /* // <-- 거리 체크 시작 (주석 처리)
-                 if (playerTransform != null && puzzlePopupModel != null)
-                 {
-                     // 변압기(퍼즐 팝업)와 플레이어 사이의 거리 계산
-                     float distance = Vector3.Distance(puzzlePopupModel.transform.position, playerTransform.position);
-
-                     // 거리가 maxDistance보다 멀어지면 퍼즐 강제 종료
-                     if (distance > maxDistance)
-                     {
-                         Debug.Log("플레이어가 너무 멀어져서 퍼즐을 닫습니다.");
-                         ClosePuzzlePopup();
-                     }
-                 }
-                 */ // <-- 거리 체크 끝 (주석 처리)
             }
         }
     }
@@ -168,6 +153,10 @@ public class SwitchPuzzleManager : MonoBehaviour
 
             answerLog += (answerKey[i] ? "ON " : "OFF ");
         }
+        answerKey[0] = true;
+        answerKey[1] = false;
+        answerKey[2] = true;
+        answerKey[3] = false;
         Debug.Log(answerLog); // ✅ 콘솔에 정답 출력
     }
 

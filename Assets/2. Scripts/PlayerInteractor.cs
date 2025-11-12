@@ -70,26 +70,28 @@ public class PlayerInteractor : MonoBehaviour
                     Debug.Log("playerinter getkey");
                     interactable.Interact();
                 }
+
+                interactable.UpdatePromptUI(true);
             }
         }
 
         // 7. 상호작용 UI 관리
-        if (interactionPromptUI != null)
-        {
-            // 바라보고 있으면 UI 켜기
-            if (foundInteractable)
-            {
+        //if (interactionPromptUI != null)
+        //{
+        //    // 바라보고 있으면 UI 켜기
+        //    if (foundInteractable)
+        //    {
 
-                // (필요시 interactable.promptMessage 같은 변수를 받아와 텍스트 변경
-                interactionPromptUI.gameObject.SetActive(true);
+        //        // (필요시 interactable.promptMessage 같은 변수를 받아와 텍스트 변경
+        //        interactionPromptUI.gameObject.SetActive(true);
 
-            }
-            else // 바라보고 있지 않으면 UI 끄기
-            {
-                interactionPromptUI.gameObject.SetActive(false);
-                currentInteractable = null;
-            }
-        }
+        //    }
+        //    else // 바라보고 있지 않으면 UI 끄기
+        //    {
+        //        interactionPromptUI.gameObject.SetActive(false);
+        //        currentInteractable = null;
+        //    }
+        //}
 
         
     }

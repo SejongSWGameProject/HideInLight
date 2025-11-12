@@ -47,24 +47,8 @@ public class InteractableObject : MonoBehaviour
         //Debug.Log(curTag);
     }
 
-    // 2. 플레이어가 범위(Trigger) 안에 들어왔을 때
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player") && !isPuzzleSolved)
-        {
-            isPlayerNear = true;
-            //Debug.Log("감지");
-            // 패널이 닫혀 있을 때만 "PRESS F" 텍스트를 켭니다.
-            if (puzzlePopupModel_Check != null && !puzzlePopupModel_Check.activeSelf)
-            {
-                UpdatePromptUI(true); // "PRESS F" UI 켜기
-            }
-        }
-    }
-
     public void Interact()
     {
-        Debug.Log("interactable obj invoke");
         OnInteract.Invoke();
 
     }
@@ -112,7 +96,7 @@ public class InteractableObject : MonoBehaviour
     /// <summary>
     /// "PRESS F" 텍스트 UI의 활성화 상태를 안전하게 변경합니다.
     /// </summary>
-    void UpdatePromptUI(bool show)
+    public void UpdatePromptUI(bool show)
     {
         if (interactionPromptUI != null && interactionPromptUI.activeSelf != show)
         {
