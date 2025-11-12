@@ -14,7 +14,7 @@ public class Wire3D : MonoBehaviour
     }
 
     /// <summary>
-    /// 전선의 시작점, 끝점, 색상을 설정합니다. (연결 완료 시)
+    //... (이하 코드 동일)
     /// </summary>
     public void SetProperties(Vector3 startPos, Vector3 endPos, Color color)
     {
@@ -26,7 +26,7 @@ public class Wire3D : MonoBehaviour
     }
 
     /// <summary>
-    /// 마우스를 따라다닐 때 선의 '끝점'만 실시간으로 업데이트합니다.
+    //... (이하 코드 동일)
     /// </summary>
     public void UpdateEndPosition(Vector3 endPos)
     {
