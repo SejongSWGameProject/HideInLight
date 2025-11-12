@@ -64,14 +64,8 @@ public class InteractableObject : MonoBehaviour
 
     public void Interact()
     {
-        if (curTag.Equals("WirePuzzle"))
-        {
-
-        }
-        else if (curTag.Equals("LampSwitch"))
-        {
-            OnInteract.Invoke();
-        }
+        Debug.Log("interactable obj invoke");
+        OnInteract.Invoke();
 
     }
 

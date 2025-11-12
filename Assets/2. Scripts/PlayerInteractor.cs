@@ -52,7 +52,7 @@ public class PlayerInteractor : MonoBehaviour
         {
             // 3. 맞은 물체에서 'InteractableObject' 스크립트 가져오기
             // (참고: 이 스크립트는 'Interact()' 함수를 가진다고 가정합니다)
-            Debug.Log("ray hit!: "+hit.transform.name);
+            //Debug.Log("ray hit!: "+hit.transform.name);
             InteractableObject interactable = hit.collider.GetComponent<InteractableObject>();
             if (interactable != null)
             {
@@ -60,14 +60,14 @@ public class PlayerInteractor : MonoBehaviour
                 foundInteractable = true;
                 currentInteractable = interactable; // 현재 객체로 저장
 
-
+                Debug.Log(currentInteractable.transform.name);
                 // 5. 상호작용 키(E)를 눌렀는지 확인
                 if (Input.GetKeyDown(interactionKey))
                 {
                     // 6. 상호작용 실행!
                     // (이 객체의 UnityEvent가 SwitchPuzzleManager의 OpenPuzzlePopup()을 호출)
 
-
+                    Debug.Log("playerinter getkey");
                     interactable.Interact();
                 }
             }
