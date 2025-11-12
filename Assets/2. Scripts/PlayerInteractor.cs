@@ -60,7 +60,7 @@ public class PlayerInteractor : MonoBehaviour
                 foundInteractable = true;
                 currentInteractable = interactable; // 현재 객체로 저장
 
-                Debug.Log(currentInteractable.transform.name);
+                //Debug.Log(currentInteractable.transform.name);
                 // 5. 상호작용 키(E)를 눌렀는지 확인
                 if (Input.GetKeyDown(interactionKey))
                 {
