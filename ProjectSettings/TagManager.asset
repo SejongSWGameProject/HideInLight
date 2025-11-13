@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Monster
   - Lamp
+  - LampSwitch
+  - WirePuzzle
+  - SwitchPuzzle
   layers:
   - Default
   - TransparentFX
@@ -14,10 +17,12 @@ TagManager:
   - Water
   - UI
   - Ceiling
-  - 
-  - 
-  - 
-  - 
+  - Floor
+  - Obstacle
+  - Clickable3D
+  - Interactable
+  - Player
+  - PuzzleOverlay
   - 
   - 
   - 

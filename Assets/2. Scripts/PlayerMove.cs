@@ -1,55 +1,74 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class Player_Ctrl : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
-    Rigidbody rb;
+    CharacterController controller;
 
     [Header("Rotate")]
-    public float mouseSpeed;
+    public float mouseSpeed = 100f;
     float yRotation;
     float xRotation;
     Camera cam;
 
     [Header("Move")]
-    public float moveSpeed;
+    public float moveSpeed = 5f;
+    public float gravity = -9.81f;
+    public float jumpHeight = 2f;
     float h;
     float v;
+    Vector3 velocity;
+
+    [Header("Ground Check")]
+    public Transform groundCheck;
+    public float groundDistance = 0.4f;
+    public LayerMask groundMask;
+    bool isGrounded;
 
     [Header("Flashlight")]
     public Light flashlight;
-    public float flashlightRotateSpeed = 10f; // ÀûÀıÈ÷ Á¶Àı
-    Vector3 flashlightRotation; // ´©Àû È¸ÀüÀ» À§ÇØ
+    public float flashlightRotateSpeed = 10f;
+    Vector3 flashlightRotation;
 
-    bool canLook = false;  // ¸¶¿ì½º ÀÔ·Â °¡´É ¿©ºÎ
+    bool canLook = false;
 
     [Header("Crouch Settings")]
-    public KeyCode crouchKey = KeyCode.Z; // ¾É±â Å°
-    private float originalY; // ÃÊ±â y À§Ä¡ ÀúÀå
-
+    public KeyCode crouchKey = KeyCode.Z;
+    private float originalHeight;
+    private float crouchHeight;
     private bool isCrouched = false;
+    public float crouchSpeed = 5f;
+    private float originalCameraY;
+    private float crouchCameraY;
 
     float currentX;
     float currentY;
     float xVelocity;
     float yVelocity;
-    public float smoothTime = 0.05f; // ¿øÇÏ´Â ºÎµå·¯¿ò
+    public float smoothTime = 0.1f;
 
+    [Header("Flash Effect")]
+    public Image flashImage;
+    public float flashDuration = 0.5f;
 
     void Start()
     {
         hiddenMouseCursor();
 
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        controller = GetComponent<CharacterController>();
+
+        if (controller == null)
+        {
+            Debug.LogError("CharacterController component not found!");
+            return;
+        }
 
         cam = Camera.main;
-
         if (cam != null)
         {
-            Vector3 camAngles = cam.transform.eulerAngles;
             xRotation = cam.transform.eulerAngles.x;
             yRotation = cam.transform.eulerAngles.y;
         }
@@ -57,11 +76,39 @@ public class Player_Ctrl : MonoBehaviour
         if (flashlight != null)
             flashlightRotation = flashlight.transform.localEulerAngles;
 
-        // ÃÊ±â y À§Ä¡ ÀúÀå
-        originalY = transform.position.y;
+        // CharacterControllerì˜ ì›ë˜ ë†’ì´ ì €ì¥
+        originalHeight = controller.height;
+        crouchHeight = originalHeight * 0.5f;
 
-        // °ÔÀÓ ½ÃÀÛ ÈÄ 0.5ÃÊ µÚºÎÅÍ ¸¶¿ì½º ÀÔ·Â Çã¿ë
+        
+
+        if (cam != null)
+        {
+            originalCameraY = cam.transform.localPosition.y;
+            crouchCameraY = originalCameraY * 0.5f;
+            
+        }
+
         Invoke(nameof(EnableMouseLook), 0.5f);
+    }
+
+    public IEnumerator FlashScreen()
+    {
+        Color c = flashImage.color;
+        c.a = 1f;
+        flashImage.color = c;
+
+        float elapsed = 0f;
+        while (elapsed < flashDuration)
+        {
+            elapsed += Time.deltaTime;
+            c.a = Mathf.Lerp(1f, 0f, elapsed / flashDuration);
+            flashImage.color = c;
+            yield return null;
+        }
+
+        c.a = 0f;
+        flashImage.color = c;
     }
 
     void EnableMouseLook()
@@ -72,60 +119,119 @@ public class Player_Ctrl : MonoBehaviour
 
     void Update()
     {
-        Getinput();
-
-        // ¾É±â Ã³¸®
+        GetInput();
+        CheckGround();
         HandleCrouch();
+        HandleGravity();
+        Move();
 
-        // Æò¼Ò ¸¶¿ì½º ¡æ Player È¸Àü
         if (!Input.GetMouseButton(1) && canLook)
             Rotate();
 
-        // ¿ìÅ¬¸¯ ½Ã ¡æ ¼ÕÀüµî È¸Àü
         if (Input.GetMouseButton(1))
-            RotateFlashlight();
-
-        if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                if (hit.collider.gameObject == gameObject)
-                {
-                    Debug.Log("Å¬¸¯µÊ!");
-                }
-            }
+            // RotateFlashlight();
         }
+
+        // ì í”„ ì…ë ¥
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+    }
+
+    void CheckGround()
+    {
+        // CharacterControllerì˜ isGrounded ì‚¬ìš©
+        isGrounded = controller.isGrounded;
+
+        // ë” ì •í™•í•œ Ground Checkê°€ í•„ìš”í•˜ë©´ Raycast ì‚¬ìš©
+        if (groundCheck != null)
+        {
+            isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        }
+    }
+
+    void HandleGravity()
+    {
+        // ë•…ì— ìˆì„ ë•Œ velocity.yë¥¼ ì•½ê°„ì˜ ìŒìˆ˜ë¡œ ìœ ì§€
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
+
+        // ì¤‘ë ¥ ì ìš©
+        velocity.y += gravity * Time.deltaTime;
     }
 
     void HandleCrouch()
     {
-        Vector3 pos = transform.position;
-
         if (Input.GetKey(crouchKey))
         {
-            // Å°¸¦ ´©¸£°í ÀÖÀ¸¸é Àı¹İ ³ôÀÌ
-            pos.y = originalY * 0.5f;
+            if (!isCrouched)
+            {
+                isCrouched = true;
+            }
         }
         else
         {
-            // Å°¸¦ ¶¼¸é ¿ø·¡ ³ôÀÌ
-            pos.y = originalY;
+            isCrouched = false;
         }
 
-        transform.position = pos;
+        float targetHeight = isCrouched ? crouchHeight : originalHeight;
+        float targetCameraY = isCrouched ? crouchCameraY : originalCameraY;
+        float currentHeight = controller.height;
+
+        
+
+        // ë¶€ë“œëŸ½ê²Œ ë†’ì´ ë³€ê²½
+        if (Mathf.Abs(currentHeight - targetHeight) > 0.01f)
+        {
+            float newHeight = Mathf.Lerp(currentHeight, targetHeight, Time.deltaTime * crouchSpeed);
+            float heightDifference = newHeight - currentHeight;
+
+            controller.height = newHeight;
+            // Centerë¥¼ ì¡°ì •í•˜ì—¬ ë°œì´ ë•…ì— ë¶™ì–´ìˆë„ë¡
+            controller.center = new Vector3(controller.center.x, newHeight / 2f, controller.center.z);
+        }
+
+        if (cam != null)
+        {
+            Vector3 camPos = cam.transform.localPosition;
+            camPos.y = Mathf.Lerp(camPos.y, targetCameraY, Time.deltaTime * crouchSpeed);
+            cam.transform.localPosition = camPos;
+
+        }
     }
 
-    void FixedUpdate()
+    bool CheckCeiling()
     {
-        Vector3 moveVec = transform.forward * v + transform.right * h;
-        rb.linearVelocity = moveVec.normalized * moveSpeed;
+        // ìºë¦­í„° ìœ„ìª½ì— ì¥ì• ë¬¼ì´ ìˆëŠ”ì§€ ì²´í¬
+        float checkDistance = (originalHeight - crouchHeight) + 0.2f;
+        Vector3 start = transform.position + Vector3.up * controller.height;
+
+        return Physics.Raycast(start, Vector3.up, checkDistance);
     }
 
-    void Getinput()
+    void GetInput()
     {
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
+    }
+
+    void Move()
+    {
+        // ì´ë™ ë°©í–¥ ê³„ì‚°
+        Vector3 moveDirection = transform.right * h + transform.forward * v;
+
+        // í˜„ì¬ ì†ë„ (ì•‰ì•˜ì„ ë•Œ ì†ë„ ê°ì†Œ)
+        float currentSpeed = isCrouched ? moveSpeed * 0.5f : moveSpeed;
+
+        // ìˆ˜í‰ ì´ë™
+        controller.Move(moveDirection.normalized * currentSpeed * Time.deltaTime);
+
+        // ìˆ˜ì§ ì´ë™ (ì¤‘ë ¥, ì í”„)
+        controller.Move(velocity * Time.deltaTime);
     }
 
     void Rotate()
@@ -139,22 +245,14 @@ public class Player_Ctrl : MonoBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        // ¸ñÇ¥ È¸Àü°ª ¡æ ½ÇÁ¦ È¸Àü°ªÀ¸·Î ½º¹«µù
         currentX = Mathf.SmoothDampAngle(currentX, xRotation, ref xVelocity, smoothTime);
         currentY = Mathf.SmoothDampAngle(currentY, yRotation, ref yVelocity, smoothTime);
 
-        // Ä«¸Ş¶ó »óÇÏ È¸Àü, ÇÃ·¹ÀÌ¾î ÁÂ¿ì È¸Àü
-        cam.transform.rotation = Quaternion.Euler(currentX, currentY, 0);
+        if (cam != null)
+        {
+            cam.transform.rotation = Quaternion.Euler(currentX, currentY, 0);
+        }
         transform.rotation = Quaternion.Euler(0, currentY, 0);
-    }
-
-    void Move()
-    {
-
-        Vector3 moveVec = transform.forward * v + transform.right * h;
-
-
-        rb.MovePosition(rb.position + moveVec.normalized * moveSpeed * Time.fixedDeltaTime);
     }
 
     void RotateFlashlight()
@@ -164,7 +262,6 @@ public class Player_Ctrl : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * flashlightRotateSpeed * 0.05f;
         float mouseY = Input.GetAxis("Mouse Y") * flashlightRotateSpeed * 0.05f;
 
-        // ´©Àû È¸Àü
         flashlightRotation.x -= mouseY;
         flashlightRotation.y += mouseX;
         flashlightRotation.x = Mathf.Clamp(flashlightRotation.x, -90f, 90f);
