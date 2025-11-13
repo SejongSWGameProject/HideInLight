@@ -44,7 +44,6 @@ public class PlayerInteractor : MonoBehaviour
         Ray ray = new Ray(playerCameraTransform.position, playerCameraTransform.forward);
         RaycastHit hit; // 레이에 맞은 물체의 정보
 
-        bool foundInteractable = false;
         Debug.DrawRay(ray.origin, ray.direction * interactionDistance, Color.red);
 
         // 2. 레이 발사: (레이, 맞은 정보, 거리, 감지할 레이어)
@@ -57,7 +56,6 @@ public class PlayerInteractor : MonoBehaviour
             if (interactable != null)
             {
                 // 4. 상호작용 가능한 물체를 찾음
-                foundInteractable = true;
                 currentInteractable = interactable; // 현재 객체로 저장
 
                 //Debug.Log(currentInteractable.transform.name);
