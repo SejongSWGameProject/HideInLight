@@ -41,66 +41,73 @@ public class PlayerLight : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) // 0 = 왼쪽 버튼
         {
             flashlight.enabled = !flashlight.enabled; // 켜져있으면 끄고, 꺼져있으면 켬
+            if (flashlight.enabled)
+            {
+                if (isMonsterInSight())
+                {
+                    monster.setMonsterState(2);
+                }
+            }
         }
         if (Input.GetMouseButtonDown(1))
         {
-            //RotateFlashlight();
-            //StopAllCoroutines();  // 혹시 중복 실행 방지
-                                  // 전등 앞쪽 방향으로 Raycast
 
-            Vector3 viewportPos = mainCamera.WorldToViewportPoint(monster.transform.position);
-            // 2. 화면 안에 있는지 3가지 조건을 모두 검사
-            bool isInView = viewportPos.z > 0 &&
-                            viewportPos.x >= 0 && viewportPos.x <= 1 &&
-                            viewportPos.y >= 0 && viewportPos.y <= 1;
-
-            bool isVisible = false;
-
-            if (isInView)
+            if (isMonsterInSight())
             {
-                // 카메라 위치에서 몬스터 위치로 향하는 방향과 거리 계산
-                Vector3 directionToMonster = (monster.eyePosition.position - mainCamera.transform.position);
-                float distanceToMonster = directionToMonster.magnitude;
-
-                // Raycast 실행
-                // Physics.Raycast()가 'true'를 반환하면 "장애물을 맞췄다"는 의미
-                if (Physics.Raycast(mainCamera.transform.position,
-                                    directionToMonster.normalized,
-                                    distanceToMonster, // 몬스터까지만의 거리
-                                    obstacleLayerMask)) // "Obstacle" 레이어만 감지
+                Debug.Log(monster.name + "이(가) 화면에 보입니다. (벽 없음)");
+                if (monster.CheckSight())
                 {
-                    // 장애물이 감지됨 (벽에 가려짐)
-                    isVisible = false;
+                    monster.RequestPause(3.0f);
                 }
                 else
                 {
-                    // 장애물이 감지되지 않음 (보임)
-                    isVisible = true;
+                    monster.setMonsterState(2);
                 }
-            }
-            // (else: 1단계(화면 밖)에서 탈락했으므로 isVisible은 어차피 false)
-
-
-            // --- 최종 결과 ---
-            if (isVisible)
-            {
-                Debug.Log(monster.name + "이(가) 화면에 보입니다. (벽 없음)");
-                monster.RequestPause(3.0f);
             }
             else
             {
                 Debug.Log(monster.name + "이(가) 안 보입니다. (화면 밖이거나 벽에 가려짐)");
-            }
 
+            }
             playerMove.StartCoroutine(playerMove.FlashScreen());
         }
 
-        
+    }
 
+    public bool isMonsterInSight()
+    {
+        Vector3 viewportPos = mainCamera.WorldToViewportPoint(monster.transform.position);
+        // 2. 화면 안에 있는지 3가지 조건을 모두 검사
+        bool isInView = viewportPos.z > 0 &&
+                        viewportPos.x >= 0 && viewportPos.x <= 1 &&
+                        viewportPos.y >= 0 && viewportPos.y <= 1;
 
+        bool isVisible = false;
 
-        
+        if (isInView)
+        {
+            // 카메라 위치에서 몬스터 위치로 향하는 방향과 거리 계산
+            Vector3 directionToMonster = (monster.eyePosition.position - mainCamera.transform.position);
+            float distanceToMonster = directionToMonster.magnitude;
 
+            // Raycast 실행
+            // Physics.Raycast()가 'true'를 반환하면 "장애물을 맞췄다"는 의미
+            if (Physics.Raycast(mainCamera.transform.position,
+                                directionToMonster.normalized,
+                                distanceToMonster, // 몬스터까지만의 거리
+                                obstacleLayerMask)) // "Obstacle" 레이어만 감지
+            {
+                // 장애물이 감지됨 (벽에 가려짐)
+                isVisible = false;
+            }
+            else
+            {
+                // 장애물이 감지되지 않음 (보임)
+                isVisible = true;
+
+            }
+        }
+        return isVisible;
     }
 
     public void ScrollableLight()

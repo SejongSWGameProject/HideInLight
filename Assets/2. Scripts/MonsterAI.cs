@@ -267,7 +267,8 @@ public class MonsterAI : MonoBehaviour
             jumpscareLight.enabled = false;
         }
     }
-    public void setMonsterState(int state)
+    
+    public void setMonsterState(int state)  //NORMAL(1), CHASE(2), STUN(3)
     {
         monsterState = state;
     }
@@ -331,7 +332,7 @@ public class MonsterAI : MonoBehaviour
         currentPauseCoroutine = null;
     }
 
-    bool CheckSight()
+    public bool CheckSight()
     {
         // "��" ��ġ�� �������� �ʾ����� �⺻ transform.position ���
         Vector3 eyePos = (eyePosition != null) ? eyePosition.position : this.transform.position;
