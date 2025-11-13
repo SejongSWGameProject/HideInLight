@@ -143,7 +143,7 @@ public class MonsterAI : MonoBehaviour
             return;
         }
 
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && monsterState!=STUN)
         {
             StartJumpScare();
         }
@@ -278,6 +278,7 @@ public class MonsterAI : MonoBehaviour
         // 5. ���� ���·� ����
         isPaused = true;
         float originspeed = monster.speed;
+        monsterState = STUN;
         animator.SetFloat("Speed", 0f);
         animator.SetBool("isStunned", true);
         // 6. NavMeshAgent�� �̵��� ����
