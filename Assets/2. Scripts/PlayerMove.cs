@@ -125,15 +125,21 @@ public class PlayerMove : MonoBehaviour
             {
                 isCrouched = true;
 
-                // 위치 y값 절반
-                Vector3 pos = transform.position;
-                pos.y = originalY * 0.5f;
-                transform.position = pos;
+                // 스케일 절반으로 줄임
+                Vector3 newScale = transform.localScale;
+                newScale.y = originalScale.y * 0.5f;
 
-                // y축 스케일 절반, x/z는 그대로
-                Vector3 scale = transform.localScale;
-                scale.y = originalScale.y * 0.5f;
-                transform.localScale = scale;
+                // Pivot이 중앙이므로 위쪽만 줄이려면
+                // 줄어든 높이의 절반만큼 아래로 내려줌
+                float heightBefore = originalScale.y;
+                float heightAfter = newScale.y;
+                float deltaHeight = heightBefore - heightAfter;
+
+                transform.position -= new Vector3(0, deltaHeight / 2f, 0);
+                transform.localScale = newScale;
+
+                // --- 이동속도 절반으로 감소 ---
+                moveSpeed *= 0.5f;
             }
         }
         else
@@ -142,15 +148,18 @@ public class PlayerMove : MonoBehaviour
             {
                 isCrouched = false;
 
-                // 위치 원래대로
-                Vector3 pos = transform.position;
-                pos.y = originalY;
-                transform.position = pos;
+                // 다시 원래 크기로 복원
+                Vector3 currentScale = transform.localScale;
+                float heightBefore = currentScale.y;
+                float heightAfter = originalScale.y;
+                float deltaHeight = heightAfter - heightBefore;
 
-                // y축 스케일 원래대로
-                Vector3 scale = transform.localScale;
-                scale.y = originalScale.y;
-                transform.localScale = scale;
+                // 복원 시 다시 위로 올려줌
+                transform.position += new Vector3(0, deltaHeight / 2f, 0);
+                transform.localScale = originalScale;
+
+                // --- 이동속도 원복 ---
+                moveSpeed *= 2f; // 절반으로 줄였으니 다시 2배로 복원
             }
         }
     }
