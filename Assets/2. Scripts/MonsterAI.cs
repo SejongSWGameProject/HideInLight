@@ -220,7 +220,7 @@ public class MonsterAI : MonoBehaviour
 
         playerCamera.position = jumpScareCameraPos.position;
         Vector3 scarePos = transform.position;
-        scarePos.y -= 2;
+        //scarePos.y -= 2;
         monster.transform.position = scarePos;
 
         playerCamera.LookAt(transform);
@@ -249,7 +249,7 @@ public class MonsterAI : MonoBehaviour
 
         // 5. 게임 오버 처리 (아래 3단계 참고)
         // (이벤트 또는 Invoke 사용)
-        float killAnimationLength = 2.5f; // 예: 킬 애니메이션의 총 길이 (초)
+        float killAnimationLength = 1.5f; // 예: 킬 애니메이션의 총 길이 (초)
         Invoke("ShowGameOver", killAnimationLength);
 
     }
