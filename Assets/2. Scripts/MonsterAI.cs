@@ -136,6 +136,19 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (isJumpscaring || !other.CompareTag("Player"))
+        {
+            return;
+        }
+
+        if (other.CompareTag("Player"))
+        {
+            StartJumpScare();
+        }
+    }
+
     bool CanKillPlayer()
     {
         // 예: 플레이어와의 거리가 1미터 미만이고 공격 쿨타임이 지났다면
