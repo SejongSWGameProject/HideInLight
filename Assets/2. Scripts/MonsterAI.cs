@@ -167,6 +167,7 @@ public class MonsterAI : MonoBehaviour
         {
             monster.isStopped = true;
             monster.enabled = false;
+            monster.velocity = Vector3.zero;
         }
 
    
@@ -176,17 +177,37 @@ public class MonsterAI : MonoBehaviour
         // 2. 플레이어 컨트롤 정지
         // (플레이어 이동 스크립트 이름이 'PlayerMovement'라고 가정)
         PlayerMove playerMovement = player.GetComponent<PlayerMove>();
+        SlopeStabilizer playerMovement2 = player.GetComponent<SlopeStabilizer>();
         PlayerLight playerLight = player.GetComponentInChildren<PlayerLight>();
         if (playerMovement != null)
         {
+            playerMovement.moveSpeed = 0f;
             playerMovement.enabled = false;
         }
-        if(playerLight != null)
+        if (playerMovement2 != null)
+        {
+            playerMovement2.enabled = false;
+        }
+        if (playerLight != null)
         {
             playerLight.flashlight.enabled = false;
             playerLight.enabled = false;
         }
-        
+
+        // (B) 플레이어 'Rigidbody'의 속도를 강제로 0으로 만듦
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            // 모든 물리적 움직임(속도)과 회전 속도를 즉시 0으로 만듭니다.
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+
+            // (선택 사항이지만 권장)
+            // 씬 연출 중에는 Rigidbody가 다른 물체에 밀리거나 중력에 
+            // 반응하지 않도록 'Kinematic'으로 만드는 것이 가장 안전합니다.
+            rb.isKinematic = true;
+        }
+
 
         // 마우스 커서 잠금 해제 (필요시)
         Cursor.lockState = CursorLockMode.None;
