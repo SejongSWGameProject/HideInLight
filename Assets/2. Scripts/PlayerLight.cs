@@ -20,10 +20,14 @@ public class PlayerLight : MonoBehaviour
     private float angle;
 
     public LayerMask obstacleLayerMask;
+    public AudioClip toggleLight;
+    private AudioSource audioSource;
 
     void Start()
     {
         if (flashlight == null) return;
+
+        audioSource = GetComponent<AudioSource>();
 
         range = initialRange;  // Inspector 값 그대로 초기값으로 사용
         angle = initialAngle;
@@ -41,6 +45,7 @@ public class PlayerLight : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) // 0 = 왼쪽 버튼
         {
             flashlight.enabled = !flashlight.enabled; // 켜져있으면 끄고, 꺼져있으면 켬
+            audioSource.PlayOneShot(toggleLight);
             if (flashlight.enabled)
             {
                 if (isMonsterInSight())

@@ -5,10 +5,12 @@ public class LampController : MonoBehaviour
     public Light lamp;
     public bool isTurnedOn = false;
     public bool isBroken = false;
-    public AudioSource breakSound;       // 소리 (선택)
+    public AudioClip breakSound;       // 소리 (선택)
+    private AudioSource audioSource;
     public ParticleSystem sparkEffect;   // 불꽃 (선택)
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         if (lamp == null)
             lamp = GetComponentInChildren<Light>();
         if (lamp.enabled)
@@ -66,7 +68,7 @@ public class LampController : MonoBehaviour
         // 완전히 꺼짐
         lamp.enabled = false;
         //if (sparkEffect != null) sparkEffect.Play();
-        //if (breakSound != null) breakSound.Play();
+        if (breakSound != null) audioSource.PlayOneShot(breakSound);
 
     }
 }
