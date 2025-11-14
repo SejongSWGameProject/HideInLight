@@ -14,14 +14,13 @@ public class InteractableDevice : MonoBehaviour
     private Camera playerCamera;
     private bool isPlayerInRange = false;
     private bool isPuzzleActive = false;
-    private PlayerMove playerController; // 플레이어 컨트롤러 참조
+    
 
     void Start()
     {
         playerCamera = Camera.main;
 
-        // 플레이어 컨트롤러 찾기 (있다면)
-        playerController = FindObjectOfType<PlayerMove>();
+        
 
         if (puzzleUI != null)
             puzzleUI.SetActive(false);
@@ -81,15 +80,13 @@ public class InteractableDevice : MonoBehaviour
         if (wireConnectionPuzzle != null)
             wireConnectionPuzzle.OpenPuzzle();
 
-        // 플레이어 움직임 비활성화
-        if (playerController != null)
-        {
-            playerController.enabled = false;
-        }
+        
 
         // 마우스 커서 보이기
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        Debug.Log("InteractableObject OpenPuzzle()");
     }
 
     public void ClosePuzzle()
@@ -98,12 +95,7 @@ public class InteractableDevice : MonoBehaviour
 
         if (puzzleUI != null)
             puzzleUI.SetActive(false);
-
-        // 플레이어 움직임 활성화
-        if (playerController != null)
-        {
-            playerController.enabled = true;
-        }
+        
 
         // 마우스 커서 숨기기
         Cursor.lockState = CursorLockMode.Locked;

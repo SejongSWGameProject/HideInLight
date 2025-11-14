@@ -39,8 +39,8 @@ public class WireConnector3D : MonoBehaviour
 
     void SetupLineRenderer()
     {
-        lineRenderer.startWidth = 0.02f;
-        lineRenderer.endWidth = 0.02f;
+        lineRenderer.startWidth = 0.2f;
+        lineRenderer.endWidth = 0.2f;
         lineRenderer.positionCount = 2;
         lineRenderer.useWorldSpace = true;
 
@@ -91,6 +91,8 @@ public class WireConnector3D : MonoBehaviour
         // 마우스 위치를 3D 공간으로 변환
         Ray ray = puzzleCamera.ScreenPointToRay(Input.mousePosition);
         Vector3 targetPosition = ray.GetPoint(dragDistance);
+
+        Debug.Log("그리는중");
 
         // 끝점 위치 업데이트
         endPoint.position = Vector3.Lerp(endPoint.position, targetPosition, dragSensitivity * 100f * Time.deltaTime);
