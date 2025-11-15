@@ -5,7 +5,7 @@ public class FlashlightActivator : MonoBehaviour
     [Header("Objects to Activate")]
     public GameObject flashlightModel; // A 오브젝트
     public GameObject flashlightScript;    // B 오브젝트
-
+    
     private bool isActivated = false;
 
     void Start()
@@ -16,18 +16,16 @@ public class FlashlightActivator : MonoBehaviour
 
         if (flashlightScript != null)
             flashlightScript.SetActive(false);
+
+        
     }
 
     void Update()
     {
-        // 스페이스바 한 번만 입력 처리
-        if (!isActivated && Input.GetKeyDown(KeyCode.Space))
-        {
-            ActivateObjects();
-        }
+        
     }
 
-    void ActivateObjects()
+    public void ActivateObjects()
     {
         if (flashlightModel != null)
         {
@@ -41,7 +39,14 @@ public class FlashlightActivator : MonoBehaviour
 
         }
 
-
         isActivated = true;
+
+        Destroy(this.gameObject);
+
+        InteractableObject obj = GetComponent<InteractableObject>();
+        obj.canInteract = false;
+
     }
+
+
 }

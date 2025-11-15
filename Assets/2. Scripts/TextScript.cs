@@ -21,7 +21,12 @@ public class TypeWriterTMP : MonoBehaviour
 
     void Start()
     {
+    }
+
+    public void ShowFindGeneratorText()
+    {
         StartCoroutine(ShowTextWithDelay());
+
     }
 
     IEnumerator ShowTextWithDelay()
