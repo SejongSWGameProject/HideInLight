@@ -1,16 +1,16 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class FlashlightActivator : MonoBehaviour
 {
     [Header("Objects to Activate")]
-    public GameObject flashlight; // A ¿ÀºêÁ§Æ®
-    public GameObject objectB;    // B ¿ÀºêÁ§Æ®
+    public GameObject flashlight; // A ì˜¤ë¸Œì íŠ¸
+    public GameObject objectB;    // B ì˜¤ë¸Œì íŠ¸
 
     private bool isActivated = false;
 
     void Start()
     {
-        // µÑ ´Ù ½ÃÀÛ ½Ã ºñÈ°¼ºÈ­
+        // ë‘˜ ë‹¤ ì‹œì‘ ì‹œ ë¹„í™œì„±í™”
         if (flashlight != null)
             flashlight.SetActive(false);
 
@@ -20,7 +20,7 @@ public class FlashlightActivator : MonoBehaviour
 
     void Update()
     {
-        // ½ºÆäÀÌ½º¹Ù ÇÑ ¹ø¸¸ ÀÔ·Â Ã³¸®
+        // ìŠ¤í˜ì´ìŠ¤ë°” í•œ ë²ˆë§Œ ì…ë ¥ ì²˜ë¦¬
         if (!isActivated && Input.GetKeyDown(KeyCode.Space))
         {
             ActivateObjects();
@@ -30,10 +30,17 @@ public class FlashlightActivator : MonoBehaviour
     void ActivateObjects()
     {
         if (flashlight != null)
+        {
             flashlight.SetActive(true);
+            
+        }
 
         if (objectB != null)
+        {
             objectB.SetActive(true);
+
+        }
+
 
         isActivated = true;
     }
