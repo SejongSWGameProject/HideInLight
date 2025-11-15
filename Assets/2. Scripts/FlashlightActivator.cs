@@ -3,19 +3,19 @@
 public class FlashlightActivator : MonoBehaviour
 {
     [Header("Objects to Activate")]
-    public GameObject flashlight; // A 오브젝트
-    public GameObject objectB;    // B 오브젝트
+    public GameObject flashlightModel; // A 오브젝트
+    public GameObject flashlightScript;    // B 오브젝트
 
     private bool isActivated = false;
 
     void Start()
     {
         // 둘 다 시작 시 비활성화
-        if (flashlight != null)
-            flashlight.SetActive(false);
+        if (flashlightModel != null)
+            flashlightModel.SetActive(false);
 
-        if (objectB != null)
-            objectB.SetActive(false);
+        if (flashlightScript != null)
+            flashlightScript.SetActive(false);
     }
 
     void Update()
@@ -29,15 +29,15 @@ public class FlashlightActivator : MonoBehaviour
 
     void ActivateObjects()
     {
-        if (flashlight != null)
+        if (flashlightModel != null)
         {
-            flashlight.SetActive(true);
+            flashlightModel.SetActive(true);
             
         }
 
-        if (objectB != null)
+        if (flashlightScript != null)
         {
-            objectB.SetActive(true);
+            flashlightScript.SetActive(true);
 
         }
 
