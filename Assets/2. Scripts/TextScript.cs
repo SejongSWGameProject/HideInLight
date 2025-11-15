@@ -1,12 +1,12 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using TMPro;
 
 public class TypeWriterTMP : MonoBehaviour
 {
     public TMP_Text uiText;       // TextMeshPro
-    public float delay = 0.5f;    // ±ÛÀÚ Ãâ·Â °£°İ
-    public float fadeDuration = 1.5f; // ¼­¼­È÷ »ç¶óÁö´Â ½Ã°£
+    public float delay = 0.5f;    // ê¸€ì ì¶œë ¥ ê°„ê²©
+    public float fadeDuration = 1.5f; // ì„œì„œíˆ ì‚¬ë¼ì§€ëŠ” ì‹œê°„
 
     private string originalText;
 
@@ -28,17 +28,17 @@ public class TypeWriterTMP : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        // 1) Å¸ÀÌÇÎ È¿°ú
+        // 1) íƒ€ì´í•‘ íš¨ê³¼
         foreach (char c in originalText)
         {
             uiText.text += c;
             yield return new WaitForSeconds(delay);
         }
 
-        // 2) Å¸ÀÌÇÎ ³¡³­ µÚ 2ÃÊ À¯Áö
+        // 2) íƒ€ì´í•‘ ëë‚œ ë’¤ 2ì´ˆ ìœ ì§€
         yield return new WaitForSeconds(2f);
 
-        // 3) ÆäÀÌµå ¾Æ¿ô ½ÃÀÛ
+        // 3) í˜ì´ë“œ ì•„ì›ƒ ì‹œì‘
         yield return StartCoroutine(FadeOut());
     }
 
@@ -62,7 +62,7 @@ public class TypeWriterTMP : MonoBehaviour
             yield return null;
         }
 
-        // ¿ÏÀüÈ÷ Åõ¸íÇÏ°Ô
+        // ì™„ì „íˆ íˆ¬ëª…í•˜ê²Œ
         uiText.color = new Color(
             originalColor.r,
             originalColor.g,
