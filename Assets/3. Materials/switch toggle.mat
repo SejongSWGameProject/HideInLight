@@ -36,7 +36,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3005
+  m_CustomRenderQueue: 3050
   stringTagMap:
     RenderType: Transparent
   disabledShaderPasses:
@@ -249,7 +249,7 @@ Material:
     - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 0
     - _TransparentDepthPrepassEnable: 0
-    - _TransparentSortPriority: 5
+    - _TransparentSortPriority: 50
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
     - _UVBase: 0
@@ -262,8 +262,8 @@ Material:
     - _ZTestTransparent: 0
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 0.93962264, g: 0.06914194, b: 0.06914194, a: 1}
-    - _Color: {r: 0.93962264, g: 0.06914192, b: 0.06914192, a: 1}
+    - _BaseColor: {r: 0.9411765, g: 0.10588236, b: 0.13029173, a: 1}
+    - _Color: {r: 0.9411765, g: 0.105882324, b: 0.1302917, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
