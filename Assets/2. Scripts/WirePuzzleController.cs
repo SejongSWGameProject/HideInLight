@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections; // 딜레이(Coroutine) 사용
+using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Events;
-using System.Collections; // 딜레이(Coroutine) 사용
 
 public class WirePuzzleController : MonoBehaviour
 {
@@ -19,7 +20,15 @@ public class WirePuzzleController : MonoBehaviour
     // 내부 변수
     private int[] currentConnections = new int[3] { -1, -1, -1 }; 
     private bool isDragging = false;       
-    private int draggingWireIndex = -1;    
+    private int draggingWireIndex = -1;
+
+    public SoundManager sound;
+    private AudioSource wireDragSound;
+
+    private void Start()
+    {
+        wireDragSound = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
@@ -114,7 +123,12 @@ public class WirePuzzleController : MonoBehaviour
         Vector3 startPos = GetSnapPosition(topPorts[topIndex]);
         
         lr.SetPosition(0, startPos);
-        lr.SetPosition(1, startPos); 
+        lr.SetPosition(1, startPos);
+
+        if (!wireDragSound.isPlaying)
+        {
+            wireDragSound.Play(); // Loop가 켜져 있으므로 멈출 때까지 계속 재생됨
+        }
     }
 
     void UpdateDraggingWire()
@@ -140,6 +154,12 @@ public class WirePuzzleController : MonoBehaviour
         
         isDragging = false;
         draggingWireIndex = -1;
+
+        // 재생 중일 때만 멈춤
+        if (wireDragSound.isPlaying)
+        {
+            wireDragSound.Stop();
+        }
 
         Debug.Log($"연결됨: 위{topIndex} -> 아래{bottomIndex}");
         
@@ -179,6 +199,7 @@ public class WirePuzzleController : MonoBehaviour
         {
             Debug.Log("틀렸습니다! 리셋합니다.");
             StartCoroutine(ResetPuzzleRoutine());
+            sound.WirePuzzleFailSound();
         }
     }
 

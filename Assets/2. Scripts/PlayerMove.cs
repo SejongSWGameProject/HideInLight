@@ -55,6 +55,7 @@ public class PlayerMove : MonoBehaviour
     public float flashDuration = 0.5f;
 
     public AudioClip[] footstepClips;
+    public AudioClip flashClip;
     private AudioSource audioSource;
     public float stepInterval = 0.5f; // 발소리 사이의 간격 (초)
 
@@ -115,6 +116,7 @@ public class PlayerMove : MonoBehaviour
     }
     public IEnumerator FlashScreen()
     {
+        audioSource.PlayOneShot(flashClip);
         Color c = flashImage.color;
         c.a = 1f;
         flashImage.color = c;
