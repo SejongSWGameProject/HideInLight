@@ -55,6 +55,7 @@ public class MonsterAI : MonoBehaviour
         animator = GetComponent<Animator>();
         StartCoroutine(CalculateDeltaDistance(0.5f));
         audioSource = GetComponent<AudioSource>();
+        this.gameObject.SetActive(false);
     }
 
     void Update()
@@ -134,6 +135,11 @@ public class MonsterAI : MonoBehaviour
             
             StartJumpScare();
         }
+    }
+
+    public void StartMove()
+    {
+        this.gameObject.SetActive(true);
     }
 
     private void OnTriggerEnter(Collider other)
