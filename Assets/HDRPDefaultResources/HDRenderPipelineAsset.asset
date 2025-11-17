@@ -195,7 +195,7 @@ MonoBehaviour:
       lowResVolumetricCloudsMinimumThreshold: 50
       enableDLSS: 0
     lowresTransparentSettings:
-      enabled: 0
+      enabled: 1
       checkerboardDepthBuffer: 1
       upsampleType: 1
     xrSettings:
