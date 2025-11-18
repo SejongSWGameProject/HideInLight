@@ -7,6 +7,17 @@ public class MainMenuController : MonoBehaviour
     public GameObject settingsPanel; // 설정 창 패널
     public AudioMixer audioMixer;    // 오디오 믹서
 
+    // Update 함수는 매 프레임마다 실행됩니다.
+    // 여기서 키 입력을 감시합니다.
+    void Update()
+    {
+        // 만약 ESC 키가 눌렸고(GetKeyDown), 설정 패널이 현재 켜져 있다면(activeSelf)
+        if (Input.GetKeyDown(KeyCode.Escape) && settingsPanel.activeSelf)
+        {
+            CloseOption(); // 창 닫기 함수 실행
+        }
+    }
+
     // 1. 게임 시작
     public void GameStart()
     {
@@ -39,7 +50,7 @@ public class MainMenuController : MonoBehaviour
         audioMixer.SetFloat("MasterVolume", Mathf.Log10(volume) * 20);
     }
 
-    // 6. [추가됨] 마우스 감도 조절 (감도 슬라이더랑 연결될 함수)
+    // 6. 마우스 감도 조절 (감도 슬라이더랑 연결될 함수)
     public void SetSensitivity(float sens)
     {
         // "MouseSens"라는 이름표를 붙여서 컴퓨터에 영구 저장합니다.

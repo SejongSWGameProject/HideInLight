@@ -64,24 +64,29 @@ public class PlayerMove : MonoBehaviour
 
         Invoke(nameof(EnableMouseLook), 0.5f);
 
-        originalScale = transform.localScale; // 원래 스케일 저장
+        originalScale = transform.localScale; 
 
-        // =========================================================
-        // [추가된 부분] 메인 화면에서 설정한 마우스 감도 불러오기
-        // =========================================================
-        // "MouseSens"라는 이름으로 저장된 값이 있으면 가져옵니다.
-        // 저장된 게 없으면(처음 켰을 때) 기본값 5.0f를 씁니다.
-        // * 50f를 곱해서 슬라이더 값(1~10)을 실제 게임 감도(50~500)로 변환합니다.
-        mouseSpeed = PlayerPrefs.GetFloat("MouseSens", 5.0f) * 50.0f;
+        // 시작할 때 감도 적용
+        UpdateSensitivity();
+    }
 
-        // (선택사항) 만약 손전등 속도도 마우스 감도에 비례하게 하고 싶다면 아래 주석을 푸세요.
-        // flashlightRotateSpeed = mouseSpeed * 2.0f; 
+    // =========================================================
+    // [핵심] 감도 업데이트 함수 (외부에서 호출 가능)
+    // =========================================================
+    public void UpdateSensitivity()
+    {
+        float sens = PlayerPrefs.GetFloat("MouseSens", 5.0f);
+        
+        // [공식 변경] 제곱(Pow)을 사용하여 차이를 극대화함
+        // 감도 1 -> 1*1 * 5 = 5 (아주 느림)
+        // 감도 5 -> 5*5 * 5 = 125 (보통)
+        // 감도 10 -> 10*10 * 5 = 500 (아주 빠름)
+        mouseSpeed = Mathf.Pow(sens, 2) * 5.0f; 
     }
 
     // --- 플래시 코루틴 ---
     public IEnumerator FlashScreen()
     {
-        // Image를 흰색으로 불투명하게
         Color c = flashImage.color;
         c.a = 1f;
         flashImage.color = c;
@@ -94,8 +99,6 @@ public class PlayerMove : MonoBehaviour
             flashImage.color = c;
             yield return null;
         }
-
-        // 마지막으로 완전히 투명
         c.a = 0f;
         flashImage.color = c;
     }
@@ -117,13 +120,10 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             //RotateFlashlight();
-            
         }
 
-        // --- 추가: 스페이스바 입력 시 플래시 효과 ---
         if (Input.GetKeyDown(KeyCode.Space) && flashImage != null)
         {
-            //StopAllCoroutines();  // 혹시 중복 실행 방지
             //StartCoroutine(FlashScreen());
         }
     }
@@ -135,13 +135,10 @@ public class PlayerMove : MonoBehaviour
             if (!isCrouched)
             {
                 isCrouched = true;
-
-                // 위치 y값 절반
                 Vector3 pos = transform.position;
                 pos.y = originalY * 0.5f;
                 transform.position = pos;
 
-                // y축 스케일 절반, x/z는 그대로
                 Vector3 scale = transform.localScale;
                 scale.y = originalScale.y * 0.5f;
                 transform.localScale = scale;
@@ -152,13 +149,10 @@ public class PlayerMove : MonoBehaviour
             if (isCrouched)
             {
                 isCrouched = false;
-
-                // 위치 원래대로
                 Vector3 pos = transform.position;
                 pos.y = originalY;
                 transform.position = pos;
 
-                // y축 스케일 원래대로
                 Vector3 scale = transform.localScale;
                 scale.y = originalScale.y;
                 transform.localScale = scale;
@@ -168,11 +162,8 @@ public class PlayerMove : MonoBehaviour
 
     void FixedUpdate()
     {
-        // 이동 입력
         Vector3 moveVec = transform.forward * v + transform.right * h;
         moveVec = moveVec.normalized * moveSpeed;
-
-        // Rigidbody에 이동 적용, y축 속도 유지
         rb.linearVelocity = new Vector3(moveVec.x, rb.linearVelocity.y, moveVec.z);
     }
 
@@ -186,7 +177,6 @@ public class PlayerMove : MonoBehaviour
     {
         if (!canLook) return;
 
-        // mouseSpeed 변수가 Start()에서 설정된 값으로 적용됩니다.
         float mouseX = Input.GetAxisRaw("Mouse X") * mouseSpeed * Time.deltaTime;
         float mouseY = Input.GetAxisRaw("Mouse Y") * mouseSpeed * Time.deltaTime;
 
@@ -210,14 +200,11 @@ public class PlayerMove : MonoBehaviour
     void RotateFlashlight()
     {
         if (flashlight == null) return;
-
         float mouseX = Input.GetAxis("Mouse X") * flashlightRotateSpeed * 0.05f;
         float mouseY = Input.GetAxis("Mouse Y") * flashlightRotateSpeed * 0.05f;
-
         flashlightRotation.x -= mouseY;
         flashlightRotation.y += mouseX;
         flashlightRotation.x = Mathf.Clamp(flashlightRotation.x, -90f, 90f);
-
         flashlight.transform.localRotation = Quaternion.Euler(flashlightRotation);
     }
 
@@ -227,7 +214,6 @@ public class PlayerMove : MonoBehaviour
         Cursor.visible = false;
     }
 
-    // --- 반발력 무시 코드 ---
     private void OnCollisionEnter(Collision collision)
     {
         Vector3 vel = rb.linearVelocity;
