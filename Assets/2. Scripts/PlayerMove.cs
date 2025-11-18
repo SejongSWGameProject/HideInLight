@@ -9,7 +9,7 @@ public class PlayerMove : MonoBehaviour
     Rigidbody rb;
 
     [Header("Rotate")]
-    public float mouseSpeed;
+    public float mouseSpeed; // 여기에 저장된 감도 값이 들어갑니다
     float yRotation;
     float xRotation;
     Camera cam;
@@ -38,7 +38,7 @@ public class PlayerMove : MonoBehaviour
     public float smoothTime = 0.1f; // 원하는 부드러움
 
     [Header("Flash Effect")]
-    public Image flashImage;          // Canvas의 흰색 Image 연결
+    public Image flashImage;           // Canvas의 흰색 Image 연결
     public float flashDuration = 0.5f; // 플래시 지속 시간
 
     Vector3 originalScale;
@@ -65,6 +65,17 @@ public class PlayerMove : MonoBehaviour
         Invoke(nameof(EnableMouseLook), 0.5f);
 
         originalScale = transform.localScale; // 원래 스케일 저장
+
+        // =========================================================
+        // [추가된 부분] 메인 화면에서 설정한 마우스 감도 불러오기
+        // =========================================================
+        // "MouseSens"라는 이름으로 저장된 값이 있으면 가져옵니다.
+        // 저장된 게 없으면(처음 켰을 때) 기본값 5.0f를 씁니다.
+        // * 50f를 곱해서 슬라이더 값(1~10)을 실제 게임 감도(50~500)로 변환합니다.
+        mouseSpeed = PlayerPrefs.GetFloat("MouseSens", 5.0f) * 50.0f;
+
+        // (선택사항) 만약 손전등 속도도 마우스 감도에 비례하게 하고 싶다면 아래 주석을 푸세요.
+        // flashlightRotateSpeed = mouseSpeed * 2.0f; 
     }
 
     // --- 플래시 코루틴 ---
@@ -175,6 +186,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (!canLook) return;
 
+        // mouseSpeed 변수가 Start()에서 설정된 값으로 적용됩니다.
         float mouseX = Input.GetAxisRaw("Mouse X") * mouseSpeed * Time.deltaTime;
         float mouseY = Input.GetAxisRaw("Mouse Y") * mouseSpeed * Time.deltaTime;
 
