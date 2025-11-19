@@ -77,7 +77,6 @@ public class InteractableObject : MonoBehaviour
             interactionPromptUI.SetActive(show);
         }
     }
-
     // (Puzzle Manager에서 호출) 퍼즐이 풀렸을 때 상호작용 비활성화
     public void OnPuzzleHasBeenSolved()
     {
