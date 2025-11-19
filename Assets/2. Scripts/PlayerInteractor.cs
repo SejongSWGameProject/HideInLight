@@ -16,12 +16,10 @@ public class PlayerInteractor : MonoBehaviour
     [Tooltip("상호작용 키")]
     public KeyCode interactionKey = KeyCode.F;
 
-    [Header("UI (선택 사항)")]
-    [Tooltip("상호작용 안내 텍스트 (예: 'Press [F] to interact')")]
-    public GameObject interactionPromptUI;
-
     // 현재 바라보고 있는 상호작용 가능한 객체
     private InteractableObject currentInteractable;
+
+    public bool canInteract = true;
 
     void Start()
     {
@@ -31,11 +29,6 @@ public class PlayerInteractor : MonoBehaviour
             playerCameraTransform = transform;
         }
 
-        // 시작할 때 UI 숨기기
-        if (interactionPromptUI != null)
-        {
-            interactionPromptUI.gameObject.SetActive(false);
-        }
     }
 
     void Update()
@@ -66,31 +59,21 @@ public class PlayerInteractor : MonoBehaviour
                     // (이 객체의 UnityEvent가 SwitchPuzzleManager의 OpenPuzzlePopup()을 호출)
 
                     Debug.Log("playerinter getkey");
+
                     interactable.Interact();
                 }
-
-                interactable.UpdatePromptUI(true);
+                interactable.SetPromptUI();
+            }
+            
+        }
+        else
+        {
+            if(currentInteractable != null)
+            {
+                currentInteractable.SetPromptUI(false);
             }
         }
-
-        // 7. 상호작용 UI 관리
-        //if (interactionPromptUI != null)
-        //{
-        //    // 바라보고 있으면 UI 켜기
-        //    if (foundInteractable)
-        //    {
-
-        //        // (필요시 interactable.promptMessage 같은 변수를 받아와 텍스트 변경
-        //        interactionPromptUI.gameObject.SetActive(true);
-
-        //    }
-        //    else // 바라보고 있지 않으면 UI 끄기
-        //    {
-        //        interactionPromptUI.gameObject.SetActive(false);
-        //        currentInteractable = null;
-        //    }
-        //}
-
-        
     }
+
+
 }

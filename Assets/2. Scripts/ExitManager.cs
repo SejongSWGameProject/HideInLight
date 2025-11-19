@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 public class ExitManager : MonoBehaviour
@@ -6,12 +6,13 @@ public class ExitManager : MonoBehaviour
     public Transform leftDoor;
     public Transform rightDoor;
     public bool isOpen = false;
-    public AudioSource moveSound;
+    public AudioClip moveSound;
+    private AudioSource audioSource;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();   
     }
 
     // Update is called once per frame
@@ -34,7 +35,7 @@ public class ExitManager : MonoBehaviour
         leftDoor.position = openedLeftDoorPos;
         rightDoor.position = openedRightDoorPos;
 
-        if (moveSound != null) moveSound.Play();
+        if (moveSound != null) audioSource.PlayOneShot(moveSound);
 
     }
 }

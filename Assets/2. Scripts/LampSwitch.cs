@@ -8,10 +8,14 @@ public class LampSwitch : MonoBehaviour
     public LampController[] targetLights; // ★★★ 변경점: 단일 Light에서 Light[] 배열로 변경!
 
     public bool isLightOn = false;
+    public AudioClip switchOn;
+    public AudioClip switchOff;
+
+    private AudioSource audioSource;
 
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
         LampManager.Instance.RegisterLampSwitch(this);
         // 1. 배열이 비어있는지, 또는 첫 번째 항목이 비어있는지 확인합니다.
         if (targetLights == null || targetLights.Length == 0 || targetLights[0] == null)
@@ -63,11 +67,13 @@ public class LampSwitch : MonoBehaviour
                 {
                     //Debug.Log(this.name+light.name+"Toggle켜짐");
                     LampManager.Instance.RegisterLamp(light);
+                    audioSource.PlayOneShot(switchOn);
                 }
                 else if (!isLightOn)
                 {
                     //Debug.Log(this.name + light.name+"Toggle끔");
                     LampManager.Instance.QuitLamp(light);
+                    audioSource.PlayOneShot(switchOff);
 
                 }
             }
