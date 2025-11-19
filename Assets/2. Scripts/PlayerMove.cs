@@ -9,7 +9,7 @@ public class PlayerMove : MonoBehaviour
     CharacterController controller;
 
     [Header("Rotate")]
-    public float mouseSpeed = 100f;
+    public float mouseSpeed; // 여기에 저장된 감도 값이 들어갑니다
     float yRotation;
     float xRotation;
     Camera cam;
@@ -98,6 +98,25 @@ public class PlayerMove : MonoBehaviour
         }
 
         Invoke(nameof(EnableMouseLook), 0.5f);
+
+        //originalScale = transform.localScale; 
+
+        // 시작할 때 감도 적용
+        UpdateSensitivity();
+    }
+
+    // =========================================================
+    // [핵심] 감도 업데이트 함수 (외부에서 호출 가능)
+    // =========================================================
+    public void UpdateSensitivity()
+    {
+        float sens = PlayerPrefs.GetFloat("MouseSens", 5.0f);
+        
+        // [공식 변경] 제곱(Pow)을 사용하여 차이를 극대화함
+        // 감도 1 -> 1*1 * 5 = 5 (아주 느림)
+        // 감도 5 -> 5*5 * 5 = 125 (보통)
+        // 감도 10 -> 10*10 * 5 = 500 (아주 빠름)
+        mouseSpeed = Mathf.Pow(sens, 2) * 5.0f; 
     }
 
     void PlayRandomFootStep()
@@ -129,7 +148,6 @@ public class PlayerMove : MonoBehaviour
             flashImage.color = c;
             yield return null;
         }
-
         c.a = 0f;
         flashImage.color = c;
     }
@@ -299,14 +317,11 @@ public class PlayerMove : MonoBehaviour
     void RotateFlashlight()
     {
         if (flashlight == null) return;
-
         float mouseX = Input.GetAxis("Mouse X") * flashlightRotateSpeed * 0.05f;
         float mouseY = Input.GetAxis("Mouse Y") * flashlightRotateSpeed * 0.05f;
-
         flashlightRotation.x -= mouseY;
         flashlightRotation.y += mouseX;
         flashlightRotation.x = Mathf.Clamp(flashlightRotation.x, -90f, 90f);
-
         flashlight.transform.localRotation = Quaternion.Euler(flashlightRotation);
     }
 
