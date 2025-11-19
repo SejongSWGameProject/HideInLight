@@ -99,7 +99,7 @@ public class PlayerMove : MonoBehaviour
 
         Invoke(nameof(EnableMouseLook), 0.5f);
 
-        originalScale = transform.localScale; 
+        //originalScale = transform.localScale; 
 
         // 시작할 때 감도 적용
         UpdateSensitivity();
