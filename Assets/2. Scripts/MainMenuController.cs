@@ -1,64 +1,101 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Audio; // 오디오 믹서 쓰려면 이거 필수!
+using UnityEngine.Audio;
+using UnityEngine.UI; // UI 사용
+using TMPro; // TextMeshPro Dropdown 사용 필수
+using System.Collections.Generic; // 리스트 사용
 
 public class MainMenuController : MonoBehaviour
 {
+    [Header("UI")]
     public GameObject settingsPanel; // 설정 창 패널
+    public TMP_Dropdown resolutionDropdown; // [추가] 해상도 드롭다운 연결할 곳
+
+    [Header("Audio")]
     public AudioMixer audioMixer;    // 오디오 믹서
 
-    // Update 함수는 매 프레임마다 실행됩니다.
-    // 여기서 키 입력을 감시합니다.
+    Resolution[] resolutions; // 해상도 목록 저장용 변수
+
+    void Start()
+    {
+        // 게임 시작하자마자 해상도 목록을 불러와서 드롭다운에 채워넣습니다.
+        InitResolutionDropdown();
+    }
+
+    // --- 해상도 초기화 함수 ---
+    void InitResolutionDropdown()
+    {
+        resolutions = Screen.resolutions;
+        resolutionDropdown.ClearOptions();
+
+        List<string> options = new List<string>();
+        int currentResolutionIndex = 0;
+
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            string option = resolutions[i].width + " x " + resolutions[i].height;
+            options.Add(option);
+
+            if (resolutions[i].width == Screen.width &&
+                resolutions[i].height == Screen.height)
+            {
+                currentResolutionIndex = i;
+            }
+        }
+
+        resolutionDropdown.AddOptions(options);
+        resolutionDropdown.value = currentResolutionIndex;
+        resolutionDropdown.RefreshShownValue();
+    }
+
+    // --- 해상도 변경 함수 (드롭다운 연결용) ---
+    public void SetResolution(int resolutionIndex)
+    {
+        Resolution resolution = resolutions[resolutionIndex];
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+    }
+
+    // --- 기존 기능들 ---
+
     void Update()
     {
-        // 만약 ESC 키가 눌렸고(GetKeyDown), 설정 패널이 현재 켜져 있다면(activeSelf)
+        // ESC 누르면 설정창 닫기
         if (Input.GetKeyDown(KeyCode.Escape) && settingsPanel.activeSelf)
         {
-            CloseOption(); // 창 닫기 함수 실행
+            CloseOption();
         }
     }
 
-    // 1. 게임 시작
     public void GameStart()
     {
         SceneManager.LoadScene("FirstStage");
     }
 
-    // 2. 환경설정 열기
     public void OpenOption()
     {
-        settingsPanel.SetActive(true); // 패널 켜기
+        settingsPanel.SetActive(true);
     }
 
-    // 3. 환경설정 닫기
     public void CloseOption()
     {
-        settingsPanel.SetActive(false); // 패널 끄기
+        settingsPanel.SetActive(false);
     }
 
-    // 4. 게임 종료
     public void QuitGame()
     {
         Application.Quit();
         Debug.Log("게임 종료");
     }
 
-    // 5. 볼륨 조절 (슬라이더랑 연결될 함수)
     public void SetVolume(float volume)
     {
-        // 슬라이더 값(0~1)을 데시벨(-80~0)로 변환하는 공식
         audioMixer.SetFloat("MasterVolume", Mathf.Log10(volume) * 20);
     }
 
-    // 6. 마우스 감도 조절 (감도 슬라이더랑 연결될 함수)
     public void SetSensitivity(float sens)
     {
-        // "MouseSens"라는 이름표를 붙여서 컴퓨터에 영구 저장합니다.
-        // 게임을 껐다 켜도, 다른 씬으로 넘어가도 이 값은 유지됩니다.
         PlayerPrefs.SetFloat("MouseSens", sens);
-        PlayerPrefs.Save(); 
-        
-        // 값이 잘 바뀌나 콘솔창에서 확인용 (나중에 지워도 됨)
+        PlayerPrefs.Save();
         Debug.Log("마우스 감도 변경됨: " + sens);
     }
 }

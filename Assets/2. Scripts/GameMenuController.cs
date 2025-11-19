@@ -1,101 +1,137 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Audio; 
+using UnityEngine.Audio;
+using UnityEngine.UI; // Dropdown 쓰려면 필요
+using TMPro; // TextMeshPro Dropdown 쓰려면 필수!
+using System.Collections.Generic; // 리스트 쓰려면 필요
 
 public class GameMenuController : MonoBehaviour
 {
     [Header("UI Panels")]
-    public GameObject pauseMenuPanel;   // 1. 작은 메뉴 (설정, 나가기 버튼 있는 곳)
-    public GameObject settingsPanel;    // 2. 큰 설정창 (볼륨 조절)
-    public GameObject quitConfirmPanel; // 3. 종료 확인창 (진짜 나갈거냐?)
+    public GameObject pauseMenuPanel;
+    public GameObject settingsPanel;
+    public GameObject quitConfirmPanel;
+
+    [Header("Settings UI")]
+    public TMP_Dropdown resolutionDropdown; // 해상도 드롭다운 연결할 곳
 
     [Header("Audio")]
     public AudioMixer audioMixer;
 
-    private bool isPaused = false; 
+    private bool isPaused = false;
+    Resolution[] resolutions; // 가능한 해상도 목록 저장
+
+    void Start()
+    {
+        // --- 해상도 목록 초기화 (게임 켜자마자 실행) ---
+        InitResolutionDropdown();
+    }
+
+    void InitResolutionDropdown()
+    {
+        // 1. 모니터가 지원하는 모든 해상도 가져오기
+        resolutions = Screen.resolutions;
+
+        // 2. 드롭다운 비우기
+        resolutionDropdown.ClearOptions();
+
+        // 3. 해상도들을 문자열("1920 x 1080")로 바꿔서 리스트에 담기
+        List<string> options = new List<string>();
+        int currentResolutionIndex = 0;
+
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            string option = resolutions[i].width + " x " + resolutions[i].height;
+            options.Add(option);
+
+            // 현재 내 화면 해상도와 똑같은지 확인 (똑같다면 그 번호를 기억)
+            if (resolutions[i].width == Screen.width &&
+                resolutions[i].height == Screen.height)
+            {
+                currentResolutionIndex = i;
+            }
+        }
+
+        // 4. 드롭다운에 리스트 추가하고, 현재 해상도로 선택해두기
+        resolutionDropdown.AddOptions(options);
+        resolutionDropdown.value = currentResolutionIndex;
+        resolutionDropdown.RefreshShownValue();
+    }
+
+    // --- 해상도 변경 함수 (드롭다운이랑 연결) ---
+    public void SetResolution(int resolutionIndex)
+    {
+        Resolution resolution = resolutions[resolutionIndex];
+        
+        // 선택된 해상도로 변경 (마지막 true는 전체화면 모드)
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+    }
+
+    // ... (아래는 기존 Update 및 메뉴 관련 코드들 그대로) ...
 
     void Update()
     {
-        // ESC 키를 눌렀을 때
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // 만약 설정창이나 종료확인창이 켜져 있다면 -> 뒤로가기(일시정지 메뉴로)
             if (settingsPanel.activeSelf || quitConfirmPanel.activeSelf)
-            {
                 BackToPauseMenu();
-            }
-            // 이미 일시정지 메뉴가 켜져 있다면 -> 게임 재개
             else if (isPaused)
-            {
                 ResumeGame();
-            }
-            // 게임 중이라면 -> 일시정지 메뉴 열기
             else
-            {
                 PauseGame();
-            }
         }
     }
 
-    // 1. 게임 일시정지 (ESC 누르면 가장 먼저 뜨는 창)
     public void PauseGame()
     {
-        pauseMenuPanel.SetActive(true); // 작은 메뉴 켜기
-        settingsPanel.SetActive(false); // 혹시 모르니 다른 건 끄기
+        pauseMenuPanel.SetActive(true);
+        settingsPanel.SetActive(false);
         quitConfirmPanel.SetActive(false);
-
-        Time.timeScale = 0f; // 시간 멈춤
+        Time.timeScale = 0f;
         isPaused = true;
-
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
 
-    // 2. 게임 재개 (메뉴 닫고 게임으로)
     public void ResumeGame()
     {
         pauseMenuPanel.SetActive(false);
         settingsPanel.SetActive(false);
         quitConfirmPanel.SetActive(false);
-
-        Time.timeScale = 1f; // 시간 다시 흐름
+        Time.timeScale = 1f;
         isPaused = false;
-
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // 3. 설정 창 열기 (PauseMenu -> Settings)
     public void OpenSettings()
     {
-        pauseMenuPanel.SetActive(false); // 작은 메뉴 숨기고
-        settingsPanel.SetActive(true);   // 큰 설정창 보여줌
+        pauseMenuPanel.SetActive(false);
+        settingsPanel.SetActive(true);
     }
 
-    // 4. 종료 확인 창 열기 (PauseMenu -> QuitConfirm)
     public void OpenQuitConfirm()
     {
         pauseMenuPanel.SetActive(false);
         quitConfirmPanel.SetActive(true);
     }
 
-    // 5. 뒤로 가기 (Settings/QuitConfirm -> PauseMenu)
-    // X 버튼이나 '아니오' 버튼에 연결하세요
     public void BackToPauseMenu()
     {
         settingsPanel.SetActive(false);
         quitConfirmPanel.SetActive(false);
-        pauseMenuPanel.SetActive(true); // 다시 작은 메뉴를 켜줌
+        pauseMenuPanel.SetActive(true);
     }
 
-    // 6. 진짜 게임 종료 (Yes 버튼)
     public void QuitGame()
     {
         Debug.Log("게임 종료!");
         Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 
-    // --- 기존 설정 기능 ---
     public void SetVolume(float volume)
     {
         audioMixer.SetFloat("MasterVolume", Mathf.Log10(volume) * 20);
@@ -105,11 +141,7 @@ public class GameMenuController : MonoBehaviour
     {
         PlayerPrefs.SetFloat("MouseSens", sens);
         PlayerPrefs.Save();
-
         PlayerMove player = FindObjectOfType<PlayerMove>();
-        if (player != null)
-        {
-            player.UpdateSensitivity(); 
-        }
+        if (player != null) player.UpdateSensitivity();
     }
 }
