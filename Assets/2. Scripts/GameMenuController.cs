@@ -3,7 +3,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using UnityEngine.UI; // Image(밝기 조절용) 사용
 using TMPro; // Dropdown 사용
-using System.Collections.Generic; // 리스트 사용
+using System.Collections.Generic;
+using Unity.VisualScripting; // 리스트 사용
 
 public class GameMenuController : MonoBehaviour
 {
@@ -18,6 +19,13 @@ public class GameMenuController : MonoBehaviour
 
     [Header("Audio")]
     public AudioMixer audioMixer;       // 오디오 믹서
+
+    [Header("Puzzle UI")]
+    public GameObject wirePuzzleAnchor;
+    public GameObject switchPuzzleAnchor;
+
+    [Header("Player")]
+    public PlayerLight playerLight;
 
     private bool isPaused = false;
     Resolution[] resolutions; 
@@ -65,23 +73,38 @@ public class GameMenuController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if(switchPuzzleAnchor.activeSelf || wirePuzzleAnchor.activeSelf)
+            {
+                return;
+            }
             // 설정창이나 종료확인창이 켜져 있으면 -> 일시정지 메뉴로 뒤로가기
-            if (settingsPanel.activeSelf || quitConfirmPanel.activeSelf)
+            else if (settingsPanel.activeSelf || quitConfirmPanel.activeSelf)
+            {
+                Debug.Log("BackToPause");
                 BackToPauseMenu();
+            }
             // 이미 일시정지 상태면 -> 게임 재개
             else if (isPaused)
+            {
+                Debug.Log("Resume");
                 ResumeGame();
+            }
             // 게임 중이면 -> 일시정지
             else
+            {
+                Debug.Log("pause");
                 PauseGame();
+            }
         }
     }
 
     public void PauseGame()
     {
+        Debug.Log("Esc");
         pauseMenuPanel.SetActive(true);
         settingsPanel.SetActive(false);
         quitConfirmPanel.SetActive(false);
+        playerLight.gameObject.SetActive(false);
         Time.timeScale = 0f; // 시간 멈춤
         isPaused = true;
         Cursor.visible = true;
@@ -93,6 +116,8 @@ public class GameMenuController : MonoBehaviour
         pauseMenuPanel.SetActive(false);
         settingsPanel.SetActive(false);
         quitConfirmPanel.SetActive(false);
+        playerLight.gameObject.SetActive(true);
+
         Time.timeScale = 1f; // 시간 다시 흐름
         isPaused = false;
         Cursor.visible = false;
