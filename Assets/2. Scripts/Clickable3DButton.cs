@@ -26,10 +26,10 @@ public class Clickable3DButton : MonoBehaviour
 
     // ▼▼▼ 'rotationOffset' 대신 'Up/Down' 오프셋으로 변경 ▼▼▼
     [Tooltip("버튼이 '올라온' 상태일 때 적용할 '상대적인' 회전 오프셋 (예: X축 -15도)")]
-    public Vector3 upRotationOffset = new Vector3(-30, 0, 0);
+    public Vector3 upRotationOffset = new Vector3(-15, 0, 0);
 
     [Tooltip("버튼이 '눌린' 상태일 때 적용할 '상대적인' 회전 오프셋 (예: X축 15도)")]
-    public Vector3 downRotationOffset = new Vector3(30, 0, 0);
+    public Vector3 downRotationOffset = new Vector3(15, 0, 0);
 
     // 애니메이션 상태 변수
     private Quaternion baseRotation;      // 모델의 '원래(중심)' 각도
@@ -44,6 +44,7 @@ public class Clickable3DButton : MonoBehaviour
         {
             movablePart = transform;
         }
+
         // '올라온' 각도와 '눌린' 각도를 Quaternion으로 변환하여 저장
         if (!hasRotationBeenSet)
         {
@@ -89,7 +90,7 @@ public class Clickable3DButton : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !isAnimating)
         {
             // ▼▼▼ [디버그 2] ▼▼▼
-            //Debug.Log("[Clickable3DButton] 마우스 왼쪽 버튼 클릭 감지! Raycast를 시작합니다."); // 로그가 너무 많이 찍혀서 주석 처리
+            // Debug.Log("[Clickable3DButton] 마우스 왼쪽 버튼 클릭 감지! Raycast를 시작합니다."); // 로그가 너무 많이 찍혀서 주석 처리
             HandleClickRaycast();
         }
     }
@@ -109,7 +110,7 @@ public class Clickable3DButton : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 50f, clickableLayerMask))
         {
             // ▼▼▼ [디버그 4] ▼▼▼
-            //Debug.Log($"[Clickable3DButton] Raycast가 '{hit.collider.gameObject.name}' 오브젝트에 맞았습니다!"); // 로그가 너무 많이 찍혀서 주석 처리
+            // Debug.Log($"[Clickable3DButton] Raycast가 '{hit.collider.gameObject.name}' 오브젝트에 맞았습니다!"); // 로그가 너무 많이 찍혀서 주석 처리
 
             if (hit.collider.gameObject == this.gameObject)
             {

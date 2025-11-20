@@ -9,7 +9,7 @@ public class PlayerMove : MonoBehaviour
     CharacterController controller;
 
     [Header("Rotate")]
-    public float mouseSpeed = 100f;
+    public float mouseSpeed; // 여기에 저장된 감도 값이 들어갑니다
     float yRotation;
     float xRotation;
     Camera cam;
@@ -54,10 +54,20 @@ public class PlayerMove : MonoBehaviour
     public Image flashImage;
     public float flashDuration = 0.5f;
 
+    public AudioClip[] footstepClips;
+    public AudioClip flashClip;
+    private AudioSource audioSource;
+    public float stepInterval = 0.5f; // 발소리 사이의 간격 (초)
+
+    private float stepTimer = 0f;
+
+
     void Start()
     {
         hiddenMouseCursor();
-
+        audioSource = GetComponent<AudioSource>();
+        audioSource.loop = false;
+        audioSource.playOnAwake = false;
         controller = GetComponent<CharacterController>();
 
         if (controller == null)
@@ -80,8 +90,6 @@ public class PlayerMove : MonoBehaviour
         originalHeight = controller.height;
         crouchHeight = originalHeight * 0.5f;
 
-        
-
         if (cam != null)
         {
             originalCameraY = cam.transform.localPosition.y;
@@ -90,10 +98,44 @@ public class PlayerMove : MonoBehaviour
         }
 
         Invoke(nameof(EnableMouseLook), 0.5f);
+
+        //originalScale = transform.localScale; 
+
+        // 시작할 때 감도 적용
+        UpdateSensitivity();
     }
 
+    // =========================================================
+    // [핵심] 감도 업데이트 함수 (외부에서 호출 가능)
+    // =========================================================
+    public void UpdateSensitivity()
+    {
+        float sens = PlayerPrefs.GetFloat("MouseSens", 5.0f);
+        
+        // [공식 변경] 제곱(Pow)을 사용하여 차이를 극대화함
+        // 감도 1 -> 1*1 * 5 = 5 (아주 느림)
+        // 감도 5 -> 5*5 * 5 = 125 (보통)
+        // 감도 10 -> 10*10 * 5 = 500 (아주 빠름)
+        mouseSpeed = Mathf.Pow(sens, 2) * 5.0f; 
+    }
+
+    void PlayRandomFootStep()
+    {
+        // 4. 소리 재생 (랜덤 클립, 랜덤 피치)
+        if (footstepClips.Length == 0) return;
+
+        // 랜덤 클립 선택
+        AudioClip clip = footstepClips[Random.Range(0, footstepClips.Length)];
+
+        // 랜덤 피치 설정
+        //audioSource.pitch = Random.Range(minPitch, maxPitch);
+
+        // 재생
+        audioSource.PlayOneShot(clip);
+    }
     public IEnumerator FlashScreen()
     {
+        audioSource.PlayOneShot(flashClip);
         Color c = flashImage.color;
         c.a = 1f;
         flashImage.color = c;
@@ -106,7 +148,6 @@ public class PlayerMove : MonoBehaviour
             flashImage.color = c;
             yield return null;
         }
-
         c.a = 0f;
         flashImage.color = c;
     }
@@ -137,6 +178,24 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+
+        Vector3 horizontalVelocity = new Vector3(controller.velocity.x, 0, controller.velocity.z);
+        //Debug.Log(horizontalVelocity.magnitude);
+        if (horizontalVelocity.magnitude > 1f)
+        {
+            //Debug.Log("재생" + stepTimer);
+            // 3. 타이머가 다 됐는지?
+            stepTimer -= Time.deltaTime;
+            if (stepTimer <= 0f)
+            {
+                if (!isCrouched)
+                {
+                    PlayRandomFootStep();
+                    stepTimer = stepInterval; // 타이머 리셋
+                }
+                
+            }
         }
     }
 
@@ -221,17 +280,17 @@ public class PlayerMove : MonoBehaviour
 
     void Move()
     {
-        // 이동 방향 계산
-        Vector3 moveDirection = transform.right * h + transform.forward * v;
-
-        // 현재 속도 (앉았을 때 속도 감소)
+        // 1. 수평 이동 방향과 속도 계산
+        Vector3 moveDirection = (transform.right * h + transform.forward * v).normalized;
         float currentSpeed = isCrouched ? moveSpeed * 0.5f : moveSpeed;
+        Vector3 horizontalMove = moveDirection * currentSpeed;
 
-        // 수평 이동
-        controller.Move(moveDirection.normalized * currentSpeed * Time.deltaTime);
+        // 2. 수평 이동(horizontalMove)과 수직 이동(velocity.y)을 하나의 벡터로 합침
+        // velocity.y는 HandleGravity()와 점프에서 이미 계산됨
+        Vector3 finalMove = new Vector3(horizontalMove.x, velocity.y, horizontalMove.z);
 
-        // 수직 이동 (중력, 점프)
-        controller.Move(velocity * Time.deltaTime);
+        // 3. Move()는 프레임당 한 번만 호출!
+        controller.Move(finalMove * Time.deltaTime);
     }
 
     void Rotate()
@@ -258,14 +317,11 @@ public class PlayerMove : MonoBehaviour
     void RotateFlashlight()
     {
         if (flashlight == null) return;
-
         float mouseX = Input.GetAxis("Mouse X") * flashlightRotateSpeed * 0.05f;
         float mouseY = Input.GetAxis("Mouse Y") * flashlightRotateSpeed * 0.05f;
-
         flashlightRotation.x -= mouseY;
         flashlightRotation.y += mouseX;
         flashlightRotation.x = Mathf.Clamp(flashlightRotation.x, -90f, 90f);
-
         flashlight.transform.localRotation = Quaternion.Euler(flashlightRotation);
     }
 
