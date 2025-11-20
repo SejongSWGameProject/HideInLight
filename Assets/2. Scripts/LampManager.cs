@@ -85,13 +85,13 @@ public class LampManager : MonoBehaviour
             Debug.Log("모든 전등 깨짐");
             monster.setTarget(player.transform);
         }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            nearSwitch = GetNearSwitch();
-            nearSwitch.ToggleLights();
-            Debug.Log("켜져있는 전등 개수: " + lamps.Count);
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    nearSwitch = GetNearSwitch();
+        //    nearSwitch.ToggleLights();
+        //    Debug.Log("켜져있는 전등 개수: " + lamps.Count);
 
-        }
+        //}
     }
 
     public void RegisterLamp(LampController lamp)

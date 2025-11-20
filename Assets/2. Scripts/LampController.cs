@@ -1,14 +1,16 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class LampController : MonoBehaviour
 {
     public Light lamp;
     public bool isTurnedOn = false;
     public bool isBroken = false;
-    public AudioSource breakSound;       // ¼Ò¸® (¼±ÅÃ)
-    public ParticleSystem sparkEffect;   // ºÒ²É (¼±ÅÃ)
+    public AudioClip breakSound;       // ì†Œë¦¬ (ì„ íƒ)
+    private AudioSource audioSource;
+    public ParticleSystem sparkEffect;   // ë¶ˆê½ƒ (ì„ íƒ)
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         if (lamp == null)
             lamp = GetComponentInChildren<Light>();
         if (lamp.enabled)
@@ -23,7 +25,7 @@ public class LampController : MonoBehaviour
 
     public void BreakLamp()
     {
-        //Debug.Log("²ö´Ù");
+        //Debug.Log("ëˆë‹¤");
         if (isBroken) return;
         StartCoroutine(BreakLightRoutine());
     }
@@ -31,14 +33,14 @@ public class LampController : MonoBehaviour
     public void TurnOn()
     {
         if (isBroken) return;
-        Debug.Log(this.name+"ÄÑ´Ù");
+        //Debug.Log(this.name+"ì¼œë‹¤");
         lamp.enabled = true;
     }
 
     public void TurnOff()
     {
         if (isBroken) return;
-        Debug.Log(this.name + "²ô´Ù");
+        //Debug.Log(this.name + "ë„ë‹¤");
         lamp.enabled = false;
 
     }
@@ -54,7 +56,7 @@ public class LampController : MonoBehaviour
     {
         isBroken = true;
 
-        // ±ô¹ÚÀÓ È¿°ú
+        // ê¹œë°•ì„ íš¨ê³¼
         for (int i = 0; i < 3; i++)
         {
             lamp.enabled = false;
@@ -63,10 +65,10 @@ public class LampController : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
-        // ¿ÏÀüÈ÷ ²¨Áü
+        // ì™„ì „íˆ êº¼ì§
         lamp.enabled = false;
         //if (sparkEffect != null) sparkEffect.Play();
-        //if (breakSound != null) breakSound.Play();
+        if (breakSound != null) audioSource.PlayOneShot(breakSound);
 
     }
 }
