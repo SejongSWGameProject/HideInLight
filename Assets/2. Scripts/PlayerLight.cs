@@ -5,6 +5,15 @@ public class PlayerLight : MonoBehaviour
     public Light flashlight;          // Spot Light 연결
     public Transform cameraTransform; // 카메라 Transform
     public Camera mainCamera;
+
+    [Header("Battery UI Canvas")]
+    public GameObject BatteryUI;
+
+    [Header("UI Settings")]
+    public RectTransform uiObjectA;   // Inspector에서 연결
+    public float decreaseSpeed = 20f; // 1초에 얼마나 감소할지
+    public float decreasesize = 30f;
+
     [Header("Initial Settings")]
     public float initialRange = 80f;  // Inspector에서 초기값 설정
     public float initialAngle = 70f;   // Inspector에서 초기값 설정
@@ -41,6 +50,10 @@ public class PlayerLight : MonoBehaviour
 
     void Update()
     {
+        // --- 배터리 UI 오브젝트 활성화 (한 번만) ---
+        if (BatteryUI != null)
+            BatteryUI.SetActive(true);
+
         // 마우스 왼쪽 클릭 시 토글
         if (Input.GetMouseButtonDown(0)) // 0 = 왼쪽 버튼
         {
@@ -54,8 +67,22 @@ public class PlayerLight : MonoBehaviour
                 }
             }
         }
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && uiObjectA != null && uiObjectA.sizeDelta.x >= decreasesize)
         {
+
+            Vector2 size = uiObjectA.sizeDelta;
+            Vector3 pos = uiObjectA.localPosition;
+
+            size.x -= decreasesize;
+
+            if (size.x < 0f) size.x = 0f; // 최소값 0 제한
+
+            // 왼쪽으로 이동: 줄어든 값의 절반만큼
+            pos.x -= decreasesize / 2f;
+
+            uiObjectA.sizeDelta = size;
+            uiObjectA.localPosition = pos;
+            
 
             if (isMonsterInSight())
             {
@@ -77,6 +104,28 @@ public class PlayerLight : MonoBehaviour
             playerMove.StartCoroutine(playerMove.FlashScreen());
         }
 
+        ScrollableLight();
+
+        // **손전등이 켜져 있는 동안 UI 감소**
+        if (flashlight.enabled && uiObjectA != null)
+        {
+            Vector2 size = uiObjectA.sizeDelta;
+            Vector3 pos = uiObjectA.localPosition;
+
+            float a = size.x;
+
+            float decreaseAmount = decreaseSpeed * Time.deltaTime; // 이번 프레임에 줄일 값
+            size.x -= decreaseAmount;
+
+            if (size.x < 0f) size.x = 0f; // 최소값 0 제한
+
+            float b = a - size.x;
+            // 왼쪽으로 이동: 줄어든 값의 절반만큼
+            pos.x -= b / 2f;
+
+            uiObjectA.sizeDelta = size;
+            uiObjectA.localPosition = pos;
+        }
     }
 
     public bool isMonsterInSight()
