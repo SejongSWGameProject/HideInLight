@@ -1,15 +1,15 @@
-using UnityEngine;
-using TMPro; // TextMeshPro¿ë
+ï»¿using UnityEngine;
+using TMPro; // TextMeshProìš©
 
 public class DisplayWidth : MonoBehaviour
 {
-    public RectTransform targetUI;   // ³Êºñ È®ÀÎÇÒ UI
-    public TMP_Text widthText;        // TextMeshPro¿ë ÅØ½ºÆ®
+    public RectTransform targetUI;   // ë„ˆë¹„ í™•ì¸í•  UI
+    public TMP_Text widthText;        // TextMeshProìš© í…ìŠ¤íŠ¸
 
     void Awake()
     {
         if (widthText == null)
-            widthText = GetComponent<TMP_Text>(); // °°Àº ¿ÀºêÁ§Æ® Text ÀÚµ¿ ¿¬°á
+            widthText = GetComponent<TMP_Text>(); // ê°™ì€ ì˜¤ë¸Œì íŠ¸ Text ìë™ ì—°ê²°
     }
 
     void Update()
