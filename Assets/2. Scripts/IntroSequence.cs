@@ -1,61 +1,74 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class IntroSequence : MonoBehaviour
 {
     [Header("조명/전구/텍스트 연결")]
-    public Light spotLight;         // 빛을 쏘는 조명
-    public MeshRenderer lampRenderer; // 형광등 모델 (빛나는 껍데기)
-    public GameObject titleGroup;   // 제목 묶음
+    public Light spotLight;         
+    public MeshRenderer lampRenderer; 
+    public GameObject titleGroup;   
 
-    private Color originalGlowColor; // 원래 형광등의 밝은 색을 저장할 변수
+    [Header("이동할 게임 씬 이름")]
+    public string gameSceneName = "GameScene";
+
+    [Header("연출 시간 설정")]
+    [Tooltip("전등이 깜빡거리는 총 시간")]
+    public float flickerDuration = 2.5f;
+
+    [Tooltip("깜빡이는 속도 (최소~최대 랜덤)")]
+    public float minFlickerSpeed = 0.1f; 
+    public float maxFlickerSpeed = 0.5f; 
+
+    [Tooltip("전등이 꺼지고 게임 넘어가기 전 암전 시간 (초)")]
+    public float blackoutDuration = 2.0f; // 기본값 2초로 설정해둠
+
+    private Color originalGlowColor;
 
     void Start()
     {
-        // 1. 시작할 때 형광등의 원래 불빛 색깔(흰색)을 기억해둠
         if (lampRenderer != null)
         {
             originalGlowColor = lampRenderer.material.GetColor("_EmissiveColor");
         }
-
-        StartCoroutine(PlaySequence());
+        
+        SetLightState(true); 
+        titleGroup.SetActive(true); 
     }
 
-    IEnumerator PlaySequence()
+    public void StartGameSequence()
     {
-        // 초기화: 제목 끄기, 불 켜기
-        titleGroup.SetActive(false);
-        SetLightState(true); 
+        StartCoroutine(PlaySequenceAndLoad());
+    }
 
-        // 깜빡임 연출 (2.5초)
-        float timer = 0f;
-        while (timer < 2.5f)
+    IEnumerator PlaySequenceAndLoad()
+    {
+        // 1. 공포스럽게 깜빡거림 (설정된 시간만큼 진행)
+        float totalTimer = 0f;
+        while (totalTimer < flickerDuration)
         {
-            // 현재 불이 켜져있으면 끄고, 꺼져있으면 켬 (반전)
             bool isLightOn = !spotLight.enabled;
             SetLightState(isLightOn);
 
-            float waitTime = Random.Range(0.05f, 0.2f); // 더 빠르게 깜빡임
+            float waitTime = Random.Range(minFlickerSpeed, maxFlickerSpeed); 
             yield return new WaitForSeconds(waitTime);
-            timer += waitTime;
+            totalTimer += waitTime;
         }
 
-        // 퍽! 하고 깨짐 (완전 암전)
+        // 2. 퍽! 하고 완전히 꺼짐
         SetLightState(false);
-        yield return new WaitForSeconds(1.5f);
+        
+        // 3. 설정한 시간(2초)만큼 어둠 속에서 대기
+        // 여기가 님이 원하시던 부분입니다!
+        yield return new WaitForSeconds(blackoutDuration);
 
-        // 복구 및 제목 등장
-        SetLightState(true);
-        titleGroup.SetActive(true);
+        // 4. 게임 씬으로 이동
+        SceneManager.LoadScene(gameSceneName);
     }
 
-    // 빛과 전구 색깔을 동시에 껐다 켜는 함수
     void SetLightState(bool isOn)
     {
-        // 1. 조명 끄기/켜기
         spotLight.enabled = isOn;
-
-        // 2. 형광등 전구 색깔 바꾸기 (켜지면 원래색, 꺼지면 검은색)
         if (lampRenderer != null)
         {
             Color targetColor = isOn ? originalGlowColor : Color.black;
