@@ -12,6 +12,7 @@ public class MonsterAI : MonoBehaviour
     public const int NORMAL = 1;
     public const int CHASE = 2;
     public const int STUN = 3;
+    public const int BREAK = 4;
     int monsterState = NORMAL;           //1:����(��������ٴϴ���)   2:�÷��̾��Ѵ���   3:���ϸ���
 
     public Transform player;         // �÷��̾� Transform
@@ -56,6 +57,13 @@ public class MonsterAI : MonoBehaviour
         StartCoroutine(CalculateDeltaDistance(0.5f));
         audioSource = GetComponent<AudioSource>();
         //this.gameObject.SetActive(false);
+
+        if (monster == null)
+        {
+            Debug.LogError("NavMeshAgent 컴포넌트를 찾을 수 없습니다!");
+            return;
+        }
+
     }
 
     void Update()
@@ -104,23 +112,16 @@ public class MonsterAI : MonoBehaviour
             monster.speed = 10;
             animator.SetFloat("animSpeed", 1.0f);
             CheckSight();
-                
-            if (deltatDistance < 0.1f && Vector3.Distance(this.transform.position, this.target.transform.position)<20)
+            Debug.Log(monster.velocity.magnitude);
+            if(monster.velocity.magnitude < 1f && Vector3.Distance(this.transform.position, this.target.transform.position) < 20)
             {
-                animator.SetTrigger("doBreak");
-                animator.SetBool("isWalking", false);
-
-                if (target.CompareTag("Lamp"))
-                {
-                    //Debug.Log("�μ�");
-                    LampManager.Instance.BreakLamp();
-                }
+                StartCoroutine(BreakLamp());
             }
         }
-        else if(monsterState == CHASE)
+        else if (monsterState == CHASE)
         {
-            animator.SetFloat("animSpeed", 3.0f);
             monster.speed = 30;
+            animator.SetFloat("animSpeed", 3.0f);
             target = player;
 
             if (Input.GetKeyDown(KeyCode.P) && !isPaused)
@@ -278,6 +279,37 @@ public class MonsterAI : MonoBehaviour
     public void setMonsterState(int state)  //NORMAL(1), CHASE(2), STUN(3)
     {
         monsterState = state;
+    }
+
+    private IEnumerator BreakLamp()
+    {
+        float originspeed = monster.speed;
+
+        if (monster.isOnNavMesh)
+        {
+            monster.isStopped = true;
+        }
+        animator.SetFloat("Speed", 0f);
+
+        Debug.Log("깨기 애니메이션");
+        animator.SetTrigger("doBreak");
+
+        if (target.CompareTag("Lamp"))
+        {
+            //Debug.Log("�μ�");
+            LampManager.Instance.BreakLamp();
+        }
+
+        yield return new WaitForSeconds(1.3f);
+
+        if (monster.isOnNavMesh) // NavMesh ���� ���� ����
+        {
+            monster.isStopped = false;
+        }
+        animator.SetFloat("Speed", originspeed);
+
+        monsterState = NORMAL;
+
     }
 
     // 4. ���͸� ���� �ð� ���߰� �ϴ� �ڷ�ƾ

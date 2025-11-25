@@ -62,16 +62,16 @@ public class LampController : MonoBehaviour
     {
         isBroken = true;
 
+        yield return new WaitForSeconds(1f);
         // 깜박임 효과
-        for (int i = 0; i < 3; i++)
-        {
-            lamp.enabled = false;
-            pointLight.enabled = false;
-            yield return new WaitForSeconds(0.1f);
-            lamp.enabled = true;
-            pointLight.enabled = true;
-            yield return new WaitForSeconds(0.1f);
-        }
+        //for (int i = 0; i < 3; i++)
+        //{
+        //    lamp.enabled = false;
+        //    pointLight.enabled = false;
+        //    yield return new WaitForSeconds(0.1f);
+        //    lamp.enabled = true;
+        //    pointLight.enabled = true;
+        //}
 
         // 완전히 꺼짐
         lamp.enabled = false;
