@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,7 +11,7 @@ public class IntroSequence : MonoBehaviour
     public GameObject titleGroup;     // 제목과 버튼
 
     [Header("이동할 게임 씬 이름")]
-    public string gameSceneName = "GameScene";
+    public string gameSceneName = "FirstScene";
 
     [Header("시간 설정")]
     public float flickerDuration = 2.0f;
