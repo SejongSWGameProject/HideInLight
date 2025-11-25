@@ -107,6 +107,7 @@ public class MonsterAI : MonoBehaviour
                 
             if (deltatDistance < 0.1f && Vector3.Distance(this.transform.position, this.target.transform.position)<20)
             {
+                animator.SetTrigger("doBreak");
                 animator.SetBool("isWalking", false);
 
                 if (target.CompareTag("Lamp"))
