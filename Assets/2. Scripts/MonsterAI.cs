@@ -112,7 +112,7 @@ public class MonsterAI : MonoBehaviour
             monster.speed = 10;
             animator.SetFloat("animSpeed", 1.0f);
             CheckSight();
-            Debug.Log(monster.velocity.magnitude);
+            //Debug.Log(monster.velocity.magnitude);
             if(monster.velocity.magnitude < 1f && Vector3.Distance(this.transform.position, this.target.transform.position) < 20)
             {
                 StartCoroutine(BreakLamp());
