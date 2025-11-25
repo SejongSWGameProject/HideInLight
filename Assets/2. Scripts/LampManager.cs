@@ -12,6 +12,7 @@ public class LampManager : MonoBehaviour
 
     [Header("전등 배열")]
     public List<LampController> lamps = new List<LampController>();
+    public List<LampController> arrangedLamps = new List<LampController>();
 
     [Header("플레이어")]
     public Transform player;
@@ -99,6 +100,24 @@ public class LampManager : MonoBehaviour
         if (!lamps.Contains(lamp))
         {
             lamps.Add(lamp);
+        }
+    }
+
+    public void RegisterLamp(LampController lamp, bool insertArranged)
+    {
+        if (insertArranged)
+        {
+            if (!arrangedLamps.Contains(lamp))
+            {
+                arrangedLamps.Add(lamp);
+            }
+        }
+        else
+        {
+            if (!lamps.Contains(lamp))
+            {
+                lamps.Add(lamp);
+            }
         }
     }
 

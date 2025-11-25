@@ -1,8 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.HighDefinition.ProbeSettings;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -60,7 +64,7 @@ public class PlayerMove : MonoBehaviour
     public float stepInterval = 0.5f; // 발소리 사이의 간격 (초)
 
     private float stepTimer = 0f;
-
+    private bool isInDarkness = false;
 
     void Start()
     {
@@ -347,4 +351,30 @@ public class PlayerMove : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+
+    public bool getIsInDarkness()
+    {
+        return isInDarkness;
+    }
+
+    public void setIsInDarkness(bool isin)
+    {
+        isInDarkness = isin;
+    }
+
+    public void CheckDarkness(bool isLampOn)
+    {
+        if (isLampOn)
+        {
+            isInDarkness = false;
+        }
+        else
+        {
+            Debug.Log(LampManager.Instance.arrangedLamps[0]);
+            // 2. LINQ를 사용하여 거리를 기준으로 정렬하고 상위 4개를 선택합니다.
+            
+           
+        }
+    }
+    
 }

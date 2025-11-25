@@ -9,6 +9,7 @@ public class LampController : MonoBehaviour
     public AudioClip breakSound;       // 소리 (선택)
     private AudioSource audioSource;
     public ParticleSystem sparkEffect;   // 불꽃 (선택)
+    public BoxCollider darkCollider;
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -22,10 +23,27 @@ public class LampController : MonoBehaviour
         {
             LampManager.Instance.RegisterLamp(this);
         }
+        if(darkCollider == null)
+        {
+            darkCollider = GetComponentInChildren<BoxCollider>();
+        }
+        LampManager.Instance.RegisterLamp(this, true);
     }
     void Update()
     {
         
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            PlayerMove player = other.GetComponent<PlayerMove>();
+            player.CheckDarkness(lamp.enabled);
+            Debug.Log("IsInDark:" + player.getIsInDarkness());
+
+            //isInDark == true일 때 가장 가까운 4개의 전등을 봄. 하나라도 켜져 있으면 not.
+        }
     }
 
     public void BreakLamp()
