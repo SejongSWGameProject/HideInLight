@@ -252,4 +252,35 @@ public class LampManager : MonoBehaviour
         }
         return nearest;
     }
+
+    public void SortLampListByDistance()
+    {
+        if (player == null || arrangedLamps == null || arrangedLamps.Count == 0)
+        {
+            Debug.LogWarning("플레이어 Transform 또는 램프 리스트가 설정되지 않았습니다.");
+            return;
+        }
+
+        Vector3 playerPos = player.position;
+
+        // 람다식을 사용하여 리스트를 정렬합니다.
+        // (a, b) => ... 부분은 두 요소 a와 b를 비교하는 로직입니다.
+        arrangedLamps.Sort((a, b) =>
+        {
+            // 1. 플레이어와 각 램프 사이의 벡터를 구합니다.
+            Vector3 diffA = a.transform.position - playerPos;
+            Vector3 diffB = b.transform.position - playerPos;
+
+            // 2. Vector3.sqrMagnitude (제곱 거리)를 사용하여 비교합니다.
+            //    제곱 거리는 Vector3.Distance()보다 훨씬 빠릅니다. (제곱근 연산 생략)
+            float distSqA = diffA.sqrMagnitude;
+            float distSqB = diffB.sqrMagnitude;
+
+            // 3. CompareTo를 사용하여 오름차순 정렬합니다 (가까운 것이 먼저).
+            //    a의 거리가 b의 거리보다 작으면(가까우면) 음수를 반환하여 a가 b보다 앞으로 옵니다.
+            return distSqA.CompareTo(distSqB);
+        });
+
+        Debug.Log("LampController 리스트가 플레이어와의 거리를 기준으로 정렬되었습니다 (가까운 순).");
+    }
 }
