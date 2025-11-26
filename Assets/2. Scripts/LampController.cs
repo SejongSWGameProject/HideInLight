@@ -80,7 +80,7 @@ public class LampController : MonoBehaviour
     {
         isBroken = true;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         // 깜박임 효과
         //for (int i = 0; i < 3; i++)
         //{

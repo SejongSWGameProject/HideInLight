@@ -202,6 +202,8 @@ public class LampManager : MonoBehaviour
         return nearest;
     }
 
+    
+
     LampController GetRandomLamp()
     {
         if (lamps.Count > 0)
