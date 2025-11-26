@@ -9,6 +9,7 @@ TagManager:
   - LampSwitch
   - WirePuzzle
   - SwitchPuzzle
+  - Ghost
   layers:
   - Default
   - TransparentFX

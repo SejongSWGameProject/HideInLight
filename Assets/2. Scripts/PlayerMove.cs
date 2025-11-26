@@ -67,6 +67,8 @@ public class PlayerMove : MonoBehaviour
     private float stepTimer = 0f;
     private bool isInDarkness = false;
 
+    public GhostAI ghost;
+
     void Start()
     {
         hiddenMouseCursor();
@@ -175,11 +177,12 @@ public class PlayerMove : MonoBehaviour
             Rotate();
 
 
-
-        if (Input.GetKey(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B))
         {
-            Debug.Log(""+CalculateBrightness(this.transform.position));
+            ghost.gameObject.SetActive(false);
+            ghost.gameObject.SetActive(true);
         }
+
 
         Vector3 horizontalVelocity = new Vector3(controller.velocity.x, 0, controller.velocity.z);
         //Debug.Log(horizontalVelocity.magnitude);
@@ -383,113 +386,6 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    float detectionRadius = 20f;
-    bool showDebugRays = true;
-    public LayerMask occlusionMask;
-    float CalculateBrightness(Vector3 playerPosition)
-    {
-        float totalBrightness = 0f;
-
-        // 환경광(Ambient Light) 추가
-        totalBrightness += RenderSettings.ambientLight.grayscale * RenderSettings.ambientIntensity;
-
-        // 반경 내의 모든 객체 검색
-        Collider[] nearbyColliders = Physics.OverlapSphere(playerPosition, detectionRadius);
-
-        foreach (Collider col in nearbyColliders)
-        {
-            // 자식 객체 포함하여 Light 컴포넌트 찾기
-            Light[] lights = col.GetComponentsInChildren<Light>();
-
-            foreach (Light light in lights)
-            {
-                if (!light.enabled) continue;
-
-                // 광원까지의 방향과 거리
-                Vector3 lightPosition = light.transform.position;
-                Vector3 directionToLight = lightPosition - playerPosition;
-                float distance = directionToLight.magnitude;
-
-                // 광원 범위 체크
-                if (light.type == LightType.Point || light.type == LightType.Spot)
-                {
-                    if (distance > light.range) continue;
-                }
-
-                // 벽에 가려졌는지 Raycast로 확인
-                bool isOccluded = Physics.Raycast(
-                    playerPosition,
-                    directionToLight.normalized,
-                    distance,
-                    occlusionMask
-                );
-
-                if (showDebugRays)
-                {
-                    Debug.DrawRay(
-                        playerPosition,
-                        directionToLight.normalized * distance,
-                        isOccluded ? Color.red : Color.green
-                    );
-                }
-
-                if (isOccluded) continue; // 가려진 경우 스킵
-
-                // 광원 타입별 밝기 계산
-                float intensity = CalculateLightInfluence(light, playerPosition, directionToLight, distance);
-                totalBrightness += intensity;
-            }
-        }
-
-        return Mathf.Clamp01(totalBrightness);
-    }
-
-    float CalculateLightInfluence(Light light, Vector3 playerPos, Vector3 directionToLight, float distance)
-    {
-        float intensity = 0f;
-
-        switch (light.type)
-        {
-            case LightType.Directional:
-                // Directional Light는 거리에 영향받지 않음
-                intensity = light.intensity;
-                break;
-
-            case LightType.Point:
-                // Point Light: 거리에 따른 감쇠
-                float attenuation = 1f - (distance / light.range);
-                attenuation = Mathf.Clamp01(attenuation);
-                intensity = light.intensity * attenuation * attenuation; // 제곱 감쇠
-                break;
-
-            case LightType.Spot:
-                // Spot Light: 거리 + 각도 감쇠
-                Vector3 lightForward = light.transform.forward;
-                float angleToPlayer = Vector3.Angle(lightForward, directionToLight.normalized);
-
-                if (angleToPlayer < light.spotAngle / 2f)
-                {
-                    float distanceAttenuation = 1f - (distance / light.range);
-                    distanceAttenuation = Mathf.Clamp01(distanceAttenuation);
-
-                    float angleAttenuation = 1f - (angleToPlayer / (light.spotAngle / 2f));
-
-                    intensity = light.intensity * distanceAttenuation * angleAttenuation;
-                }
-                break;
-        }
-
-        // 광원 색상의 밝기도 고려
-        intensity *= light.color.grayscale;
-
-        return intensity;
-    }
-
-    // 디버그용: 현재 밝기 시각화
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
-    }
+    
 
 }

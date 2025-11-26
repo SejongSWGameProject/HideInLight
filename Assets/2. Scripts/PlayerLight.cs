@@ -32,6 +32,11 @@ public class PlayerLight : MonoBehaviour
     public AudioClip toggleLight;
     private AudioSource audioSource;
 
+    [Header("Debug")]
+    public bool showDebugRays = true;
+    public Color hitColor = Color.green;
+    public Color missColor = Color.red;
+
     void Start()
     {
         if (flashlight == null) return;
@@ -181,5 +186,58 @@ public class PlayerLight : MonoBehaviour
             flashlight.range = range;
             flashlight.spotAngle = angle;
         }
+    }
+
+    public bool IsObjectIlluminated(GameObject target)
+    {
+
+        if (target == null || cameraTransform == null)
+            return false;
+
+        if (!flashlight.enabled)
+        {
+            return false;
+        }
+
+        Vector3 flashlightPosition = cameraTransform.position;
+        Vector3 flashlightForward = cameraTransform.forward;
+        Vector3 targetPosition = target.transform.position;
+
+        // 1. 거리 체크
+        Vector3 directionToTarget = targetPosition - flashlightPosition;
+        float distanceToTarget = directionToTarget.magnitude;
+
+        if (distanceToTarget > initialRange)
+        {
+            if (showDebugRays)
+                Debug.DrawRay(flashlightPosition, directionToTarget.normalized * initialRange, Color.gray);
+            return false;
+        }
+
+        // 2. 각도 체크 (원뿔 범위 내에 있는지)
+        float angleToTarget = Vector3.Angle(flashlightForward, directionToTarget);
+
+        if (angleToTarget > initialAngle / 3f)
+        {
+            if (showDebugRays)
+                Debug.DrawRay(flashlightPosition, directionToTarget.normalized * distanceToTarget, Color.yellow);
+            return false;
+        }
+
+        // 3. 장애물 체크 (Raycast)
+        RaycastHit hit;
+        if (Physics.Raycast(flashlightPosition, directionToTarget.normalized, out hit, distanceToTarget, obstacleLayerMask))
+        {
+            // 중간에 장애물이 있음
+            if (showDebugRays)
+                Debug.DrawRay(flashlightPosition, directionToTarget.normalized * hit.distance, missColor);
+            return false;
+        }
+
+        // 모든 조건 통과 - 객체가 빛을 받고 있음
+        if (showDebugRays)
+            Debug.DrawRay(flashlightPosition, directionToTarget.normalized * distanceToTarget, hitColor);
+
+        return true;
     }
 }
