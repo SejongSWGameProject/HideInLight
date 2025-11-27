@@ -33,11 +33,6 @@ public class GhostSpawner : MonoBehaviour
             }
             nextSpawnTime = Time.time + spawnInterval;
         }
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            //SpawnGhost();
-        }
     }
 
     bool CanSpawnGhost()

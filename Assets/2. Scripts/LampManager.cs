@@ -55,7 +55,7 @@ public class LampManager : MonoBehaviour
         {
             monster = GameObject.FindAnyObjectByType<MonsterAI>();
             if (monster == null)
-                Debug.LogError("MonsterFollow 객체를 찾을 수 없습니다!");
+                Debug.Log("MonsterFollow 객체를 찾을 수 없습니다!");
         }
 
     }

@@ -110,6 +110,8 @@ public class PlayerMove : MonoBehaviour
 
         // 시작할 때 감도 적용
         UpdateSensitivity();
+
+        StartCoroutine(CheckDarknessRoutine());
     }
 
     // =========================================================
@@ -178,7 +180,7 @@ public class PlayerMove : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            CheckDarkness(false);
+            CheckDarkness();
         }
 
 
@@ -361,54 +363,63 @@ public class PlayerMove : MonoBehaviour
         isInDarkness = isin;
     }
 
-    public void CheckDarkness(bool isLampOn)
+    IEnumerator CheckDarknessRoutine()
     {
-        if (isLampOn)
+        // 최적화: 1초 대기 오브젝트를 미리 만들어둠 (메모리 절약)
+        WaitForSeconds wait = new WaitForSeconds(1.0f);
+
+        while (true)
         {
-            isInDarkness = false;
-        }
-        else
-        {
-            LampManager.Instance.SortLampListByDistance();
-            int cnt = 0;
-            float distSum = 0.0f;
-            float K = 1000.0f;
-            foreach(LampController l in LampManager.Instance.arrangedLamps)
-            {
-                if (l.lamp.enabled)
-                {
-                    Vector3 direction = l.transform.position - this.transform.position;
-                    float distance = direction.magnitude;
+            // 함수 실행
+            CheckDarkness();
 
-                    RaycastHit hit;
-                    if (!Physics.Raycast(transform.position, direction.normalized, out hit, distance, obstacleLayer))
-                    {
-
-                        float distSquare = direction.sqrMagnitude;
-                        //Debug.Log("" + l.name + distSquare);
-                        cnt++;
-                        distSum += (K / distSquare);
-                    }
-                } 
-
-                if (cnt >= 4)
-                {
-                    break;
-                }
-            }
-
-            if (distSum < 2.5f)
-            {
-                isInDarkness = true;
-            }
-            else
-            {
-                isInDarkness = false;
-            }
-            Debug.Log("Sum:" + distSum+"\nisInDark:"+isInDarkness);
+            // 1초 대기 (이 줄에서 코드가 멈췄다가 1초 뒤 재개됨)
+            yield return wait;
         }
     }
 
-    
+    public void CheckDarkness()
+    {
+        // 1. 반경 40m 내의 전등 레이어만 감지
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 40f, LayerMask.GetMask("Lamp"));
+
+        float distSum = 0.0f;
+
+        // 2. 배열을 한 번만 돌면서 검사와 계산을 동시에 수행
+        foreach (Collider c in hitColliders)
+        {
+            // 전등 컴포넌트 가져오기
+            LampController l = c.GetComponent<LampController>();
+
+            // 예외 처리: 컴포넌트가 없거나, 전등이 꺼져있으면 패스
+            if (l == null || !l.lamp.enabled) continue;
+
+            Vector3 direction = c.transform.position - transform.position;
+            float distance = direction.magnitude; // 레이캐스트용 실제 거리
+
+            // 3. 벽 체크 (Raycast)
+            // 장애물에 막히지 않았을 때만 계산 (Raycast가 false여야 벽이 없는 것)
+            if (!Physics.Raycast(transform.position, direction.normalized, distance, obstacleLayer))
+            {
+                // 벽이 없다면 빛 계산
+                float distSquare = direction.sqrMagnitude; // 거리 제곱 (최적화)
+
+                // 0으로 나누기 방지 (혹시 모를 에러 방지)
+                if (distSquare > 0.001f)
+                {
+                    distSum += (1000.0f / distSquare);
+                    // 디버깅이 필요하면 주석 해제
+                    Debug.Log($"{c.name} : {distSquare}");
+                }
+            }
+        }
+
+        Debug.Log("distSum:" + distSum);
+
+        // 4. 최종 판정
+        isInDarkness = (distSum < 1.0f);
+    }
+
+
 
 }
