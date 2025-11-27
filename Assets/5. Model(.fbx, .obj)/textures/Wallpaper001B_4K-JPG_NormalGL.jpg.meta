@@ -4,11 +4,8 @@ TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 13
-  mipmaps:
-    mipMapMode: 0
-    enableMipMap: 1
-    sRGBTexture: 1
-    linearTexture: 0
+    sRGBTexture: 0
+    linearTexture: 1
     fadeOut: 0
     borderMipMap: 0
     mipMapsPreserveCoverage: 0
@@ -20,7 +17,7 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-    flipGreenChannel: 0
+    flipGreenChannel: 1
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
@@ -31,7 +28,7 @@ TextureImporter:
   cubemapConvolution: 0
   seamlessCubemap: 0
   textureFormat: 1
-  maxTextureSize: 2048
+  maxTextureSize: 4096
   textureSettings:
     serializedVersion: 2
     filterMode: 1
@@ -54,7 +51,7 @@ TextureImporter:
   alphaUsage: 1
   alphaIsTransparency: 0
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1

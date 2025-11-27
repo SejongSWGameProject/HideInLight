@@ -9,6 +9,7 @@ TagManager:
   - LampSwitch
   - WirePuzzle
   - SwitchPuzzle
+  - Ghost
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Player
   - PuzzleOverlay
   - Weapon
-  - 
+  - Lamp
   - 
   - 
   - 
