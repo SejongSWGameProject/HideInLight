@@ -36,7 +36,7 @@ public class GhostSpawner : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            SpawnGhost();
+            //SpawnGhost();
         }
     }
 

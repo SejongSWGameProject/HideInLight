@@ -68,7 +68,7 @@ public class PlayerMove : MonoBehaviour
     private bool isInDarkness = false;
 
     public GhostAI ghost;
-
+    public LayerMask obstacleLayer;
     void Start()
     {
         hiddenMouseCursor();
@@ -176,12 +176,11 @@ public class PlayerMove : MonoBehaviour
         if (!Input.GetMouseButton(1) && canLook)
             Rotate();
 
-
         if (Input.GetKeyDown(KeyCode.B))
         {
-            ghost.gameObject.SetActive(false);
-            ghost.gameObject.SetActive(true);
+            CheckDarkness(false);
         }
+
 
 
         Vector3 horizontalVelocity = new Vector3(controller.velocity.x, 0, controller.velocity.z);
@@ -371,18 +370,42 @@ public class PlayerMove : MonoBehaviour
         else
         {
             LampManager.Instance.SortLampListByDistance();
-            for (int i = 0; i < 4; i++)
+            int cnt = 0;
+            float distSum = 0.0f;
+            float K = 1000.0f;
+            foreach(LampController l in LampManager.Instance.arrangedLamps)
             {
-                bool isOn = LampManager.Instance.arrangedLamps[i].lamp.enabled;
-                
-                //Debug.Log("" + i + LampManager.Instance.arrangedLamps[i] + isOn);
-                if (isOn)
+                if (l.lamp.enabled)
                 {
-                    isInDarkness = false;
-                    return;
+                    Vector3 direction = l.transform.position - this.transform.position;
+                    float distance = direction.magnitude;
+
+                    RaycastHit hit;
+                    if (!Physics.Raycast(transform.position, direction.normalized, out hit, distance, obstacleLayer))
+                    {
+
+                        float distSquare = direction.sqrMagnitude;
+                        //Debug.Log("" + l.name + distSquare);
+                        cnt++;
+                        distSum += (K / distSquare);
+                    }
+                } 
+
+                if (cnt >= 4)
+                {
+                    break;
                 }
             }
-            isInDarkness = true;
+
+            if (distSum < 2.5f)
+            {
+                isInDarkness = true;
+            }
+            else
+            {
+                isInDarkness = false;
+            }
+            Debug.Log("Sum:" + distSum+"\nisInDark:"+isInDarkness);
         }
     }
 
