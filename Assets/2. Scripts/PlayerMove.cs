@@ -69,6 +69,8 @@ public class PlayerMove : MonoBehaviour
 
     public GhostAI ghost;
     public LayerMask obstacleLayer;
+    public GhostSpawner ghostSpawner;
+
     void Start()
     {
         hiddenMouseCursor();
@@ -418,8 +420,10 @@ public class PlayerMove : MonoBehaviour
 
         // 4. 최종 판정
         isInDarkness = (distSum < 1.0f);
+
+        if (!isInDarkness)
+        {
+            ghostSpawner.KillAllGhosts();
+        }
     }
-
-
-
 }

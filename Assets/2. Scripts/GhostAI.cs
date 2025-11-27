@@ -15,8 +15,6 @@ public class GhostAI : MonoBehaviour
 
     [Header("Attack")]
     public float attackRange = 2f;
-    public float attackCooldown = 1f;
-    private float lastAttackTime;
 
     [Header("Visual")]
     public bool floatEffect = true;
@@ -173,6 +171,16 @@ public class GhostAI : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    void CheckAttack()
+    {
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        if (distanceToPlayer <= attackRange)
+        {
+            //Attack()
+        }
     }
 
     void OnDrawGizmosSelected()

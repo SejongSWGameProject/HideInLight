@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class GhostSpawner : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class GhostSpawner : MonoBehaviour
     private Transform player;
 
     private float nextSpawnTime;
+
+    private List<GameObject> activeGhosts = new List<GameObject>();
 
     void Start()
     {
@@ -56,7 +59,7 @@ public class GhostSpawner : MonoBehaviour
         ghost.tag = "Ghost";
 
         ghost.SetActive(true);
-
+        activeGhosts.Add(ghost);
         Debug.Log($"Ghost spawned at {spawnPosition}");
     }
 
@@ -85,5 +88,21 @@ public class GhostSpawner : MonoBehaviour
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(player.position, spawnRadius);
+    }
+
+    public void KillAllGhosts()
+    {
+        foreach (GameObject g in activeGhosts)
+        {
+            // 중요: 이미 게임 플레이 중에 죽어서 없을 수도 있으니 확인해야 함
+            if (g != null)
+            {
+                Destroy(g);
+            }
+        }
+
+        // 다 죽였으니 명단 초기화
+        activeGhosts.Clear();
+        Debug.Log("모든 유령 제거 완료");
     }
 }
