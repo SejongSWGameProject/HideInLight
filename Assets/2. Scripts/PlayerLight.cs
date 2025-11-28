@@ -27,14 +27,23 @@ public class PlayerLight : MonoBehaviour
 
     private float range;
     private float angle;
+    private Color originalColor; // Start에서 초기값 저장
 
     public LayerMask obstacleLayerMask;
     public AudioClip toggleLight;
     private AudioSource audioSource;
 
+    void Awake()
+    {
+        // Awake에서 초기화
+        flashlight.enabled = false;
+    }
+
     void Start()
     {
         if (flashlight == null) return;
+
+        originalColor = flashlight.color; // 초기 색상 저장
 
         audioSource = GetComponent<AudioSource>();
 
@@ -54,8 +63,18 @@ public class PlayerLight : MonoBehaviour
         if (BatteryUI != null)
             BatteryUI.SetActive(true);
 
+        if (flashlight.enabled && Input.GetKeyDown(KeyCode.E))
+        {
+            if(flashlight.color == originalColor)
+                flashlight.color = Color.red; // 빨간색으로 변경
+            else if (flashlight.color == Color.red)
+                flashlight.color = Color.green; // 초록색으로 변경
+            else
+                flashlight.color = originalColor; // 기존색으로 변경
+        }
+
         // 마우스 왼쪽 클릭 시 토글
-        if (Input.GetMouseButtonDown(0)) // 0 = 왼쪽 버튼
+        if (Input.GetMouseButtonDown(0) && uiObjectA.sizeDelta.x > 0) // 0 = 왼쪽 버튼
         {
             flashlight.enabled = !flashlight.enabled; // 켜져있으면 끄고, 꺼져있으면 켬
             audioSource.PlayOneShot(toggleLight);
@@ -117,7 +136,11 @@ public class PlayerLight : MonoBehaviour
             float decreaseAmount = decreaseSpeed * Time.deltaTime; // 이번 프레임에 줄일 값
             size.x -= decreaseAmount;
 
-            if (size.x < 0f) size.x = 0f; // 최소값 0 제한
+            if (size.x < 0f)
+            {
+                size.x = 0f;
+                flashlight.enabled = false;
+            }
 
             float b = a - size.x;
             // 왼쪽으로 이동: 줄어든 값의 절반만큼
