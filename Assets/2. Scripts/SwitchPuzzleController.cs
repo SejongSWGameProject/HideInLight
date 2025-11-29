@@ -12,108 +12,144 @@ public class SwitchPuzzleController : MonoBehaviour
     public bool[] correctSolution; 
 
     [Header("연출 및 플레이어 제어")]
-    public GameObject puzzleLight;     // 퍼즐 전용 포인트 라이트
-    public GameObject playerFlashlight; // 플레이어 손전등
-    public PlayerLockControl playerLock; // 플레이어 고정 스크립트 (Player 오브젝트에 있는 것)
+    public GameObject puzzleLight;      
+    public GameObject playerFlashlight; 
+    public PlayerLockControl playerLock; 
 
     [Header("이벤트")]
-    public UnityEvent OnPuzzleSolved;    // 성공했을 때
-    public UnityEvent OnPuzzleCancelled; // ESC 눌렀을 때
+    public UnityEvent OnPuzzleSolved;    
+    public UnityEvent OnPuzzleCancelled; 
 
-    // 퍼즐이 켜질 때 (F키 눌렀을 때) 자동으로 실행
+    private bool isAlreadySolved = false; // 이미 푼 퍼즐인지 체크
+
     void OnEnable()
     {
-        // 1. 플레이어 고정 및 마우스 보이기
-        if (playerLock != null) playerLock.FreezePlayer();
+        if (isAlreadySolved) return; 
 
-        // 2. 조명 연출 (플래시 끄고, 퍼즐 조명 켜기)
+        if (playerLock != null) playerLock.FreezePlayer();
         if (playerFlashlight != null) playerFlashlight.SetActive(false);
         if (puzzleLight != null) puzzleLight.SetActive(true);
 
-        // 3. 스위치들의 변경 감지 연결
+        // ★ 현재 보유 개수에 맞춰 스위치 켜기
+        UpdateSwitchesByCount(); 
+
         if (switches == null) return;
         foreach (Switch s in switches)
         {
             if (s == null) continue;
-            s.OnToggled.RemoveListener(CheckVictory); // 중복 방지
+            s.OnToggled.RemoveListener(CheckVictory);
             s.OnToggled.AddListener(CheckVictory);
         }
     }
 
-    // 퍼즐이 꺼질 때 (닫힐 때) 자동으로 실행
     void OnDisable()
     {
-        // 1. 플레이어 풀기 및 마우스 숨기기
         if (playerLock != null) playerLock.UnfreezePlayer();
-
-        // 2. 조명 원상복구
         if (playerFlashlight != null) playerFlashlight.SetActive(true);
         if (puzzleLight != null) puzzleLight.SetActive(false);
     }
 
-    // ★★★ [수정된 부분] Update 함수 ★★★
     void Update()
     {
-        // 1. ESC 키 누르면 퍼즐 닫기
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ClosePuzzle();
-        }
+        if (isAlreadySolved) return; 
 
-        // 2. 레이캐스트로 스위치 클릭 감지
+        if (Input.GetKeyDown(KeyCode.Escape)) ClosePuzzle();
+
         if (Input.GetMouseButtonDown(0)) 
         {
-            // 카메라에서 마우스 위치로 광선을 쏨
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-
-            // 광선이 무언가에 맞았다면 (콜라이더 필요!)
             if (Physics.Raycast(ray, out hit))
             {
-                // 맞은 물체에서 'Switch' 스크립트를 찾는다.
                 Switch clickedSwitch = hit.collider.GetComponent<Switch>();
-
-                // 'Switch' 스크립트를 찾았다면 (즉, 손잡이를 클릭했다면)
-                if (clickedSwitch != null)
-                {
-                    // 찾은 스위치의 Toggle() 함수를 강제로 실행!
-                    clickedSwitch.Toggle();
-                }
+                if (clickedSwitch != null) clickedSwitch.Toggle();
             }
         }
     }
-    // ★★★ [수정 끝] ★★★
 
-    // 정답 체크 (스위치 누를 때마다 실행됨)
-    void CheckVictory()
+    // ★ 투명망토 모드: 물체는 켜두고(Active True), 눈과 손만 끕니다.
+    void UpdateSwitchesByCount()
     {
-        // 개수가 안 맞으면 에러 방지
-        if (switches == null || correctSolution == null || switches.Length != correctSolution.Length) return;
+        if (SwitchManager.Instance == null) return;
 
-        bool isCorrect = true;
+        int currentCount = SwitchManager.Instance.currentCount;
+        int activeCount = Mathf.Min(currentCount, 4); // 최대 4개까지만 활성
+        
+        Debug.Log($"🧩 상태 갱신: 보유 {currentCount}개 -> {activeCount}개만 보이고 나머지는 투명해짐");
+
         for (int i = 0; i < switches.Length; i++)
         {
-            if (switches[i] == null) continue; // 혹시 모를 빈칸 방지
+            if (switches[i] == null) continue;
 
-            // 하나라도 정답과 다르면 실패
-            if (switches[i].isOn != correctSolution[i])
+            // 보여줄지 말지 결정
+            bool shouldShow = (i < activeCount);
+
+            // 1. [중요] 게임 오브젝트는 무조건 켜둡니다! (연결고리 유지)
+            switches[i].gameObject.SetActive(true);
+
+            // 2. '그림(Renderer)' On/Off (눈에 보임/안보임)
+            Renderer[] renderers = switches[i].GetComponentsInChildren<Renderer>(true);
+            foreach (var r in renderers) r.enabled = shouldShow;
+
+            // 3. '충돌(Collider)' On/Off (클릭 됨/안됨)
+            Collider[] colliders = switches[i].GetComponentsInChildren<Collider>(true);
+            foreach (var c in colliders) c.enabled = shouldShow;
+            
+            // 4. (개별 조명이나 캔버스가 있다면 그것도 처리)
+            Light[] lights = switches[i].GetComponentsInChildren<Light>(true);
+            foreach (var l in lights) l.enabled = shouldShow;
+            
+            Canvas[] canvases = switches[i].GetComponentsInChildren<Canvas>(true);
+            foreach (var c in canvases) c.enabled = shouldShow;
+        }
+    }
+
+    // ★ 정답 체크 + 상세 로그 + 부품 소비
+    void CheckVictory()
+    {
+        if (switches == null || correctSolution == null) return;
+
+        // 4개가 다 안 모였으면 정답 체크 자체를 안 함 (못 푸는 상태)
+        if (SwitchManager.Instance.currentCount < 4) return;
+
+        bool isCorrect = true;
+        string logMsg = "🔍 채점표: "; // 콘솔에 띄울 메시지
+
+        for (int i = 0; i < switches.Length; i++)
+        {
+            if (switches[i] == null) continue; 
+
+            bool current = switches[i].isOn;
+            bool target = correctSolution[i];
+
+            // 상세 로그 작성
+            if (current != target)
             {
                 isCorrect = false;
-                break;
+                logMsg += $"[❌{i}번] "; // 틀림
+            }
+            else
+            {
+                logMsg += $"[✅{i}번] "; // 맞음
             }
         }
 
+        // 콘솔창에 결과 출력
+        Debug.Log(logMsg);
+
         if (isCorrect)
         {
-            Debug.Log("스위치 퍼즐 성공!");
-            OnPuzzleSolved.Invoke(); // 문 열기 등 이벤트 실행
+            Debug.Log("🎉 정답입니다! 부품 4개를 사용하여 수리합니다.");
             
-            // 성공했으니 퍼즐 창 닫기
+            // ★ 정답을 맞췄으므로 부품 4개 차감!
+            SwitchManager.Instance.ConsumeParts(4);
+            
+            isAlreadySolved = true; 
+            OnPuzzleSolved.Invoke(); 
             this.gameObject.SetActive(false);
         }
     }
 
-    // 강제로 닫기 (ESC)
     public void ClosePuzzle()
     {
         OnPuzzleCancelled.Invoke();
