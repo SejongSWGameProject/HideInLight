@@ -119,10 +119,10 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &4490664 stripped
+--- !u!4 &5 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1628026855}
+  m_PrefabInstance: {fileID: 2057985938}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &11823535
 PrefabInstance:
@@ -314,11 +314,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
---- !u!4 &29951232 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1578803745}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &34970321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -423,6 +418,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &34970323 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 34970321}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &43239796
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -607,6 +607,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &47375186 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 47375184}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &55493197
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -711,6 +716,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &55493199 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 55493197}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &55951159 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8168719783472753995, guid: b9cb13a39f3442446a78f48ac735ee69, type: 3}
@@ -880,11 +890,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
---- !u!4 &64783699 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1806191700}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &65873973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -978,11 +983,6 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 1550919814}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &75167734 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1092757460}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &84903849
 PrefabInstance:
@@ -1168,6 +1168,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &88359402 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 88359400}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &90345012
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1264,11 +1269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &97812834 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 88359400}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &99847772 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8168719783472753995, guid: b9cb13a39f3442446a78f48ac735ee69, type: 3}
@@ -1278,11 +1278,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 212032709}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &116925066 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1382635109}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &124118196 stripped
 Transform:
@@ -1362,16 +1357,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
---- !u!4 &129847932 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 2143450672}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &133496842 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 2040024379}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &138470679
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1464,6 +1449,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &138470681 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 138470679}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &150940765
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1605,11 +1595,6 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 1569838632}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &162378828 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1216139389}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &171399513 stripped
 Transform:
@@ -1804,10 +1789,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &187822474 stripped
+--- !u!4 &185853584 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1024103269}
+  m_PrefabInstance: {fileID: 185853582}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &191680733
 PrefabInstance:
@@ -1985,6 +1970,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &194432405 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 194432403}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &196187454
 GameObject:
   m_ObjectHideFlags: 0
@@ -2399,15 +2389,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &239584736 stripped
+--- !u!4 &235687523 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1428213012}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &246113599 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 364222308}
+  m_PrefabInstance: {fileID: 235687521}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &249014930
 PrefabInstance:
@@ -2558,86 +2543,86 @@ Transform:
   - {fileID: 100797264}
   - {fileID: 533993940}
   - {fileID: 939952933}
-  - {fileID: 1258209164}
-  - {fileID: 1877905590}
-  - {fileID: 1185492606}
-  - {fileID: 1008338111}
-  - {fileID: 239584736}
-  - {fileID: 162378828}
-  - {fileID: 4490664}
-  - {fileID: 519381388}
+  - {fileID: 739598493}
+  - {fileID: 947365701}
+  - {fileID: 278085888}
+  - {fileID: 1544283362}
+  - {fileID: 969258592}
+  - {fileID: 1448071295}
+  - {fileID: 1766109721}
+  - {fileID: 727309892}
   - {fileID: 658134615}
-  - {fileID: 187822474}
-  - {fileID: 75167734}
+  - {fileID: 342847839}
+  - {fileID: 1487729429}
   - {fileID: 1054758717}
-  - {fileID: 1593103046}
-  - {fileID: 783726565}
-  - {fileID: 1194380249}
-  - {fileID: 1911160954}
-  - {fileID: 2125106810}
-  - {fileID: 393845728}
-  - {fileID: 945642042}
+  - {fileID: 468395664}
+  - {fileID: 1512879282}
+  - {fileID: 290841987}
+  - {fileID: 1683045631}
+  - {fileID: 1750312005}
+  - {fileID: 1043521972}
+  - {fileID: 758325822}
   - {fileID: 2033908348}
-  - {fileID: 798973717}
+  - {fileID: 446057955}
   - {fileID: 220402559}
-  - {fileID: 97812834}
-  - {fileID: 2070057977}
-  - {fileID: 1357983114}
-  - {fileID: 1803335634}
-  - {fileID: 496756871}
-  - {fileID: 1743003357}
-  - {fileID: 437043973}
-  - {fileID: 1487227112}
-  - {fileID: 133496842}
-  - {fileID: 2010903845}
-  - {fileID: 1473565819}
-  - {fileID: 1284706510}
-  - {fileID: 129847932}
-  - {fileID: 1373866097}
-  - {fileID: 116925066}
-  - {fileID: 1307290635}
-  - {fileID: 1539197705}
-  - {fileID: 718566618}
-  - {fileID: 1783168306}
+  - {fileID: 88359402}
+  - {fileID: 2079320472}
+  - {fileID: 1837267699}
+  - {fileID: 1027108468}
+  - {fileID: 587058777}
+  - {fileID: 1326551738}
+  - {fileID: 738021224}
+  - {fileID: 1624718545}
+  - {fileID: 2040024381}
+  - {fileID: 352836191}
+  - {fileID: 185853584}
+  - {fileID: 332484849}
+  - {fileID: 2143450674}
+  - {fileID: 716609432}
+  - {fileID: 1382635111}
+  - {fileID: 235687523}
+  - {fileID: 315161895}
+  - {fileID: 1405451348}
+  - {fileID: 746457319}
   - {fileID: 1029233631}
   - {fileID: 2048218172}
   - {fileID: 1554872991}
-  - {fileID: 1528658992}
-  - {fileID: 720918706}
-  - {fileID: 306903140}
-  - {fileID: 1097400268}
-  - {fileID: 1488250198}
-  - {fileID: 1671988640}
-  - {fileID: 305349123}
+  - {fileID: 34970323}
+  - {fileID: 1426342594}
+  - {fileID: 873435965}
+  - {fileID: 1542233549}
+  - {fileID: 1848060983}
+  - {fileID: 1639974217}
+  - {fileID: 1791015318}
   - {fileID: 343947935}
-  - {fileID: 1384187633}
-  - {fileID: 29951232}
-  - {fileID: 1769648162}
-  - {fileID: 315553789}
-  - {fileID: 1998111409}
+  - {fileID: 138470681}
+  - {fileID: 1578803747}
+  - {fileID: 1370014429}
+  - {fileID: 55493199}
+  - {fileID: 1783783283}
   - {fileID: 56765420}
-  - {fileID: 1831152851}
-  - {fileID: 899177387}
+  - {fileID: 1927543893}
+  - {fileID: 1272621171}
   - {fileID: 602778766}
-  - {fileID: 1970773855}
+  - {fileID: 1665183297}
   - {fileID: 864672261}
-  - {fileID: 1274430026}
-  - {fileID: 1503387885}
-  - {fileID: 875874695}
-  - {fileID: 2112043155}
-  - {fileID: 1715110808}
-  - {fileID: 246113599}
-  - {fileID: 365268037}
-  - {fileID: 1182296031}
-  - {fileID: 64783699}
-  - {fileID: 502027254}
-  - {fileID: 996146485}
-  - {fileID: 1357993246}
-  - {fileID: 685002125}
-  - {fileID: 1173247335}
-  - {fileID: 1890140988}
-  - {fileID: 887186634}
-  - {fileID: 417804261}
+  - {fileID: 194432405}
+  - {fileID: 47375186}
+  - {fileID: 1004883457}
+  - {fileID: 814299050}
+  - {fileID: 1020699500}
+  - {fileID: 364222310}
+  - {fileID: 1618830159}
+  - {fileID: 282296346}
+  - {fileID: 1806191702}
+  - {fileID: 961259629}
+  - {fileID: 1517515698}
+  - {fileID: 1267360878}
+  - {fileID: 5}
+  - {fileID: 1384978457}
+  - {fileID: 1348555317}
+  - {fileID: 2100595096}
+  - {fileID: 2006708888}
   - {fileID: 1606434833}
   - {fileID: 1299340243}
   - {fileID: 430391970}
@@ -2823,6 +2808,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 177654964}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &278085888 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 829492494}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &282296344
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2919,6 +2909,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &282296346 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 282296344}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &290841985
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3019,6 +3014,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &290841987 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 290841985}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &292405033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3245,16 +3245,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f0716a3397063d45aa5b397f4266ce3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameMenuController
---- !u!4 &305349123 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1791015316}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &306903140 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 873435963}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &314498090
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3440,10 +3430,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &315553789 stripped
+--- !u!4 &315161895 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 55493197}
+  m_PrefabInstance: {fileID: 315161893}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &318028471 stripped
 Transform:
@@ -4034,6 +4024,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &332484849 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 332484847}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &342847839 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1024103269}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &343947935 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -4139,6 +4139,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &352836191 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 352836189}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &364222308
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4239,10 +4244,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &365268037 stripped
+--- !u!4 &364222310 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1618830157}
+  m_PrefabInstance: {fileID: 364222308}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &373312015
 PrefabInstance:
@@ -4419,11 +4424,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &393845728 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1043521970}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &398142775 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -4513,20 +4513,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &417804261 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 2006708886}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &430391970 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 216062131}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &437043973 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1961132493}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &446057953
 PrefabInstance:
@@ -4632,6 +4622,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &446057955 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 446057953}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &459276739
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4789,6 +4784,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+--- !u!4 &468395664 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 314498090}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &474746559
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5186,11 +5186,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!4 &496756871 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1691359075}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &499742885
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5280,11 +5275,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
---- !u!4 &502027254 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1138150771}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &503041330
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5382,11 +5372,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8168719783472753995, guid: b9cb13a39f3442446a78f48ac735ee69, type: 3}
   m_PrefabInstance: {fileID: 503041330}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &519381388 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 852552840}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &531867480
 PrefabInstance:
@@ -6038,6 +6023,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8168719783472753995, guid: b9cb13a39f3442446a78f48ac735ee69, type: 3}
   m_PrefabInstance: {fileID: 586984041}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &587058777 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1691359075}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &587927912
 PrefabInstance:
@@ -6988,11 +6978,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &685002125 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 2057985938}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &701953250
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7181,15 +7166,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &718566618 stripped
+--- !u!4 &716609432 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1405451346}
+  m_PrefabInstance: {fileID: 716609430}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &720918706 stripped
+--- !u!4 &727309892 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1426342592}
+  m_PrefabInstance: {fileID: 852552840}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &731786204
 PrefabInstance:
@@ -7268,6 +7253,16 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 642842117}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &738021224 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1961132493}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &739598493 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1279091937}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &746457317
 PrefabInstance:
@@ -7365,6 +7360,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &746457319 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 746457317}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &748999872 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8302763516081525571, guid: c1a3dc0c98c2ede45912ffa2414113c9, type: 3}
@@ -7769,6 +7769,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &758325822 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 758325820}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &760589288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7963,16 +7968,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 2035116236}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &783726565 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1683165421}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &798973717 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 446057953}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &801486406
 PrefabInstance:
@@ -8184,6 +8179,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &814299050 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 814299048}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &822265951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -9445,10 +9445,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &875874695 stripped
+--- !u!4 &873435965 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1004883455}
+  m_PrefabInstance: {fileID: 873435963}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &877031663
 PrefabInstance:
@@ -9545,11 +9545,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b1f2302447ff37468416d8ce70978cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
---- !u!4 &887186634 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 2100595094}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &890826785
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9728,11 +9723,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &899177387 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1272621169}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &904237872
 GameObject:
   m_ObjectHideFlags: 0
@@ -9933,10 +9923,10 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 2135249592}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &945642042 stripped
+--- !u!4 &947365701 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 758325820}
+  m_PrefabInstance: {fileID: 1598208459}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &953550954
 GameObject:
@@ -10049,6 +10039,16 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 953550954}
   m_Mesh: {fileID: -701118185569910201, guid: 202ab8eea259fee4c97f3d65d73fdde4, type: 3}
+--- !u!4 &961259629 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1138150771}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &969258592 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1428213012}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &969900851 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5793873282316592023, guid: 752ea90276acfbc46b83443b522f1bf0, type: 3}
@@ -10485,11 +10485,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9cb13a39f3442446a78f48ac735ee69, type: 3}
---- !u!4 &996146485 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 2040610800}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &998426158
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10754,6 +10749,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1004883457 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1004883455}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1006752295 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8995814020729014302, guid: 590bc3ca6aac8fc4d9f9c107fa937cd8, type: 3}
@@ -10769,11 +10769,6 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 2083430092}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1008338111 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1651127354}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1019743697
 PrefabInstance:
@@ -10944,6 +10939,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1020699500 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1020699498}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1024103269
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11141,6 +11141,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1027108468 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1027108466}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1029233631 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -11339,6 +11344,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1043521972 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1043521970}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1045504573
 GameObject:
   m_ObjectHideFlags: 19
@@ -11686,11 +11696,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &1097400268 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1542233547}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1100927712 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -12206,11 +12211,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ba93040b41f8744db7484fa9afe5e61, type: 3}
---- !u!4 &1173247335 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1384978455}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1181038883
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12368,16 +12368,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &1182296031 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 282296344}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1185492606 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 829492494}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1189231017
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12483,11 +12473,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9cb13a39f3442446a78f48ac735ee69, type: 3}
---- !u!4 &1194380249 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 290841985}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1211771592
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13218,11 +13203,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
---- !u!4 &1258209164 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1279091937}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1258642780 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -13232,6 +13212,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 249014930}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1267360878 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 587927912}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1269752365
 PrefabInstance:
@@ -13450,10 +13435,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &1274430026 stripped
+--- !u!4 &1272621171 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 194432403}
+  m_PrefabInstance: {fileID: 1272621169}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1276148450
 GameObject:
@@ -13595,11 +13580,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
---- !u!4 &1284706510 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 332484847}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1287786256 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8168719783472753995, guid: b9cb13a39f3442446a78f48ac735ee69, type: 3}
@@ -13858,11 +13838,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6049328085051226352, guid: 162f53ce6c04dad47865b3110d6fa626, type: 3}
   m_PrefabInstance: {fileID: 848973368}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1307290635 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 235687521}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1312920792
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14009,6 +13984,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+--- !u!4 &1326551738 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1603954750}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1333656175
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14172,15 +14152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &1357983114 stripped
+--- !u!4 &1348555317 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1837267697}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1357993246 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 587927912}
+  m_PrefabInstance: {fileID: 1348555315}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1370014427
 PrefabInstance:
@@ -14278,15 +14253,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1370014429 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1370014427}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1372394304 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 667752431}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1373866097 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 716609430}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1379866185 stripped
 GameObject:
@@ -14404,10 +14379,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &1384187633 stripped
+--- !u!4 &1382635111 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 138470679}
+  m_PrefabInstance: {fileID: 1382635109}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1384978455
 PrefabInstance:
@@ -14501,6 +14476,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1384978457 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1384978455}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1389338647 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -15028,6 +15008,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1405451348 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1405451346}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1407622458 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -15222,6 +15207,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1426342594 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1426342592}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1427042270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15529,6 +15519,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1448071295 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1216139389}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1457805632 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -15623,11 +15618,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &1473565819 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 185853582}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1485280014
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15738,15 +15728,10 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8168719783472753995, guid: b9cb13a39f3442446a78f48ac735ee69, type: 3}
   m_PrefabInstance: {fileID: 1485280014}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1487227112 stripped
+--- !u!4 &1487729429 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1624718543}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1488250198 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1848060981}
+  m_PrefabInstance: {fileID: 1092757460}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1496401762
 PrefabInstance:
@@ -15954,15 +15939,20 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a490e9e6877189b46a38e0ce9de2fe62, type: 3}
---- !u!4 &1503387885 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 47375184}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1509321387 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 61221848}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1512879282 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1683165421}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1517515698 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 2040610800}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1522098946 stripped
 Transform:
@@ -16018,20 +16008,10 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1528658992 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 34970321}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1537058588 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 567307654}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1539197705 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 315161893}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1542233547
 PrefabInstance:
@@ -16117,6 +16097,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1542233549 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1542233547}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1544283362 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1651127354}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1550919814
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16473,10 +16463,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &1593103046 stripped
+--- !u!4 &1578803747 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 314498090}
+  m_PrefabInstance: {fileID: 1578803745}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1598208459
 PrefabInstance:
@@ -16940,6 +16930,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1618830159 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1618830157}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1622123624 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -17151,6 +17146,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1624718545 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1624718543}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1628026855
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17340,6 +17340,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1639974217 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1639974215}
+  m_PrefabAsset: {fileID: 0}
 --- !u!115 &1642155417
 MonoScript:
   m_ObjectHideFlags: 0
@@ -17647,10 +17652,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &1671988640 stripped
+--- !u!4 &1665183297 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1639974215}
+  m_PrefabInstance: {fileID: 1665183295}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1674378906 stripped
 Transform:
@@ -17902,6 +17907,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1683045631 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1683045629}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1683165421
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18555,11 +18565,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
---- !u!4 &1715110808 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1020699498}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1721791322 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -18658,11 +18663,6 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8168719783472753995, guid: b9cb13a39f3442446a78f48ac735ee69, type: 3}
   m_PrefabInstance: {fileID: 1604245940}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1743003357 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1603954750}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1750312002
 PrefabInstance:
@@ -18764,15 +18764,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1750312005 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1750312002}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1755578594 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 611128368}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1769648162 stripped
+--- !u!4 &1766109721 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1370014427}
+  m_PrefabInstance: {fileID: 1628026855}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1776945284 stripped
 Transform:
@@ -18784,10 +18789,10 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8168719783472753995, guid: b9cb13a39f3442446a78f48ac735ee69, type: 3}
   m_PrefabInstance: {fileID: 760589288}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1783168306 stripped
+--- !u!4 &1783783283 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 746457317}
+  m_PrefabInstance: {fileID: 499742885}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1791015316
 PrefabInstance:
@@ -18881,10 +18886,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &1803335634 stripped
+--- !u!4 &1791015318 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1027108466}
+  m_PrefabInstance: {fileID: 1791015316}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1806191700
 PrefabInstance:
@@ -18990,6 +18995,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1806191702 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1806191700}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1818379612
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19095,11 +19105,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9cb13a39f3442446a78f48ac735ee69, type: 3}
---- !u!4 &1831152851 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1708584011}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1835699284
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19273,6 +19278,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1837267699 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1837267697}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1842926419
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19535,6 +19545,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &1848060983 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1848060981}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1853167982 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -19544,11 +19559,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
   m_PrefabInstance: {fileID: 1603455890}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1877905590 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1598208459}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1887443644
 PrefabInstance:
@@ -19634,11 +19644,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &1890140988 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1348555315}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1898413791 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -19701,11 +19706,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b66d24f711ad3c740a4287d88311765b, type: 3}
---- !u!4 &1911160954 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1683045629}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1914233176 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -19916,6 +19916,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1920175191}
   m_Mesh: {fileID: 1905579886760039336, guid: 202ab8eea259fee4c97f3d65d73fdde4, type: 3}
+--- !u!4 &1927543893 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 1708584011}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1933845490
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20304,11 +20309,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &1970773855 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1665183295}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1988764035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20550,11 +20550,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
---- !u!4 &1998111409 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 499742885}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2006708886
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20659,10 +20654,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &2010903845 stripped
+--- !u!4 &2006708888 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 352836189}
+  m_PrefabInstance: {fileID: 2006708886}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2018244187
 PrefabInstance:
@@ -20921,6 +20916,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &2040024381 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 2040024379}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2040610800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21483,11 +21483,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8168719783472753995, guid: b9cb13a39f3442446a78f48ac735ee69, type: 3}
   m_PrefabInstance: {fileID: 754446602}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &2070057977 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 2079320470}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2079320470
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21588,6 +21583,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &2079320472 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 2079320470}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2083430092
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21883,6 +21883,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &2100595096 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 2100595094}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2103235647 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8168719783472753995, guid: b9cb13a39f3442446a78f48ac735ee69, type: 3}
@@ -21976,11 +21981,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
---- !u!4 &2112043155 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 814299048}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2112369479 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
@@ -22059,11 +22059,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
---- !u!4 &2125106810 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
-  m_PrefabInstance: {fileID: 1750312002}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2135249592
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22322,6 +22317,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9885f58761730145a7e3bcf6da8f505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
+--- !u!4 &2143450674 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: ea4212aaed3003c4c8454427cc8116db, type: 3}
+  m_PrefabInstance: {fileID: 2143450672}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1483927627737953419
 MonoBehaviour:
   m_ObjectHideFlags: 0
