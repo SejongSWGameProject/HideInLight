@@ -94,6 +94,10 @@ public class PlayerLight : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && uiObjectA.sizeDelta.x > 0) // 0 = 왼쪽 버튼
         {
             flashlight.enabled = !flashlight.enabled; // 켜져있으면 끄고, 꺼져있으면 켬
+            if (!flashlight.enabled)
+            {
+                mainCamera.cullingMask = defaultLayer;
+            }
             audioSource.PlayOneShot(toggleLight);
             if (flashlight.enabled)
             {
@@ -140,8 +144,12 @@ public class PlayerLight : MonoBehaviour
             playerMove.StartCoroutine(playerMove.FlashScreen());
         }
 
-        ScrollableLight();
-        UpdateCullingMask();
+        if (flashlight.enabled)
+        {
+            ScrollableLight();
+            UpdateCullingMask();
+
+        }
 
         // **손전등이 켜져 있는 동안 UI 감소**
         if (flashlight.enabled && uiObjectA != null)

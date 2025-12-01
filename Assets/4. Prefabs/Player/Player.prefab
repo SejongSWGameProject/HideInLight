@@ -181,13 +181,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1255202623194830589}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52ec565d23ed0cd478938c302262fd15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlashlightActivator
   flashlightModel: {fileID: 9063341128931264584}
   flashlightScript: {fileID: 4078355963441916387}
+  mindUI: {fileID: 0}
 --- !u!114 &8225212027028624040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,14 +202,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLightDetector
   uiObjectA: {fileID: 0}
-  IncreaseSpeed: 5
-  autoDecreaseSpeed: 10
-  checkInterval: 0.2
+  IncreaseSpeed: 2.5
+  autoDecreaseSpeed: 5
+  playerLight: {fileID: 4304078985655236899}
   ghost: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 8
   ghostSpawner: {fileID: 0}
+  mindValue: 100
 --- !u!82 &2757985741922698849
 AudioSource:
   m_ObjectHideFlags: 0
@@ -471,6 +473,17 @@ MonoBehaviour:
   showDebugRays: 1
   hitColor: {r: 0, g: 1, b: 0, a: 1}
   missColor: {r: 1, g: 0, b: 0, a: 1}
+  lightColors: []
+  colorIndex: 0
+  defaultLayer:
+    serializedVersion: 2
+    m_Bits: 32767
+  redHiddenLayer:
+    serializedVersion: 2
+    m_Bits: 32768
+  greenHiddenLayer:
+    serializedVersion: 2
+    m_Bits: 65536
 --- !u!114 &3432963621354400513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -984,7 +997,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32767
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1788,7 +1801,12 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3184170510857116436, guid: 2e891fbeea7db9b4ab8823a59b40a1be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8051269561022190748, guid: 2e891fbeea7db9b4ab8823a59b40a1be, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
