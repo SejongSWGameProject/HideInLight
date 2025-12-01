@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UI;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.Rendering.DebugUI;
@@ -26,10 +28,63 @@ public class PlayerMind : MonoBehaviour
 
     public float mindValue = 100.0f;
 
+    [Header("Volume & Status")]
+    public Volume postProcessVolume;
+
+    private Vignette vignette;
+    private DepthOfField depthOfField;
+
+    [Header("Effect Settings")]
+    public float effectStartThreshold = 50f; // 효과 시작 기준값
+
+    [Header("Vignette Settings")]
+    public float maxVignetteIntensity = 0.5f; // 최대 비네팅 강도
+
+    [Header("Blur Settings (Manual Mode)")]
+    // 평소 상태: 멀리까지 잘 보임
+    public float clearFarStart = 50f;
+    public float clearFarEnd = 100f;
+
+    // 위급 상태: 바로 앞(2m)부터 흐려지기 시작함
+    public float blurryFarStart = 2f;
+    public float blurryFarEnd = 5f;
+
+    public float minFocusDistance = 0.5f;
+
     void Start()
     {
         initialSizeY = uiObjectA.sizeDelta.y; // 시작 길이 저장
+        // 컴포넌트 가져오기
+        // Volume에서 Vignette와 Depth of Field 컴포넌트 가져오기
+        if (postProcessVolume != null)
+        {
+            postProcessVolume.profile.TryGet(out vignette);
+            postProcessVolume.profile.TryGet(out depthOfField);
 
+            if (vignette == null)
+            {
+                Debug.LogWarning("Vignette가 Volume Profile에 없습니다!");
+            }
+
+            if (depthOfField == null)
+            {
+                Debug.LogWarning("Depth of Field가 Volume Profile에 없습니다!");
+            }
+
+            // 초기 상태 설정 (효과 비활성화)
+            if (vignette != null)
+            {
+                Debug.Log("비활성화");
+
+                vignette.intensity.value = 0f;
+            }
+
+            if (depthOfField != null)
+            {
+                Debug.Log("비활성화");
+                depthOfField.farMaxBlur = 0f;
+            }
+        }
         StartCoroutine(CheckDarknessRoutine());
     }
 
@@ -62,8 +117,32 @@ public class PlayerMind : MonoBehaviour
 
         //Debug.Log(mindValue);
 
+        SetSightEffect();
     }
+    public void SetSightEffect()
+    {
+        if (mindValue < 50f)
+        {
 
+            float dofLerp = Mathf.Lerp(16f, 0f, mindValue / 50f);
+            float vigLerp = Mathf.Lerp(1f, 0f, mindValue / 50f);
+
+            // Vignette 강도 조절
+            if (vignette != null)
+            {
+                vignette.intensity.value = vigLerp;
+            }
+
+            // Depth of Field 강도 조절 (HDRP)
+            if (depthOfField != null)
+            {
+                depthOfField.farMaxBlur = dofLerp;
+            }
+
+            Debug.Log("vig:" + vigLerp);
+            Debug.Log("dof:" + dofLerp);
+        }
+    }
     public void SetUIByMind()
     {
         Vector2 size = uiObjectA.sizeDelta;
