@@ -86509,7 +86509,7 @@ MonoBehaviour:
         m_CallState: 2
   interactionPromptUI: {fileID: 0}
   puzzlePopupModel_Check: {fileID: 0}
-  canInteract: 1
+  canInteract: 0
 --- !u!1 &7303045556142727720
 GameObject:
   m_ObjectHideFlags: 0
