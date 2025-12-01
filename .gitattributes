@@ -1,6 +1,47 @@
-# Unity YAML 기반 파일은 일반 Git 텍스트로 관리
-*.unity text merge=unityyamlmerge
-*.prefab text merge=unityyamlmerge
+# -------------------------------------------------------------------------
+# 1. Unity YAML & Text Settings (줄바꿈 및 머지 설정)
+# -------------------------------------------------------------------------
+# 모든 텍스트 파일은 저장소에 들어갈 때 LF로 변환, 체크아웃 할 때는 OS에 맞춤
+* text=auto
 
-# FBX는 LFS에 유지
+# 유니티의 YAML 기반 파일들 (씬, 프리팹 등)은 텍스트로 처리하며, 
+# 유니티 스마트 머지 툴을 사용할 수 있도록 설정
+*.unity text merge=unityyamlmerge eol=lf
+*.prefab text merge=unityyamlmerge eol=lf
+*.asset text merge=unityyamlmerge eol=lf
+*.meta text merge=unityyamlmerge eol=lf
+
+# -------------------------------------------------------------------------
+# 2. Git LFS Settings (대용량 바이너리 파일 설정)
+# -------------------------------------------------------------------------
+# 3D Models
 *.fbx filter=lfs diff=lfs merge=lfs -text
+*.obj filter=lfs diff=lfs merge=lfs -text
+*.blend filter=lfs diff=lfs merge=lfs -text
+
+# Images & Textures
+*.png filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.tga filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.tiff filter=lfs diff=lfs merge=lfs -text
+*.exr filter=lfs diff=lfs merge=lfs -text
+
+# Audio
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.mp3 filter=lfs diff=lfs merge=lfs -text
+*.ogg filter=lfs diff=lfs merge=lfs -text
+
+# Video
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mov filter=lfs diff=lfs merge=lfs -text
+
+# Builds & Libraries (DLLs)
+*.dll filter=lfs diff=lfs merge=lfs -text
+*.so filter=lfs diff=lfs merge=lfs -text
+*.a filter=lfs diff=lfs merge=lfs -text
+*.pdb filter=lfs diff=lfs merge=lfs -text
+
+# Unity Specific Binaries
+*.unitypackage filter=lfs diff=lfs merge=lfs -text
