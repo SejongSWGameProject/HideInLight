@@ -1,90 +1,198 @@
+ï»¿using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
+using static UnityEditor.PlayerSettings;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerMind : MonoBehaviour
 {
 
     [Header("UI")]
-    public RectTransform uiObjectA;             // ÁÙ¾îµå´Â UI ¿ÀºêÁ§Æ®
+    public RectTransform uiObjectA;             // ì¤„ì–´ë“œëŠ” UI ì˜¤ë¸Œì íŠ¸
 
-    [Header("°¨¼Ò ¼Óµµ")]
-    public float IncreaseSpeed = 20f;           // ¿ÜºÎ ¶óÀÌÆ®¿¡ ºñÃâ ¶§
-    public float autoDecreaseSpeed = 5f;        // ¾îµÒ¿¡ ÀÖÀ» ½Ã °¨¼Ò
-    private float initialSizeY;           // ½ÃÀÛ Á¤½Å·Â ÃÖ´ë¼öÄ¡
+    [Header("ê°ì†Œ ì†ë„")]
+    public float IncreaseSpeed = 20f;           // ì™¸ë¶€ ë¼ì´íŠ¸ì— ë¹„ì¶œ ë•Œ
+    public float autoDecreaseSpeed = 5f;        // ì–´ë‘ ì— ìˆì„ ì‹œ ê°ì†Œ
+    private float initialSizeY;           // ì‹œì‘ ì •ì‹ ë ¥ ìµœëŒ€ìˆ˜ì¹˜
 
-    [Header("¼³Á¤")]
-    public float checkInterval = 0.2f;
+    private bool isInDarkness = false;
+    private PlayerLight playerLight;
 
-    private List<Light> sceneLights = new List<Light>();
-    private bool isHitByLight = false;
+    public GhostAI ghost;
+    public LayerMask obstacleLayer;
+    public GhostSpawner ghostSpawner;
+
+    public float mindValue = 100.0f;
 
     private void Start()
     {
-        initialSizeY = uiObjectA.sizeDelta.y; // ½ÃÀÛ ±æÀÌ ÀúÀå
+        initialSizeY = uiObjectA.sizeDelta.y; // ì‹œì‘ ê¸¸ì´ ì €ì¥
+        playerLight = GetComponentInChildren<PlayerLight>();
 
-        // ¾ÀÀÇ ¸ğµç Light ÀÚµ¿ °Ë»ö (¿ÜºÎ ¶óÀÌÆ®)
-        sceneLights.AddRange(FindObjectsOfType<Light>());
+        StartCoroutine(CheckDarknessRoutine());
 
     }
 
-    void CheckLightss()
-    {
-        isHitByLight = false;
-
-        foreach (var light in sceneLights)
-        {
-            // Light°¡ ²¨Á® ÀÖÀ¸¸é ½ºÅµ
-            if (!light.enabled || light.intensity <= 0f)
-                continue;
-
-            Vector3 dir = transform.position - light.transform.position;
-
-            if (Physics.Raycast(light.transform.position, dir, out RaycastHit hit))
-            {
-                if (hit.transform == transform) // Àå¾Ö¹° ¾øÀÌ ÇÃ·¹ÀÌ¾î¸¦ º½
-                {
-                    isHitByLight = true;
-                    return;  // ÇÏ³ª¶óµµ ºñÃß¸é true
-                }
-            }
-        }
-    }
 
     void Update()
     {
         if (uiObjectA == null) return;
 
-        CheckLightss();
+        // ë¹›ì„ ë°›ì„ ë•Œ ì¦ê°€
+        if (!isInDarkness)
+        {
+            adjustMind(IncreaseSpeed);
+        }
 
+        // ì–´ë‘ ì— ìˆì„ ì‹œ ì§€ì† ê°ì†Œ
+        else
+        {
+            
+            adjustMind(-autoDecreaseSpeed);
+
+        }
+
+        SetUIByMind();
+
+        //Debug.Log(mindValue);
+
+    }
+
+    public void SetUIByMind()
+    {
         Vector2 size = uiObjectA.sizeDelta;
         Vector3 pos = uiObjectA.localPosition;
 
-
-        // ºûÀ» ¹ŞÀ» ¶§ Áõ°¡
-        if (isHitByLight)
-        {
-            float c = size.y;
-            size.y += IncreaseSpeed * Time.deltaTime;
-            if (size.y > initialSizeY)
-                size.y = initialSizeY;
-            float d = size.y - c;
-            pos.y += d / 2f;
-        }
-
-        // ¾îµÒ¿¡ ÀÖÀ» ½Ã Áö¼Ó °¨¼Ò
-        else
-        {
-            float a = size.y;
-            size.y -= autoDecreaseSpeed * Time.deltaTime;
-            if (size.y < 0f)
-                size.y = 0;
-            float b = a - size.y;
-            pos.y -= b / 2f;
-        }
-
+        float originY = size.y;
+        size.y = initialSizeY * (mindValue / 100.0f);
+        if (size.y < 0f)
+            size.y = 0;
+        if (size.y > initialSizeY)
+            size.y = initialSizeY;
+        pos.y += (size.y-originY) / 2f;
+        
 
         uiObjectA.sizeDelta = size;
         uiObjectA.localPosition = pos;
+    }
+
+    private void adjustMind(float speed)
+    {
+        mindValue += speed * Time.deltaTime;
+        if(mindValue >= 100)
+        {
+            mindValue = 100f;
+        }
+        if(mindValue <= 0)
+        {
+            mindValue = 0f;
+        }
+    }
+
+    private void DecreaseMind(float speed)
+    {
+        //Vector2 size = uiObjectA.sizeDelta;
+        //Vector3 pos = uiObjectA.localPosition;
+
+        //float a = size.y;
+        //size.y -= speed * Time.deltaTime;
+        //if (size.y < 0f)
+        //    size.y = 0;
+        //float b = a - size.y;
+        //pos.y -= b / 2f;
+
+        //uiObjectA.sizeDelta = size;
+        //uiObjectA.localPosition = pos;
+    }
+
+    public float GetPlayerMind()
+    {
+        return mindValue;
+    }
+    public void SetPlayerMind(float value)
+    {
+        if (value >= 100) value = 100f;
+        if (value <= 0) value = 0f;
+        mindValue = value;
+    }
+    public void IncreasePlayerMind(float d)
+    {
+        mindValue += d;
+        if (mindValue >= 100) mindValue = 100f;
+        if (mindValue <= 0) mindValue = 0f;
+    }
+
+    public bool getIsInDarkness()
+    {
+        return isInDarkness;
+    }
+
+    public void setIsInDarkness(bool isin)
+    {
+        isInDarkness = isin;
+    }
+
+    IEnumerator CheckDarknessRoutine()
+    {
+        // ìµœì í™”: 1ì´ˆ ëŒ€ê¸° ì˜¤ë¸Œì íŠ¸ë¥¼ ë¯¸ë¦¬ ë§Œë“¤ì–´ë‘  (ë©”ëª¨ë¦¬ ì ˆì•½)
+        WaitForSeconds wait = new WaitForSeconds(1.0f);
+
+        while (true)
+        {
+            // í•¨ìˆ˜ ì‹¤í–‰
+            CheckDarkness();
+
+            // 1ì´ˆ ëŒ€ê¸° (ì´ ì¤„ì—ì„œ ì½”ë“œê°€ ë©ˆì·„ë‹¤ê°€ 1ì´ˆ ë’¤ ì¬ê°œë¨)
+            yield return wait;
+        }
+    }
+
+    public void CheckDarkness()
+    {
+        // 1. ë°˜ê²½ 40m ë‚´ì˜ ì „ë“± ë ˆì´ì–´ë§Œ ê°ì§€
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 40f, LayerMask.GetMask("Lamp"));
+
+        float distSum = 0.0f;
+
+        // 2. ë°°ì—´ì„ í•œ ë²ˆë§Œ ëŒë©´ì„œ ê²€ì‚¬ì™€ ê³„ì‚°ì„ ë™ì‹œì— ìˆ˜í–‰
+        foreach (Collider c in hitColliders)
+        {
+            // ì „ë“± ì»´í¬ë„ŒíŠ¸ ê°€ì ¸ì˜¤ê¸°
+            LampController l = c.GetComponent<LampController>();
+
+            // ì˜ˆì™¸ ì²˜ë¦¬: ì»´í¬ë„ŒíŠ¸ê°€ ì—†ê±°ë‚˜, ì „ë“±ì´ êº¼ì ¸ìˆìœ¼ë©´ íŒ¨ìŠ¤
+            if (l == null || !l.lamp.enabled) continue;
+
+            Vector3 direction = c.transform.position - transform.position;
+            float distance = direction.magnitude; // ë ˆì´ìºìŠ¤íŠ¸ìš© ì‹¤ì œ ê±°ë¦¬
+
+            // 3. ë²½ ì²´í¬ (Raycast)
+            // ì¥ì• ë¬¼ì— ë§‰íˆì§€ ì•Šì•˜ì„ ë•Œë§Œ ê³„ì‚° (Raycastê°€ falseì—¬ì•¼ ë²½ì´ ì—†ëŠ” ê²ƒ)
+            if (!Physics.Raycast(transform.position, direction.normalized, distance, obstacleLayer))
+            {
+                // ë²½ì´ ì—†ë‹¤ë©´ ë¹› ê³„ì‚°
+                float distSquare = direction.sqrMagnitude; // ê±°ë¦¬ ì œê³± (ìµœì í™”)
+
+                // 0ìœ¼ë¡œ ë‚˜ëˆ„ê¸° ë°©ì§€ (í˜¹ì‹œ ëª¨ë¥¼ ì—ëŸ¬ ë°©ì§€)
+                if (distSquare > 0.001f)
+                {
+                    distSum += (1000.0f / distSquare);
+                    // ë””ë²„ê¹…ì´ í•„ìš”í•˜ë©´ ì£¼ì„ í•´ì œ
+                    //Debug.Log($"{c.name} : {distSquare}");
+                }
+            }
+        }
+
+        //Debug.Log("distSum:" + distSum);
+
+        // 4. ìµœì¢… íŒì •
+        isInDarkness = (distSum < 1.0f);
+
+        if (!isInDarkness)
+        {
+            ghostSpawner.KillAllGhosts();
+        }
     }
 }

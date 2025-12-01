@@ -12,6 +12,7 @@ public class GhostAI : MonoBehaviour
     private Transform player;
     private PlayerMove playerMove;
     private PlayerLight playerLight;
+    private PlayerMind playerMind;
 
     [Header("Attack")]
     public float attackRange = 2f;
@@ -37,6 +38,7 @@ public class GhostAI : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         playerMove = player.GetComponent<PlayerMove>();
         playerLight = player.GetComponentInChildren<PlayerLight>();
+        playerMind = player.GetComponentInChildren<PlayerMind>();
         startY = transform.position.y;
 
         // Rigidbody가 있다면 kinematic으로 설정
@@ -53,6 +55,11 @@ public class GhostAI : MonoBehaviour
         {
             col.isTrigger = true;
         }
+
+        if (playerLight == null)
+        {
+            Debug.Log("ghostAI-playerLight 미할당");
+        }
     }
 
     void Update()
@@ -67,11 +74,15 @@ public class GhostAI : MonoBehaviour
             ApplyFloatEffect();
         }
 
-        if (playerLight.IsObjectIlluminated(this.gameObject))
+        if(playerLight != null)
         {
-            Debug.Log("빛받음");
-            Die();
+            if (playerLight.IsObjectIlluminated(this.gameObject))
+            {
+                Debug.Log("빛받음");
+                Die();
+            }
         }
+        CheckAttack();
     }
 
     void MoveTowardsPlayer()
@@ -179,7 +190,9 @@ public class GhostAI : MonoBehaviour
 
         if (distanceToPlayer <= attackRange)
         {
-            //Attack()
+            Debug.Log("공격!");
+            playerMind.IncreasePlayerMind(-10);
+            Die();
         }
     }
 
