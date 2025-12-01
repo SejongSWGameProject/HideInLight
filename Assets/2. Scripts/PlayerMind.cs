@@ -124,8 +124,20 @@ public class PlayerMind : MonoBehaviour
         if (mindValue < 50f)
         {
 
-            float dofLerp = Mathf.Lerp(16f, 0f, mindValue / 50f);
-            float vigLerp = Mathf.Lerp(1f, 0f, mindValue / 50f);
+            // 1. 현재 진행률을 0(정상) ~ 1(완전 미침) 사이 값으로 변환
+            // mindValue가 50이면 t = 0, mindValue가 0이면 t = 1
+            float t = 1f - (mindValue / 50f);
+
+            // 2. 제곱 적용 (Ease In 효과)
+            // t가 0.1일 때 -> 0.01 (거의 변화 없음)
+            // t가 0.5일 때 -> 0.25 (아직 절반 안 됨)
+            // t가 0.9일 때 -> 0.81 (급격히 증가)
+            float curveT = t * t;
+
+            // 3. 0(기본값)에서 최대값으로 보간
+            // 기존 코드와 달리 '시작값 -> 목표값' 순서로 적어 헷갈림 방지
+            float dofLerp = Mathf.Lerp(0f, 16f, curveT); // 0에서 16으로
+            float vigLerp = Mathf.Lerp(0f, 1f, curveT);  // 0에서 1로
 
             // Vignette 강도 조절
             if (vignette != null)
@@ -139,8 +151,8 @@ public class PlayerMind : MonoBehaviour
                 depthOfField.farMaxBlur = dofLerp;
             }
 
-            Debug.Log("vig:" + vigLerp);
-            Debug.Log("dof:" + dofLerp);
+            // 디버그로 수치 변화 확인해보세요 (초반엔 수치가 아주 천천히 오를 겁니다)
+            Debug.Log($"Mind: {mindValue} | Linear(t): {t:F2} | Curved(t^2): {curveT:F2}");
         }
     }
     public void SetUIByMind()
