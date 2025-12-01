@@ -42,7 +42,11 @@ public class PlayerLight : MonoBehaviour
     // 0: Original, 1: Red, 2: Green
     public Color[] lightColors;
 
-    private int colorIndex = 0;
+    public int colorIndex = 0;
+
+    public LayerMask defaultLayer; // 기본적으로 비출 레이어 (Default, Player 등)
+    public LayerMask redHiddenLayer; // 빨간색 숨겨진 오브젝트 레이어
+    public LayerMask greenHiddenLayer; // 초록색 숨겨진 오브젝트 레이어
 
     void Start()
     {
@@ -137,6 +141,7 @@ public class PlayerLight : MonoBehaviour
         }
 
         ScrollableLight();
+        UpdateCullingMask();
 
         // **손전등이 켜져 있는 동안 UI 감소**
         if (flashlight.enabled && uiObjectA != null)
@@ -200,6 +205,25 @@ public class PlayerLight : MonoBehaviour
         return isVisible;
     }
 
+    public void UpdateCullingMask()
+    {
+        // 2. 보이는 레이어 변경 (비트 연산 | 을 사용하여 레이어 합치기)
+        if (colorIndex == 0) // 기본 (하얀 빛)
+        {
+            // 기본 레이어만 비춤
+            mainCamera.cullingMask = defaultLayer;
+        }
+        else if (colorIndex == 1) // 빨간 빛
+        {
+            // 기본 레이어 + 빨간 숨겨진 레이어를 같이 비춤
+            mainCamera.cullingMask = defaultLayer | redHiddenLayer;
+        }
+        else if (colorIndex == 2) // 초록 빛
+        {
+            // 기본 레이어 + 초록 숨겨진 레이어를 같이 비춤
+            mainCamera.cullingMask = defaultLayer | greenHiddenLayer;
+        }
+    }
     public void ScrollableLight()
     {
         // 마우스 휠 입력 처리
@@ -217,8 +241,6 @@ public class PlayerLight : MonoBehaviour
 
             // 색상 적용 (단 한 줄로 처리 가능)
             flashlight.color = lightColors[colorIndex];
-
-            Debug.Log($"Color Index: {colorIndex}, Color: {flashlight.color}");
         }
     }
 

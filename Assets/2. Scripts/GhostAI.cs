@@ -76,7 +76,7 @@ public class GhostAI : MonoBehaviour
 
         if(playerLight != null)
         {
-            if (playerLight.IsObjectIlluminated(this.gameObject))
+            if (playerLight.IsObjectIlluminated(this.gameObject) && playerLight.colorIndex == 2)
             {
                 Debug.Log("빛받음");
                 Die();
