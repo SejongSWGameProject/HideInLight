@@ -1,8 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.HighDefinition.ProbeSettings;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -103,6 +108,8 @@ public class PlayerMove : MonoBehaviour
 
         // 시작할 때 감도 적용
         UpdateSensitivity();
+
+        
     }
 
     // =========================================================
@@ -169,16 +176,7 @@ public class PlayerMove : MonoBehaviour
         if (!Input.GetMouseButton(1) && canLook)
             Rotate();
 
-        if (Input.GetMouseButton(1))
-        {
-            // RotateFlashlight();
-        }
 
-        // 점프 입력
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }
 
         Vector3 horizontalVelocity = new Vector3(controller.velocity.x, 0, controller.velocity.z);
         //Debug.Log(horizontalVelocity.magnitude);
@@ -307,6 +305,23 @@ public class PlayerMove : MonoBehaviour
         currentX = Mathf.SmoothDampAngle(currentX, xRotation, ref xVelocity, smoothTime);
         currentY = Mathf.SmoothDampAngle(currentY, yRotation, ref yVelocity, smoothTime);
 
+        // [수정된 부분] smoothTime이 0이 되면 에러가 나므로, 최소 0.01f를 보장합니다.
+        float safeSmoothTime = Mathf.Max(smoothTime, 0.01f);
+
+        currentX = Mathf.SmoothDampAngle(currentX, xRotation, ref xVelocity, safeSmoothTime);
+        currentY = Mathf.SmoothDampAngle(currentY, yRotation, ref yVelocity, safeSmoothTime);
+
+        // [추가 안전장치] 만약 계산 결과가 NaN(에러값)이라면 적용하지 않도록 방어합니다.
+        if (float.IsNaN(currentX) || float.IsNaN(currentY))
+        {
+            // NaN 발생 시, 값 초기화 (선택 사항)
+            currentX = xRotation;
+            currentY = yRotation;
+            xVelocity = 0f;
+            yVelocity = 0f;
+            return;
+        }
+
         if (cam != null)
         {
             cam.transform.rotation = Quaternion.Euler(currentX, currentY, 0);
@@ -330,4 +345,6 @@ public class PlayerMove : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+
+    
 }

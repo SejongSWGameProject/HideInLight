@@ -12,6 +12,7 @@ public class MonsterAI : MonoBehaviour
     public const int NORMAL = 1;
     public const int CHASE = 2;
     public const int STUN = 3;
+    public const int BREAK = 4;
     int monsterState = NORMAL;           //1:����(��������ٴϴ���)   2:�÷��̾��Ѵ���   3:���ϸ���
 
     public Transform player;         // �÷��̾� Transform
@@ -55,7 +56,14 @@ public class MonsterAI : MonoBehaviour
         animator = GetComponent<Animator>();
         StartCoroutine(CalculateDeltaDistance(0.5f));
         audioSource = GetComponent<AudioSource>();
-        this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(false);
+
+        if (monster == null)
+        {
+            Debug.LogError("NavMeshAgent 컴포넌트를 찾을 수 없습니다!");
+            return;
+        }
+
     }
 
     void Update()
@@ -104,22 +112,16 @@ public class MonsterAI : MonoBehaviour
             monster.speed = 10;
             animator.SetFloat("animSpeed", 1.0f);
             CheckSight();
-                
-            if (deltatDistance < 0.1f && Vector3.Distance(this.transform.position, this.target.transform.position)<20)
+            //Debug.Log(monster.velocity.magnitude);
+            if(monster.velocity.magnitude < 1f && Vector3.Distance(this.transform.position, this.target.transform.position) < 20)
             {
-                animator.SetBool("isWalking", false);
-
-                if (target.CompareTag("Lamp"))
-                {
-                    //Debug.Log("�μ�");
-                    LampManager.Instance.BreakLamp();
-                }
+                StartCoroutine(BreakLamp());
             }
         }
-        else if(monsterState == CHASE)
+        else if (monsterState == CHASE)
         {
-            animator.SetFloat("animSpeed", 3.0f);
             monster.speed = 30;
+            animator.SetFloat("animSpeed", 3.0f);
             target = player;
 
             if (Input.GetKeyDown(KeyCode.P) && !isPaused)
@@ -279,6 +281,37 @@ public class MonsterAI : MonoBehaviour
         monsterState = state;
     }
 
+    private IEnumerator BreakLamp()
+    {
+        float originspeed = monster.speed;
+
+        if (monster.isOnNavMesh)
+        {
+            monster.isStopped = true;
+        }
+        animator.SetFloat("Speed", 0f);
+
+        Debug.Log("깨기 애니메이션");
+        animator.SetTrigger("doBreak");
+
+        if (target.CompareTag("Lamp"))
+        {
+            //Debug.Log("�μ�");
+            LampManager.Instance.BreakLamp();
+        }
+
+        yield return new WaitForSeconds(1.3f);
+
+        if (monster.isOnNavMesh) // NavMesh ���� ���� ����
+        {
+            monster.isStopped = false;
+        }
+        animator.SetFloat("Speed", originspeed);
+
+        monsterState = NORMAL;
+
+    }
+
     // 4. ���͸� ���� �ð� ���߰� �ϴ� �ڷ�ƾ
     private IEnumerator PauseMonster(float duration)
     {
@@ -376,7 +409,7 @@ public class MonsterAI : MonoBehaviour
         {
             // ��ֹ� ���� �÷��̾ ��!
             canSeePlayer = true;
-            Debug.Log("�߰�!");
+            Debug.Log("발견!");
             setMonsterState(CHASE);
             return true;
             // ���⿡ �÷��̾ �߰����� ���� ������ �߰� (��: �߰� ����)
@@ -384,24 +417,51 @@ public class MonsterAI : MonoBehaviour
     }
 
     // (��) ����� ����ϸ� ��(Scene) �信�� �þ߰��� �ð������� Ȯ���� �� �ֽ��ϴ�.
-    private void OnDrawGizmosSelected()
+    // 선택했을 때만 기즈모를 그립니다. (항상 보고 싶으면 OnDrawGizmos로 이름 변경)
+    void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.white;
+        // 1. 눈 위치 가져오기 (로직과 동일하게)
         Vector3 eyePos = (eyePosition != null) ? eyePosition.position : transform.position;
+
+        // 2. 시야 거리(반지름) 그리기 - 노란색 원
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(eyePos, viewRadius);
 
-        Vector3 fovLine1 = Quaternion.AngleAxis(viewAngle / 2, transform.up) * transform.forward * viewRadius;
-        Vector3 fovLine2 = Quaternion.AngleAxis(-viewAngle / 2, transform.up) * transform.forward * viewRadius;
+        // 3. 시야각(부채꼴) 그리기
+        Vector3 viewAngleA = DirFromAngle(-viewAngle / 2, false);
+        Vector3 viewAngleB = DirFromAngle(viewAngle / 2, false);
 
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(eyePos, fovLine1);
-        Gizmos.DrawRay(eyePos, fovLine2);
+        Gizmos.DrawLine(eyePos, eyePos + viewAngleA * viewRadius);
+        Gizmos.DrawLine(eyePos, eyePos + viewAngleB * viewRadius);
 
-        if (canSeePlayer)
+        // 4. 플레이어와의 연결 선 그리기
+        if (player != null)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(eyePos, player.position);
+            // 플레이어가 시야 안에 있고 장애물이 없으면 초록색, 아니면 빨간색
+            if (canSeePlayer)
+            {
+                Gizmos.color = Color.green;
+                // 플레이어를 보고 있다는 것을 명확히 선으로 연결
+                Gizmos.DrawLine(eyePos, player.position);
+            }
+            else
+            {
+                Gizmos.color = Color.red;
+                // 플레이어 방향으로 선을 긋되, 시야 거리까지만 표시 (디버깅용)
+                // 실제 플레이어 위치까지 긋고 싶으면 player.position을 사용하세요.
+                Gizmos.DrawLine(eyePos, player.position);
+            }
         }
+    }
+
+    // 각도를 벡터(방향)로 변환해주는 헬퍼 함수
+    public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
+    {
+        if (!angleIsGlobal)
+        {
+            angleInDegrees += transform.eulerAngles.y;
+        }
+        return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
 
     public IEnumerator CalculateDeltaDistance(float delta)
@@ -427,6 +487,10 @@ public class MonsterAI : MonoBehaviour
         {
             StopCoroutine(currentPauseCoroutine);
         }
-        currentPauseCoroutine = StartCoroutine(PauseMonster(duration));
+        if(monster != null)
+        {
+            currentPauseCoroutine = StartCoroutine(PauseMonster(duration));
+
+        }
     }
 }
