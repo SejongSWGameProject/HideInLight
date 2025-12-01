@@ -559,6 +559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LampController
   lamp: {fileID: 8892479822482871721}
+  pointLight: {fileID: 0}
   isTurnedOn: 0
   isBroken: 0
   breakSound: {fileID: 0}
