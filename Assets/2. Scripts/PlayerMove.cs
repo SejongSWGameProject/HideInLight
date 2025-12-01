@@ -1,8 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.HighDefinition.ProbeSettings;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -60,7 +65,11 @@ public class PlayerMove : MonoBehaviour
     public float stepInterval = 0.5f; // 발소리 사이의 간격 (초)
 
     private float stepTimer = 0f;
+    private bool isInDarkness = false;
 
+    public GhostAI ghost;
+    public LayerMask obstacleLayer;
+    public GhostSpawner ghostSpawner;
 
     void Start()
     {
@@ -103,6 +112,8 @@ public class PlayerMove : MonoBehaviour
 
         // 시작할 때 감도 적용
         UpdateSensitivity();
+
+        StartCoroutine(CheckDarknessRoutine());
     }
 
     // =========================================================
@@ -169,16 +180,12 @@ public class PlayerMove : MonoBehaviour
         if (!Input.GetMouseButton(1) && canLook)
             Rotate();
 
-        if (Input.GetMouseButton(1))
+        if (Input.GetKeyDown(KeyCode.B))
         {
-            // RotateFlashlight();
+            CheckDarkness();
         }
 
-        // 점프 입력
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }
+
 
         Vector3 horizontalVelocity = new Vector3(controller.velocity.x, 0, controller.velocity.z);
         //Debug.Log(horizontalVelocity.magnitude);
@@ -307,6 +314,23 @@ public class PlayerMove : MonoBehaviour
         currentX = Mathf.SmoothDampAngle(currentX, xRotation, ref xVelocity, smoothTime);
         currentY = Mathf.SmoothDampAngle(currentY, yRotation, ref yVelocity, smoothTime);
 
+        // [수정된 부분] smoothTime이 0이 되면 에러가 나므로, 최소 0.01f를 보장합니다.
+        float safeSmoothTime = Mathf.Max(smoothTime, 0.01f);
+
+        currentX = Mathf.SmoothDampAngle(currentX, xRotation, ref xVelocity, safeSmoothTime);
+        currentY = Mathf.SmoothDampAngle(currentY, yRotation, ref yVelocity, safeSmoothTime);
+
+        // [추가 안전장치] 만약 계산 결과가 NaN(에러값)이라면 적용하지 않도록 방어합니다.
+        if (float.IsNaN(currentX) || float.IsNaN(currentY))
+        {
+            // NaN 발생 시, 값 초기화 (선택 사항)
+            currentX = xRotation;
+            currentY = yRotation;
+            xVelocity = 0f;
+            yVelocity = 0f;
+            return;
+        }
+
         if (cam != null)
         {
             cam.transform.rotation = Quaternion.Euler(currentX, currentY, 0);
@@ -329,5 +353,77 @@ public class PlayerMove : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    public bool getIsInDarkness()
+    {
+        return isInDarkness;
+    }
+
+    public void setIsInDarkness(bool isin)
+    {
+        isInDarkness = isin;
+    }
+
+    IEnumerator CheckDarknessRoutine()
+    {
+        // 최적화: 1초 대기 오브젝트를 미리 만들어둠 (메모리 절약)
+        WaitForSeconds wait = new WaitForSeconds(1.0f);
+
+        while (true)
+        {
+            // 함수 실행
+            CheckDarkness();
+
+            // 1초 대기 (이 줄에서 코드가 멈췄다가 1초 뒤 재개됨)
+            yield return wait;
+        }
+    }
+
+    public void CheckDarkness()
+    {
+        // 1. 반경 40m 내의 전등 레이어만 감지
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 40f, LayerMask.GetMask("Lamp"));
+
+        float distSum = 0.0f;
+
+        // 2. 배열을 한 번만 돌면서 검사와 계산을 동시에 수행
+        foreach (Collider c in hitColliders)
+        {
+            // 전등 컴포넌트 가져오기
+            LampController l = c.GetComponent<LampController>();
+
+            // 예외 처리: 컴포넌트가 없거나, 전등이 꺼져있으면 패스
+            if (l == null || !l.lamp.enabled) continue;
+
+            Vector3 direction = c.transform.position - transform.position;
+            float distance = direction.magnitude; // 레이캐스트용 실제 거리
+
+            // 3. 벽 체크 (Raycast)
+            // 장애물에 막히지 않았을 때만 계산 (Raycast가 false여야 벽이 없는 것)
+            if (!Physics.Raycast(transform.position, direction.normalized, distance, obstacleLayer))
+            {
+                // 벽이 없다면 빛 계산
+                float distSquare = direction.sqrMagnitude; // 거리 제곱 (최적화)
+
+                // 0으로 나누기 방지 (혹시 모를 에러 방지)
+                if (distSquare > 0.001f)
+                {
+                    distSum += (1000.0f / distSquare);
+                    // 디버깅이 필요하면 주석 해제
+                    Debug.Log($"{c.name} : {distSquare}");
+                }
+            }
+        }
+
+        Debug.Log("distSum:" + distSum);
+
+        // 4. 최종 판정
+        isInDarkness = (distSum < 1.0f);
+
+        if (!isInDarkness)
+        {
+            ghostSpawner.KillAllGhosts();
+        }
     }
 }

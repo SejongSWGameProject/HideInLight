@@ -4,7 +4,6 @@ using UnityEngine.Events;
 
 /// <summary>
 /// 3D 오브젝트와 F키로 상호작용합니다.
-/// - 플레이어가 근접(Trigger)했고, 퍼즐이 열려있지 않을 때만 UI를 표시하고 상호작용을 허용합니다.
 /// </summary>
 public class InteractableObject : MonoBehaviour
 {
@@ -12,9 +11,6 @@ public class InteractableObject : MonoBehaviour
     [Tooltip("상호작용에 사용할 키")]
     public KeyCode interactionKey = KeyCode.F; 
     
-    // 이 변수는 더 이상 사용하지 않습니다. (Raycast 제거)
-    // public float aimDistance = 2.5f; 
-
     [Header("연결")]
     [Tooltip("F키를 눌렀을 때 실행할 이벤트")]
     public UnityEvent OnInteract;
@@ -27,8 +23,7 @@ public class InteractableObject : MonoBehaviour
 
     [Header("퍼즐 상태")]
     private bool isPuzzleSolved = false;
-    private bool isPlayerNear = false; // 플레이어가 Trigger 안에 있는지 여부
-
+    
     public bool canInteract = true;
     private string curTag;
 
@@ -40,7 +35,6 @@ public class InteractableObject : MonoBehaviour
             interactionPromptUI.SetActive(false);
         }
         curTag = this.transform.tag;
-        //Debug.Log(curTag);
     }
 
     public void Interact()
@@ -48,7 +42,6 @@ public class InteractableObject : MonoBehaviour
         if (canInteract)
         {
             OnInteract.Invoke();
-
         }
     }
 
@@ -57,8 +50,17 @@ public class InteractableObject : MonoBehaviour
     /// </summary>
     public void SetPromptUI()
     {
+        // 파라미터 없는 버전도 아래 로직을 타도록 수정
         if (interactionPromptUI != null)
         {
+            // 퍼즐이 켜져 있으면 무조건 끔
+            if (puzzlePopupModel_Check != null && puzzlePopupModel_Check.activeInHierarchy)
+            {
+                interactionPromptUI.SetActive(false);
+                return;
+            }
+
+            // 그게 아니면 interact 가능 여부에 따라 결정
             if (canInteract)
             {
                 interactionPromptUI.SetActive(true);
@@ -70,14 +72,23 @@ public class InteractableObject : MonoBehaviour
         }
     }
 
+    // ★★★ [여기가 핵심 수정 부분] ★★★
     public void SetPromptUI(bool show)
     {
+        // 1. 안전장치: 연결된 퍼즐 창(puzzlePopupModel_Check)이 켜져 있다면?
+        //    -> 들어온 명령(show=true)을 무시하고 강제로 끕니다(false).
+        if (puzzlePopupModel_Check != null && puzzlePopupModel_Check.activeInHierarchy)
+        {
+            show = false;
+        }
+
+        // 2. 결정된 값으로 UI 설정
         if (interactionPromptUI != null)
         {
             interactionPromptUI.SetActive(show);
         }
     }
-    // (Puzzle Manager에서 호출) 퍼즐이 풀렸을 때 상호작용 비활성화
+
     public void OnPuzzleHasBeenSolved()
     {
         isPuzzleSolved = true;
@@ -92,4 +103,4 @@ public class InteractableObject : MonoBehaviour
     {
         canInteract = false;
     }
-} 
+}

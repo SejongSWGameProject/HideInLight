@@ -80,19 +80,17 @@ public class GameMenuController : MonoBehaviour
             // 설정창이나 종료확인창이 켜져 있으면 -> 일시정지 메뉴로 뒤로가기
             else if (settingsPanel.activeSelf || quitConfirmPanel.activeSelf)
             {
-                Debug.Log("BackToPause");
+
                 BackToPauseMenu();
             }
             // 이미 일시정지 상태면 -> 게임 재개
             else if (isPaused)
             {
-                Debug.Log("Resume");
                 ResumeGame();
             }
             // 게임 중이면 -> 일시정지
             else
             {
-                Debug.Log("pause");
                 PauseGame();
             }
         }
@@ -100,7 +98,6 @@ public class GameMenuController : MonoBehaviour
 
     public void PauseGame()
     {
-        Debug.Log("Esc");
         pauseMenuPanel.SetActive(true);
         settingsPanel.SetActive(false);
         quitConfirmPanel.SetActive(false);
