@@ -1898,6 +1898,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 385adeedd9a5c924393b9d016cc7ecde, type: 2}
     - target: {fileID: 8715521333929486960, guid: e5f891ebd7c71ab4796f397786b33073, type: 3}
+      propertyPath: 'correctAnswers.Array.data[0]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8715521333929486960, guid: e5f891ebd7c71ab4796f397786b33073, type: 3}
+      propertyPath: 'correctAnswers.Array.data[1]'
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8715521333929486960, guid: e5f891ebd7c71ab4796f397786b33073, type: 3}
+      propertyPath: 'correctAnswers.Array.data[2]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8715521333929486960, guid: e5f891ebd7c71ab4796f397786b33073, type: 3}
       propertyPath: OnPuzzleSolved.m_PersistentCalls.m_Calls.Array.size
       value: 7
       objectReference: {fileID: 0}
