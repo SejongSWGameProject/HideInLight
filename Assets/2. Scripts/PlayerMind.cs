@@ -18,7 +18,7 @@ public class PlayerMind : MonoBehaviour
     private float initialSizeY;           // 시작 정신력 최대수치
 
     private bool isInDarkness = false;
-    private PlayerLight playerLight;
+    public PlayerLight playerLight;
 
     public GhostAI ghost;
     public LayerMask obstacleLayer;
@@ -26,15 +26,14 @@ public class PlayerMind : MonoBehaviour
 
     public float mindValue = 100.0f;
 
-    private void Start()
+    void Start()
     {
         initialSizeY = uiObjectA.sizeDelta.y; // 시작 길이 저장
-        playerLight = GetComponentInChildren<PlayerLight>();
 
         StartCoroutine(CheckDarknessRoutine());
-
     }
 
+    
 
     void Update()
     {
@@ -49,9 +48,14 @@ public class PlayerMind : MonoBehaviour
         // 어둠에 있을 시 지속 감소
         else
         {
-            
-            adjustMind(-autoDecreaseSpeed);
+            if (playerLight != null)
+            {
+                if (!playerLight.flashlight.enabled)
+                {
+                    adjustMind(-autoDecreaseSpeed);
 
+                }
+            }
         }
 
         SetUIByMind();

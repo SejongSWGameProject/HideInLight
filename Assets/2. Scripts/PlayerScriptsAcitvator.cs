@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 
-public class FlashlightActivator : MonoBehaviour
+public class PlayerScriptsAcitvator : MonoBehaviour
 {
     [Header("Objects to Activate")]
     public GameObject flashlightModel; // A 오브젝트
     public GameObject flashlightScript;    // B 오브젝트
+    public GameObject mindUI;
     
     private bool isActivated = false;
 
@@ -17,6 +18,10 @@ public class FlashlightActivator : MonoBehaviour
         if (flashlightScript != null)
             flashlightScript.SetActive(false);
 
+        if(mindUI != null)
+        {
+            mindUI.SetActive(false);
+        }
         
     }
 
@@ -36,6 +41,12 @@ public class FlashlightActivator : MonoBehaviour
         if (flashlightScript != null)
         {
             flashlightScript.SetActive(true);
+
+        }
+
+        if (mindUI != null)
+        {
+            mindUI.SetActive(true);
 
         }
 
