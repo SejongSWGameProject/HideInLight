@@ -102,7 +102,7 @@ public class LampManager : MonoBehaviour
                 DisableAllLamps();
             }
             UpdateElectricPowerUI();
-            //Debug.Log(curPower);
+            Debug.Log(curPower);
         }
 
         if (Input.GetKeyDown(KeyCode.M))
