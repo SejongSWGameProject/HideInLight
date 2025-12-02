@@ -38,11 +38,29 @@ public class PlayerLight : MonoBehaviour
     public Color hitColor = Color.green;
     public Color missColor = Color.red;
 
+    // 색상 목록을 배열로 관리 (인스펙터에서 설정 가능)
+    // 0: Original, 1: Red, 2: Green
+    public Color[] lightColors;
+
+    public int colorIndex = 0;
+
+    public LayerMask defaultLayer; // 기본적으로 비출 레이어 (Default, Player 등)
+    public LayerMask redHiddenLayer; // 빨간색 숨겨진 오브젝트 레이어
+    public LayerMask greenHiddenLayer; // 초록색 숨겨진 오브젝트 레이어
+
     void Start()
     {
         if (flashlight == null) return;
 
-        originalColor = flashlight.color; // 초기 색상 저장
+        if (lightColors == null || lightColors.Length == 0)
+        {
+            lightColors = new Color[] { flashlight.color, Color.red, Color.green };
+        }
+        else
+        {
+            // 배열의 첫 번째 색상을 현재 라이트 색상으로 저장 (OriginalColor)
+            lightColors[0] = flashlight.color;
+        }
 
         audioSource = GetComponent<AudioSource>();
 
@@ -76,6 +94,10 @@ public class PlayerLight : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && uiObjectA.sizeDelta.x > 0) // 0 = 왼쪽 버튼
         {
             flashlight.enabled = !flashlight.enabled; // 켜져있으면 끄고, 꺼져있으면 켬
+            if (!flashlight.enabled)
+            {
+                mainCamera.cullingMask = defaultLayer;
+            }
             audioSource.PlayOneShot(toggleLight);
             if (flashlight.enabled)
             {
@@ -122,7 +144,12 @@ public class PlayerLight : MonoBehaviour
             playerMove.StartCoroutine(playerMove.FlashScreen());
         }
 
-        ScrollableLight();
+        if (flashlight.enabled)
+        {
+            ScrollableLight();
+            UpdateCullingMask();
+
+        }
 
         // **손전등이 켜져 있는 동안 UI 감소**
         if (flashlight.enabled && uiObjectA != null)
@@ -186,22 +213,42 @@ public class PlayerLight : MonoBehaviour
         return isVisible;
     }
 
+    public void UpdateCullingMask()
+    {
+        // 2. 보이는 레이어 변경 (비트 연산 | 을 사용하여 레이어 합치기)
+        if (colorIndex == 0) // 기본 (하얀 빛)
+        {
+            // 기본 레이어만 비춤
+            mainCamera.cullingMask = defaultLayer;
+        }
+        else if (colorIndex == 1) // 빨간 빛
+        {
+            // 기본 레이어 + 빨간 숨겨진 레이어를 같이 비춤
+            mainCamera.cullingMask = defaultLayer | redHiddenLayer;
+        }
+        else if (colorIndex == 2) // 초록 빛
+        {
+            // 기본 레이어 + 초록 숨겨진 레이어를 같이 비춤
+            mainCamera.cullingMask = defaultLayer | greenHiddenLayer;
+        }
+    }
     public void ScrollableLight()
     {
         // 마우스 휠 입력 처리
-        float scroll = Input.GetAxis("Mouse ScrollWheel"); // 위로 스크롤: +, 아래로: -
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+
         if (scroll != 0)
         {
-            // range 증가/감소 (최소값 50)
-            if (angle != 15f)
-                range = Mathf.Max(50f, range + scroll * scrollSpeed);
+            // 스크롤 방향에 따라 인덱스 증감
+            if (scroll > 0) colorIndex++;
+            else if (scroll < 0) colorIndex--;
 
-            // spotAngle 증가/감소 (최소값 15)
-            if (range != 50f)
-                angle = Mathf.Max(15f, angle - scroll * scrollSpeed * angleRangeFactor);
+            // 배열 길이(Length)에 맞춰 안전하게 순환 계산
+            int length = lightColors.Length;
+            colorIndex = (colorIndex % length + length) % length;
 
-            flashlight.range = range;
-            flashlight.spotAngle = angle;
+            // 색상 적용 (단 한 줄로 처리 가능)
+            flashlight.color = lightColors[colorIndex];
         }
     }
 

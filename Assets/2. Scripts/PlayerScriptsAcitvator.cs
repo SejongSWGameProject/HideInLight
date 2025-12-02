@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
-public class FlashlightActivator : MonoBehaviour
+public class PlayerScriptsAcitvator : MonoBehaviour
 {
     [Header("Objects to Activate")]
     public GameObject flashlightModel; // A 오브젝트
     public GameObject flashlightScript;    // B 오브젝트
+    public GameObject mindUI;
+    public GameObject elecPowerUI;
+    public GameObject batteryUI;
     
     private bool isActivated = false;
 
@@ -17,7 +20,19 @@ public class FlashlightActivator : MonoBehaviour
         if (flashlightScript != null)
             flashlightScript.SetActive(false);
 
-        
+        if(mindUI != null)
+        {
+            mindUI.SetActive(false);
+        }
+        if (elecPowerUI != null)
+        {
+            elecPowerUI.SetActive(false);
+        }
+        if (batteryUI != null)
+        {
+            batteryUI.SetActive(false);
+        }
+
     }
 
     void Update()
@@ -37,6 +52,20 @@ public class FlashlightActivator : MonoBehaviour
         {
             flashlightScript.SetActive(true);
 
+        }
+
+        if (mindUI != null)
+        {
+            mindUI.SetActive(true);
+
+        }
+        if (elecPowerUI != null)
+        {
+            elecPowerUI.SetActive(true);
+        }
+        if (batteryUI != null)
+        {
+            batteryUI.SetActive(true);
         }
 
         isActivated = true;

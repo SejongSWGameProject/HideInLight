@@ -487,6 +487,10 @@ public class MonsterAI : MonoBehaviour
         {
             StopCoroutine(currentPauseCoroutine);
         }
-        currentPauseCoroutine = StartCoroutine(PauseMonster(duration));
+        if(monster != null)
+        {
+            currentPauseCoroutine = StartCoroutine(PauseMonster(duration));
+
+        }
     }
 }
