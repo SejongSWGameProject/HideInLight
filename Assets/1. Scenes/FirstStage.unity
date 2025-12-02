@@ -8591,7 +8591,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8090015841123662833, guid: a490e9e6877189b46a38e0ce9de2fe62, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9900,6 +9900,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 855662052}
     - target: {fileID: 2336799605568664892, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
+      propertyPath: batteryUI
+      value: 
+      objectReference: {fileID: 1802268499}
+    - target: {fileID: 2336799605568664892, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
       propertyPath: elecPowerUI
       value: 
       objectReference: {fileID: 1524887939}
@@ -9920,9 +9924,37 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3431579865404706554}
     - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
       propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1611893511}
+    - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 567210880}
+    - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: UpdateActiveLampCount
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: LampManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7782543635756471268, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -132.66
