@@ -51,8 +51,7 @@ public class GhostAI : MonoBehaviour
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
 
         animator = GetComponentInChildren<Animator>();
-        ghostRenderer = GetComponent<Renderer>();
-        if (ghostRenderer == null) ghostRenderer = GetComponentInChildren<Renderer>(); // 자식에 있을 경우 대비
+        ghostRenderer = GetComponentInChildren<Renderer>();
 
         audioSource = GetComponent<AudioSource>(); // 오디오 소스
 
@@ -197,17 +196,29 @@ public class GhostAI : MonoBehaviour
 
         float startAlpha = startColor.a;
         float timer = 0f;
+        Vector3 originalPosition = transform.position;
+
+        // 떨림 설정
+        float shakeIntensity = 0.2f;
+        float shakeSpeed = 30f;
 
         while (timer < fadeOutDuration)
         {
             timer += Time.deltaTime;
-            float newAlpha = Mathf.Lerp(startAlpha, 0f, timer / fadeOutDuration);
+            float progress = timer / fadeOutDuration;
 
+            // 알파값 감소 (페이드 아웃)
+            float newAlpha = Mathf.Lerp(startAlpha, 0f, progress);
             Color newColor = startColor;
             newColor.a = newAlpha;
 
             if (isHDRP) mat.SetColor("_BaseColor", newColor);
             else mat.color = newColor;
+
+            // 양 옆으로 부르르 떨림 (처음 강했다가 점점 약해짐)
+            float shake = Mathf.Sin(timer * shakeSpeed) * shakeIntensity * (1f - progress);
+            Vector3 shakeOffset = transform.right * shake;
+            transform.position = originalPosition + shakeOffset;
 
             yield return null;
         }
