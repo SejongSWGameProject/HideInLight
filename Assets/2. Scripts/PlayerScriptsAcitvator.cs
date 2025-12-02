@@ -6,6 +6,8 @@ public class PlayerScriptsAcitvator : MonoBehaviour
     public GameObject flashlightModel; // A 오브젝트
     public GameObject flashlightScript;    // B 오브젝트
     public GameObject mindUI;
+    public GameObject elecPowerUI;
+    public GameObject batteryUI;
     
     private bool isActivated = false;
 
@@ -22,7 +24,15 @@ public class PlayerScriptsAcitvator : MonoBehaviour
         {
             mindUI.SetActive(false);
         }
-        
+        if (elecPowerUI != null)
+        {
+            elecPowerUI.SetActive(false);
+        }
+        if (batteryUI != null)
+        {
+            batteryUI.SetActive(false);
+        }
+
     }
 
     void Update()
@@ -48,6 +58,14 @@ public class PlayerScriptsAcitvator : MonoBehaviour
         {
             mindUI.SetActive(true);
 
+        }
+        if (elecPowerUI != null)
+        {
+            elecPowerUI.SetActive(true);
+        }
+        if (batteryUI != null)
+        {
+            batteryUI.SetActive(true);
         }
 
         isActivated = true;
