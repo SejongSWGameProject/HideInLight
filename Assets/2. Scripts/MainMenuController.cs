@@ -14,9 +14,11 @@ public class MainMenuController : MonoBehaviour
     public GameObject gameLogo;        
     public MeshRenderer lampRenderer;  
 
-    [Header("깜빡임 설정")]
-    public float minDelay = 0.05f;     
-    public float maxDelay = 0.5f;      
+    [Header("발작(이벤트) 설정")]
+    [Tooltip("이벤트 사이의 최소 대기 시간 (초)")]
+    public float intervalMin = 4.0f;     
+    [Tooltip("이벤트 사이의 최대 대기 시간 (초)")]
+    public float intervalMax = 6.0f;      
 
     private bool isGameStarted = false; 
     private Color originalEmissionColor; 
@@ -29,51 +31,39 @@ public class MainMenuController : MonoBehaviour
         if (lampRenderer != null)
             originalEmissionColor = lampRenderer.material.GetColor("_EmissiveColor");
 
-        StartCoroutine(AutoFlickerRoutine());
+        StartCoroutine(EventFlickerRoutine());
     }
 
-    // ★★★ [수정됨] 타타ㅏ타닥(X) -> 타닥! 타닥!(O) ★★★
-    IEnumerator AutoFlickerRoutine()
+    // ★★★ [수정됨] 5초마다 한 번씩 발작하는 코루틴 ★★★
+    IEnumerator EventFlickerRoutine()
     {
-        bool preventRapid = false; 
-
         while (!isGameStarted)
         {
-            // 1. 켜짐 상태 (평소)
+            // 1. 평소 상태: 불이 안정적으로 켜져 있음
             SetFlickerState(true);
-            
-            // 평소에는 여유 있게 켜져 있음 (0.8초 ~ 3.0초)
-            float onDuration = Random.value > 0.3f ? Random.Range(0.8f, 3.0f) : Random.Range(0.5f, 0.8f);
-            yield return new WaitForSeconds(onDuration);
+
+            // 5초 정도 대기 (4초 ~ 6초 사이 랜덤)
+            float waitTime = Random.Range(intervalMin, intervalMax);
+            yield return new WaitForSeconds(waitTime);
 
             if (isGameStarted) break;
 
-            // 2. 꺼짐 상태 (평소)
-            SetFlickerState(false);
-
-            // 평소에 꺼질 때도 여유 있게 (0.2초 ~ 0.5초)
-            float offDuration = Random.Range(0.2f, 0.5f); 
-            yield return new WaitForSeconds(offDuration);
+            // 2. 발작 이벤트 발생! (지직거림)
+            // 영상처럼 불규칙하게 몇 번 따닥! 거립니다.
+            int flickerCount = Random.Range(3, 6); // 3~5번 정도 반복
             
-            // 3. 지직거림 (타닥! 타닥!)
-            if (!preventRapid && Random.value < 0.12f) 
+            for (int i = 0; i < flickerCount; i++)
             {
-                for (int i = 0; i < 2; i++) 
-                {
-                    SetFlickerState(true);
-                    // [수정 포인트] 0.03초(너무 빠름) -> 0.08초~0.15초 (딱 적당히 빠름)
-                    yield return new WaitForSeconds(Random.Range(0.08f, 0.15f));
-                    
-                    SetFlickerState(false);
-                    // [수정 포인트] 여기도 똑같이 늘려줌
-                    yield return new WaitForSeconds(Random.Range(0.08f, 0.15f));
-                }
-                preventRapid = true; 
+                // 꺼짐 (아주 짧게)
+                SetFlickerState(false);
+                yield return new WaitForSeconds(Random.Range(0.05f, 0.1f));
+
+                // 켜짐 (아주 짧게)
+                SetFlickerState(true);
+                yield return new WaitForSeconds(Random.Range(0.05f, 0.1f));
             }
-            else
-            {
-                preventRapid = false; 
-            }
+            
+            // 발작이 끝나면 다시 루프 처음으로 돌아가서 5초 대기
         }
     }
 
@@ -87,6 +77,7 @@ public class MainMenuController : MonoBehaviour
 
     IEnumerator GameStartSequence()
     {
+        // 시작하면 즉시 끔
         SetFlickerState(false); 
 
         if (sfxPlayer != null && breakSound != null)
