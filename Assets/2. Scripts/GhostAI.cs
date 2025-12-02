@@ -150,12 +150,6 @@ public class GhostAI : MonoBehaviour
         if (isDying) return;
         isDying = true;
 
-        // 1. 애니메이션 먼저 실행
-        if (animator != null)
-        {
-            animator.SetTrigger("doDie");
-        }
-
         // 2. 더 이상 추적하지 못하게 스크립트 기능 끄기 (하지만 코루틴은 돌아감)
         // 이 스크립트(GhostAI)가 꺼져도 이미 시작된 코루틴은 끝까지 돕니다.
         // 다만 Update()는 멈춥니다.
@@ -226,25 +220,58 @@ public class GhostAI : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private bool isAttacking = false;
+
     void CheckAttack()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, mainCamera.position);
+        if (isAttacking) return; // 이미 공격 중이면 무시
+
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         if (distanceToPlayer <= attackRange)
         {
-            // 공격 애니메이션 실행
-            if (animator != null)
-            {
-                animator.SetTrigger("doAttack");
-            }
-
-            Debug.Log("공격!");
-            if (playerMind != null) playerMind.IncreasePlayerMind(-10);
-
-            // [확인] 공격 후 바로 죽는 것이 의도된 것인가요? (자폭 유령)
-            // 만약 계속 살아서 공격해야 한다면 Die()를 지우고 쿨타임(Cooldown)을 넣어야 합니다.
-            Die();
+            isAttacking = true; // 공격 시작 플래그
+            StartCoroutine(AttackRoutine());
         }
+    }
+
+    IEnumerator AttackRoutine()
+    {
+        // 1. 플레이어 방향으로 회전 (LookRotation)
+        Vector3 direction = mainCamera.position - transform.position;
+        direction.y = 0;
+
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRot = Quaternion.LookRotation(direction);
+            // [중요] 만약 모델이 뒤집혀 있다면 아래 줄 주석을 해제해서 180도 돌리세요
+            // targetRot *= Quaternion.Euler(0, 180, 0); 
+            transform.rotation = targetRot;
+        }
+
+        // 2. 공격 애니메이션 실행
+        //if (animator != null) animator.SetTrigger("doAttack");
+
+        // 3. 데미지 처리
+        Debug.Log("공격 및 돌진!");
+        if (playerMind != null) playerMind.IncreasePlayerMind(-10);
+
+        // 4. [핵심] 앞으로 돌진 (Lunge) 구현
+        // 0.5초 동안 유령을 앞으로 강제 이동시킵니다.
+        float lungeDuration = 0.25f; // 돌진하는 시간
+        float lungeSpeed = 30f;     // 돌진 속도 (빠르게)
+        float timer = 0;
+
+        while (timer < lungeDuration)
+        {
+            timer += Time.deltaTime;
+            // 유령이 바라보는 방향(Forward)으로 이동
+            transform.Translate(Vector3.forward * lungeSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        // 5. 돌진이 끝나면 사망 처리
+        Die();
     }
 
     void OnDrawGizmosSelected()
