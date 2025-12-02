@@ -23203,6 +23203,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4220299300847306743, guid: fdc91328ea6134e4aa1053624645996b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907206239800408828, guid: fdc91328ea6134e4aa1053624645996b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907206239800408828, guid: fdc91328ea6134e4aa1053624645996b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 7033600580424657879, guid: fdc91328ea6134e4aa1053624645996b, type: 3}
+      propertyPath: m_Color.a
+      value: 0.9019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 7033600580424657879, guid: fdc91328ea6134e4aa1053624645996b, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7033600580424657879, guid: fdc91328ea6134e4aa1053624645996b, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7033600580424657879, guid: fdc91328ea6134e4aa1053624645996b, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7897155210961503297, guid: fdc91328ea6134e4aa1053624645996b, type: 3}
       propertyPath: m_Name
       value: switchMap_Canvas
