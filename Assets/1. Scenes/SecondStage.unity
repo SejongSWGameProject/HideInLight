@@ -24802,9 +24802,22 @@ PrefabInstance:
       value: PromptUI
       objectReference: {fileID: 0}
     - target: {fileID: 3659556714863420010, guid: 752ea90276acfbc46b83443b522f1bf0, type: 3}
+      propertyPath: m_text
+      value: "\uBCC0\uC555\uAE30\uB97C \uC791\uB3D9\uC2DC\uCF1C \uC774\uACF3\uC744
+        \uD0C8\uCD9C\uD558\uC790."
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659556714863420010, guid: 752ea90276acfbc46b83443b522f1bf0, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f81a72ed5039fe42af4296c9d0f3263, type: 2}
+    - target: {fileID: 3659556714863420010, guid: 752ea90276acfbc46b83443b522f1bf0, type: 3}
       propertyPath: m_fontStyle
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3659556714863420010, guid: 752ea90276acfbc46b83443b522f1bf0, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 1382106305640370885, guid: 8f81a72ed5039fe42af4296c9d0f3263, type: 2}
     - target: {fileID: 3659556714863420010, guid: 752ea90276acfbc46b83443b522f1bf0, type: 3}
       propertyPath: m_TextWrappingMode
       value: 1
@@ -24812,6 +24825,10 @@ PrefabInstance:
     - target: {fileID: 3659556714863420010, guid: 752ea90276acfbc46b83443b522f1bf0, type: 3}
       propertyPath: m_HorizontalAlignment
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3659556714863420010, guid: 752ea90276acfbc46b83443b522f1bf0, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3659556714863420010, guid: 752ea90276acfbc46b83443b522f1bf0, type: 3}
       propertyPath: m_IsTextObjectScaleStatic
