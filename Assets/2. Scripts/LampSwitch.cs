@@ -76,10 +76,9 @@ public class LampSwitch : MonoBehaviour
                     audioSource.PlayOneShot(switchOff);
 
                 }
-            }
-            
+            }   
         }
 
-        // 4. (선택 사항) 상태를 콘솔에 출력
+        LampManager.Instance.UpdateActiveLampCount();
     }
 }
