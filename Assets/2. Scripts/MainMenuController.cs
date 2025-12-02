@@ -1,133 +1,115 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Audio;
-using UnityEngine.UI; // Image(밝기 조절용) 사용
-using TMPro; // Dropdown 사용
-using System.Collections.Generic; // 리스트 사용
 
 public class MainMenuController : MonoBehaviour
 {
-    [Header("UI Objects")]
-    public GameObject settingsPanel;        // 설정 창 패널
-    public TMP_Dropdown resolutionDropdown; // 해상도 드롭다운
-    public Image brightnessOverlay;         // 밝기 조절용 검은 막(Panel)
+    [Header("기본 연출 설정")]
+    public Light horrorLight;          
+    public GameObject blackScreenPanel; 
+    public AudioSource sfxPlayer;      
+    public AudioClip breakSound;       
 
-    [Header("Audio")]
-    public AudioMixer audioMixer;           // 오디오 믹서
+    [Header("추가 깜빡임 대상")]
+    public GameObject gameLogo;        
+    public MeshRenderer lampRenderer;  
 
-    Resolution[] resolutions; // 해상도 목록 저장 변수
+    [Header("깜빡임 설정")]
+    public float minDelay = 0.05f;     
+    public float maxDelay = 0.5f;      
+
+    private bool isGameStarted = false; 
+    private Color originalEmissionColor; 
 
     void Start()
     {
-        // 시작 시 해상도 목록 초기화
-        InitResolutionDropdown();
+        if (blackScreenPanel != null) 
+            blackScreenPanel.SetActive(false);
+
+        if (lampRenderer != null)
+            originalEmissionColor = lampRenderer.material.GetColor("_EmissiveColor");
+
+        StartCoroutine(AutoFlickerRoutine());
     }
 
-    void Update()
+    // ★★★ [수정됨] 타타ㅏ타닥(X) -> 타닥! 타닥!(O) ★★★
+    IEnumerator AutoFlickerRoutine()
     {
-        // ESC 누르면 설정창 닫기
-        if (Input.GetKeyDown(KeyCode.Escape) && settingsPanel.activeSelf)
+        bool preventRapid = false; 
+
+        while (!isGameStarted)
         {
-            CloseOption();
-        }
-    }
+            // 1. 켜짐 상태 (평소)
+            SetFlickerState(true);
+            
+            // 평소에는 여유 있게 켜져 있음 (0.8초 ~ 3.0초)
+            float onDuration = Random.value > 0.3f ? Random.Range(0.8f, 3.0f) : Random.Range(0.5f, 0.8f);
+            yield return new WaitForSeconds(onDuration);
 
-    // --- [1] 해상도 설정 기능 ---
-    void InitResolutionDropdown()
-    {
-        resolutions = Screen.resolutions;
-        resolutionDropdown.ClearOptions();
+            if (isGameStarted) break;
 
-        List<string> options = new List<string>();
-        int currentResolutionIndex = 0;
+            // 2. 꺼짐 상태 (평소)
+            SetFlickerState(false);
 
-        for (int i = 0; i < resolutions.Length; i++)
-        {
-            string option = resolutions[i].width + " x " + resolutions[i].height;
-            options.Add(option);
-
-            if (resolutions[i].width == Screen.width &&
-                resolutions[i].height == Screen.height)
+            // 평소에 꺼질 때도 여유 있게 (0.2초 ~ 0.5초)
+            float offDuration = Random.Range(0.2f, 0.5f); 
+            yield return new WaitForSeconds(offDuration);
+            
+            // 3. 지직거림 (타닥! 타닥!)
+            if (!preventRapid && Random.value < 0.12f) 
             {
-                currentResolutionIndex = i;
+                for (int i = 0; i < 2; i++) 
+                {
+                    SetFlickerState(true);
+                    // [수정 포인트] 0.03초(너무 빠름) -> 0.08초~0.15초 (딱 적당히 빠름)
+                    yield return new WaitForSeconds(Random.Range(0.08f, 0.15f));
+                    
+                    SetFlickerState(false);
+                    // [수정 포인트] 여기도 똑같이 늘려줌
+                    yield return new WaitForSeconds(Random.Range(0.08f, 0.15f));
+                }
+                preventRapid = true; 
+            }
+            else
+            {
+                preventRapid = false; 
             }
         }
-
-        resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = currentResolutionIndex;
-        resolutionDropdown.RefreshShownValue();
     }
 
-    public void SetResolution(int resolutionIndex)
+    public void OnStartButtonPressed()
     {
-        Resolution resolution = resolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        if (isGameStarted) return; 
+        isGameStarted = true;      
+
+        StartCoroutine(GameStartSequence());
     }
 
-    // --- [2] 기본 메뉴 기능 ---
-    public void GameStart()
+    IEnumerator GameStartSequence()
     {
-        SceneManager.LoadScene("FirstStage");
-    }
+        SetFlickerState(false); 
 
-    public void OpenOption()
-    {
-        settingsPanel.SetActive(true);
-    }
-
-    public void CloseOption()
-    {
-        settingsPanel.SetActive(false);
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
-        Debug.Log("게임 종료");
-    }
-
-    // --- [3] 사운드 조절 기능 (Master, BGM, SFX 분리) ---
-    
-    // 전체 볼륨
-    public void SetVolume(float volume)
-    {
-        audioMixer.SetFloat("MasterVolume", Mathf.Log10(volume) * 20);
-    }
-
-    // 배경음악 (BGM) - [추가됨]
-    public void SetBGMVolume(float volume)
-    {
-        audioMixer.SetFloat("BGMParam", Mathf.Log10(volume) * 20);
-    }
-
-    // 효과음 (SFX) - [추가됨]
-    public void SetSFXVolume(float volume)
-    {
-        audioMixer.SetFloat("SFXParam", Mathf.Log10(volume) * 20);
-    }
-
-    // --- [4] 밝기 조절 기능 (검은 막 투명도) ---
-    public void SetBrightness(float value)
-    {
-        if (brightnessOverlay != null)
+        if (sfxPlayer != null && breakSound != null)
         {
-            // 슬라이더(0~1): 1이면 밝음(투명), 0이면 어두움(검정)
-            float alpha = 1.0f - value; 
-            
-            // 너무 깜깜해지지 않게 최대 0.9까지만 어두워지게 제한
-            alpha = Mathf.Clamp(alpha, 0f, 0.9f); 
-
-            Color c = brightnessOverlay.color;
-            c.a = alpha;
-            brightnessOverlay.color = c;
+            sfxPlayer.PlayOneShot(breakSound);
         }
+
+        if (blackScreenPanel != null) 
+            blackScreenPanel.SetActive(true);
+
+        yield return new WaitForSeconds(2.0f); 
+        SceneManager.LoadScene("FirstStage"); 
     }
 
-    // --- [5] 마우스 감도 조절 ---
-    public void SetSensitivity(float sens)
+    void SetFlickerState(bool isOn)
     {
-        PlayerPrefs.SetFloat("MouseSens", sens);
-        PlayerPrefs.Save();
-        Debug.Log("마우스 감도 변경됨: " + sens);
+        if (horrorLight != null) horrorLight.enabled = isOn;
+        if (gameLogo != null) gameLogo.SetActive(isOn);
+
+        if (lampRenderer != null)
+        {
+            Color targetColor = isOn ? originalEmissionColor : Color.black;
+            lampRenderer.material.SetColor("_EmissiveColor", targetColor);
+        }
     }
 }
