@@ -58,8 +58,6 @@ public class PlayerInteractor : MonoBehaviour
                     // 6. 상호작용 실행!
                     // (이 객체의 UnityEvent가 SwitchPuzzleManager의 OpenPuzzlePopup()을 호출)
 
-                    Debug.Log("playerinter getkey");
-
                     interactable.Interact();
                 }
                 interactable.SetPromptUI();
