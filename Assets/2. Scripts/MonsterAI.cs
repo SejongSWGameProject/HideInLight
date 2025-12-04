@@ -42,6 +42,9 @@ public class MonsterAI : MonoBehaviour
 
     private Coroutine currentPauseCoroutine;
 
+    public bool chasePlayer = false;
+    public bool isCrazy = false;
+
     // �÷��̾ �ô��� ����
     public bool canSeePlayer { get; private set; }
 
