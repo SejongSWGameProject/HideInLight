@@ -1,8 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SwitchManager : MonoBehaviour
 {
     public static SwitchManager Instance;
+    public TextScript leverCntText;
 
     [Header("상태")]
     public int currentCount = 0;   // 현재 주머니에 있는 부품 개수
@@ -17,6 +18,7 @@ public class SwitchManager : MonoBehaviour
     {
         currentCount++;
         Debug.Log($"부품 획득! 현재 보유량: {currentCount}");
+        leverCntText.ShowTextInstantly("" + currentCount);
     }
 
     // ★ [추가됨] 부품 사용하기 (정답 맞췄을 때 호출)

@@ -2,7 +2,7 @@
 using UnityEngine;
 using TMPro;
 
-public class TypeWriterTMP : MonoBehaviour
+public class TextScript : MonoBehaviour
 {
     public TMP_Text uiText;       // TextMeshPro
     public float delay = 0.5f;    // 글자 출력 간격
@@ -10,6 +10,7 @@ public class TypeWriterTMP : MonoBehaviour
     public float stayDuration = 2.0f; // 텍스트가 유지되는 시간
 
     private string originalText;
+    private Coroutine currentRoutine;
 
     void Awake()
     {
@@ -26,13 +27,25 @@ public class TypeWriterTMP : MonoBehaviour
 
     public void ShowTextInstantly()
     {
-        StartCoroutine(ShowInstantlyRoutine());
+        if (currentRoutine != null)
+        {
+            StopCoroutine(currentRoutine);
+        }
+        currentRoutine = StartCoroutine(ShowInstantlyRoutine());
+    }
+
+    public void ShowTextInstantly(string s)
+    {
+        if (currentRoutine != null)
+        {
+            StopCoroutine(currentRoutine);
+        }
+        currentRoutine = StartCoroutine(ShowInstantlyRoutine(s));
     }
 
     public void ShowFindGeneratorText()
     {
         StartCoroutine(ShowTextWithDelay());
-
     }
 
     IEnumerator ShowInstantlyRoutine()
@@ -47,6 +60,24 @@ public class TypeWriterTMP : MonoBehaviour
 
         // 3) 페이드 아웃 시작
         yield return StartCoroutine(FadeOut());
+
+        currentRoutine = null;
+    }
+
+    IEnumerator ShowInstantlyRoutine(string s)
+    {
+        // 1) 텍스트와 투명도 즉시 초기화 (한번에 등장)
+        uiText.text = s+originalText;
+        Color c = uiText.color;
+        uiText.color = new Color(c.r, c.g, c.b, 1f); // 알파값 1로 복구
+
+        // 2) 지정된 시간만큼 대기 (유지)
+        yield return new WaitForSeconds(stayDuration);
+
+        // 3) 페이드 아웃 시작
+        yield return StartCoroutine(FadeOut());
+
+        currentRoutine = null;
     }
 
     IEnumerator ShowTextWithDelay()

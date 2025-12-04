@@ -109,6 +109,6 @@ public class GhostSpawner : MonoBehaviour
 
         // 다 죽였으니 명단 초기화
         activeGhosts.Clear();
-        Debug.Log("모든 유령 제거 완료");
+        //Debug.Log("모든 유령 제거 완료");
     }
 }
