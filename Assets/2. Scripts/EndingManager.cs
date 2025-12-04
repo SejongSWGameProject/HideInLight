@@ -51,7 +51,7 @@ public class EndingManager : MonoBehaviour
     {
         Debug.Log("폭사 엔딩: 다 같이 죽자!");
         // 바로 씬을 넘기기보다, 펑 터지는 효과 후 넘기는 게 좋으므로 코루틴 등 사용 권장
-        Invoke("LoadBadEndingScene", 2.0f); // 2초 뒤 이동
+        //Invoke("LoadBadEndingScene", 2.0f); // 2초 뒤 이동
     }
 
     void LoadBadEndingScene()

@@ -41,6 +41,14 @@ public class StartTigger : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            ActivateObjects();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         ActivateObjects();
