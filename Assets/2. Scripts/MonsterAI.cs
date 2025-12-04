@@ -328,16 +328,6 @@ public class MonsterAI : MonoBehaviour
             monster.isStopped = true;
         }
 
-        // --- (����) �ִϸ��̼ǵ� ���߱� ---
-        // Animator animator = GetComponent<Animator>();
-        // if (animator != null)
-        // {
-        //     animator.speed = 0; // �ִϸ��̼� �ӵ��� 0���� ����� ����
-        // }
-        // ---------------------------------
-
-        Debug.Log("���� ����!");
-
         // 7. ������ �ð�(duration)��ŭ ���
         yield return new WaitForSeconds(duration);
 
@@ -347,14 +337,14 @@ public class MonsterAI : MonoBehaviour
             monster.isStopped = false;
         }
 
+        Debug.Log(Vector3.Distance(this.transform.position, player.position));
+
         // --- (����) �ִϸ��̼� �ٽ� ��� ---
         // if (animator != null)
         // {
         //     animator.speed = 1; // �ִϸ��̼� �ӵ��� �ٽ� 1��
         // }
         // ---------------------------------
-
-        Debug.Log("���� �ٽ� ������!");
 
         // 9. ���� ���� ����
         isPaused = false;

@@ -17,6 +17,14 @@ public class ExitManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();   
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            OpenExit();
+        }
+    }
+
     public void OpenExit()
     {
         StartCoroutine(OpenDoorsRoutine());
