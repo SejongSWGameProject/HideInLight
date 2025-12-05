@@ -253,7 +253,7 @@ public class GhostAI : MonoBehaviour
         //if (animator != null) animator.SetTrigger("doAttack");
 
         // 3. 데미지 처리
-        Debug.Log("공격 및 돌진!");
+        //Debug.Log("공격 및 돌진!");
         if (playerMind != null) playerMind.IncreasePlayerMind(-10);
 
         // 4. [핵심] 앞으로 돌진 (Lunge) 구현

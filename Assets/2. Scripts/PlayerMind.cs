@@ -152,7 +152,7 @@ public class PlayerMind : MonoBehaviour
             }
 
             // 디버그로 수치 변화 확인해보세요 (초반엔 수치가 아주 천천히 오를 겁니다)
-            Debug.Log($"Mind: {mindValue} | Linear(t): {t:F2} | Curved(t^2): {curveT:F2}");
+            //Debug.Log($"Mind: {mindValue} | Linear(t): {t:F2} | Curved(t^2): {curveT:F2}");
         }
     }
     public void SetUIByMind()
