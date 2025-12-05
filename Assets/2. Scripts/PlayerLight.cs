@@ -76,9 +76,6 @@ public class PlayerLight : MonoBehaviour
 
     void Update()
     {
-        // --- 배터리 UI 오브젝트 활성화 (한 번만) ---
-        if (BatteryUI != null)
-            BatteryUI.SetActive(true);
 
         if (flashlight.enabled && Input.GetKeyDown(KeyCode.E))
         {

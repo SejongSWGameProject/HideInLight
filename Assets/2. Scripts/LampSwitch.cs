@@ -28,7 +28,8 @@ public class LampSwitch : MonoBehaviour
             // (모든 전등이 처음에 같은 상태라고 가정)
             foreach(LampController l in targetLights)
             {
-                if (isLightOn)
+                if (l == null) continue;
+                else if (isLightOn)
                 {
                     l.TurnOn();
                     LampManager.Instance.RegisterLamp(l);

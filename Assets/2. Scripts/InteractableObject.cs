@@ -20,12 +20,8 @@ public class InteractableObject : MonoBehaviour
 
     [Tooltip("퍼즐 UI의 활성 상태를 체크할 게임 오브젝트 (PopupAnchor)")]
     public GameObject puzzlePopupModel_Check;
-
-    [Header("퍼즐 상태")]
-    private bool isPuzzleSolved = false;
     
     public bool canInteract = true;
-    private string curTag;
 
     // 1. 시작할 때 UI 숨기기
     void Start()
@@ -34,7 +30,6 @@ public class InteractableObject : MonoBehaviour
         {
             interactionPromptUI.SetActive(false);
         }
-        curTag = this.transform.tag;
     }
 
     public void Interact()
@@ -87,12 +82,6 @@ public class InteractableObject : MonoBehaviour
         {
             interactionPromptUI.SetActive(show);
         }
-    }
-
-    public void OnPuzzleHasBeenSolved()
-    {
-        isPuzzleSolved = true;
-        SetPromptUI(); 
     }
 
     public void CanInteract()

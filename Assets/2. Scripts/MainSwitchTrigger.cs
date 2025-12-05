@@ -1,10 +1,13 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MainSwitchTrigger : MonoBehaviour
 {
     [Header("연결해야 할 것들")]
     public GameObject wallHandleModel; 
-    public GameObject puzzleSystemObject; 
+    public GameObject puzzleSystemObject;
+
+    public TextScript noLeverText;
+    public TextScript mainFirstText;
 
     [Header("순서 설정 (선택사항)")]
     [Tooltip("이 발전기보다 먼저 풀어야 하는 발전기가 있다면 여기에 넣으세요.")]
@@ -22,6 +25,7 @@ public class MainSwitchTrigger : MonoBehaviour
         if (previousGenerator != null && previousGenerator.isCleared == false)
         {
             Debug.Log("⚠️ 메인 발전기(파란색)를 먼저 수리해야 합니다!");
+            mainFirstText.ShowTextInstantly();
             // 여기에 "전력이 들어오지 않습니다" 같은 안내 UI를 띄워도 좋습니다.
             return; // 여기서 강제 종료 (문 안 열어줌)
         }
@@ -42,6 +46,7 @@ public class MainSwitchTrigger : MonoBehaviour
             else
             {
                 Debug.Log("부품이 하나도 없습니다.");
+                noLeverText.ShowTextInstantly();
             }
         }
     }

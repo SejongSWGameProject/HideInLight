@@ -80,14 +80,14 @@ public class LampManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            targetLamp = SetMonsterTargetToRandomLamp();
-        }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            targetLamp = SetMonsterTargetToRandomLamp();
-        }
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    targetLamp = SetMonsterTargetToRandomLamp();
+        //}
+        //if (Input.GetKeyDown(KeyCode.N))
+        //{
+        //    targetLamp = SetMonsterTargetToRandomLamp();
+        //}
         if (lamps.Count == 0)
         {
             Debug.Log("모든 전등 깨짐");
@@ -105,10 +105,10 @@ public class LampManager : MonoBehaviour
             //Debug.Log(curPower);
         }
 
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            curPower -= 100f;
-        }
+        //if (Input.GetKeyDown(KeyCode.M))
+        //{
+        //    curPower -= 100f;
+        //}
     }
 
     public void UpdateActiveLampCount()
