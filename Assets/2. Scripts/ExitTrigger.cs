@@ -1,4 +1,5 @@
-using UnityEngine;
+ï»¿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ExitTrigger : MonoBehaviour
 {
@@ -9,7 +10,8 @@ public class ExitTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             //NextStage();
-            Debug.Log("½ºÅ×ÀÌÁö Å¬¸®¾î!");
+            Debug.Log("ìŠ¤í…Œì´ì§€ í´ë¦¬ì–´!");
+            SceneManager.LoadScene("SecondStage");
         }
     }
     void Start()
