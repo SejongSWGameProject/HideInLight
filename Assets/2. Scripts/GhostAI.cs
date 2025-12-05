@@ -30,6 +30,7 @@ public class GhostAI : MonoBehaviour
     public float fadeOutDuration = 1f;
     public GameObject deathEffectPrefab;
     public AudioClip deathSound;
+    public AudioClip attackSound;
 
     private bool isDying = false;
     private Renderer ghostRenderer;
@@ -87,7 +88,7 @@ public class GhostAI : MonoBehaviour
             if (playerLight.IsObjectIlluminated(this.gameObject) && playerLight.colorIndex == 2)
             {
                 Debug.Log("빛받음");
-                Die();
+                Die(true);
             }
         }
         CheckAttack();
@@ -145,7 +146,7 @@ public class GhostAI : MonoBehaviour
         transform.position = pos;
     }
 
-    public void Die()
+    public void Die(bool playSound)
     {
         if (isDying) return;
         isDying = true;
@@ -160,7 +161,7 @@ public class GhostAI : MonoBehaviour
         if (col != null) col.enabled = false;
 
         // 4. 소리 및 이펙트
-        if (audioSource != null && deathSound != null)
+        if (audioSource != null && deathSound != null && playSound)
         {
             audioSource.PlayOneShot(deathSound);
         }
@@ -249,12 +250,17 @@ public class GhostAI : MonoBehaviour
             transform.rotation = targetRot;
         }
 
+        gameObject.layer = LayerMask.NameToLayer("Default");
+        transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Default");
+
         // 2. 공격 애니메이션 실행
         //if (animator != null) animator.SetTrigger("doAttack");
 
         // 3. 데미지 처리
         //Debug.Log("공격 및 돌진!");
         if (playerMind != null) playerMind.IncreasePlayerMind(-10);
+
+        audioSource.PlayOneShot(attackSound);
 
         // 4. [핵심] 앞으로 돌진 (Lunge) 구현
         // 0.5초 동안 유령을 앞으로 강제 이동시킵니다.
@@ -271,7 +277,7 @@ public class GhostAI : MonoBehaviour
         }
 
         // 5. 돌진이 끝나면 사망 처리
-        Die();
+        Die(false);
     }
 
     void OnDrawGizmosSelected()
