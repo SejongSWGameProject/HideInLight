@@ -4442,8 +4442,8 @@ MonoBehaviour:
   breakSound: {fileID: 0}
   gameLogo: {fileID: 2055991486}
   lampRenderer: {fileID: 3625024775602810235}
-  minDelay: 1
-  maxDelay: 2
+  intervalMin: 4
+  intervalMax: 6
 --- !u!4 &1479963269
 Transform:
   m_ObjectHideFlags: 0
