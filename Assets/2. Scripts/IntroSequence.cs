@@ -55,6 +55,7 @@ public class IntroSequence : MonoBehaviour
         // 2. 깨지는 소리 재생
         if (audioSource != null && breakSound != null)
         {
+            audioSource.Stop();
             audioSource.PlayOneShot(breakSound);
         }
         
