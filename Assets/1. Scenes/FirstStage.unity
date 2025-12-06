@@ -4390,6 +4390,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1030082177}
     - target: {fileID: 8225212027028624040, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
+      propertyPath: monster
+      value: 
+      objectReference: {fileID: 1006752295}
+    - target: {fileID: 8225212027028624040, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
       propertyPath: uiObjectA
       value: 
       objectReference: {fileID: 4863805128776872426}
@@ -10104,7 +10108,7 @@ PrefabInstance:
     - target: {fileID: 2336799605568664892, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
       propertyPath: mindUI
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 855662052}
     - target: {fileID: 2336799605568664892, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
       propertyPath: batteryUI
       value: 

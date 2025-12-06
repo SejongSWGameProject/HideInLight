@@ -51,7 +51,6 @@ public class MonsterAI : MonoBehaviour
     public AudioClip growlClip;
     private AudioSource fadeOutAudioSource;
 
-    public bool chasePlayer = false;
     public bool isCrazy = false;
 
 
@@ -417,11 +416,14 @@ public class MonsterAI : MonoBehaviour
         animator.SetFloat("Speed", originspeed);
         animator.SetBool("isStunned", false);
 
-        if (CheckSight() == false)
+        if (!isCrazy)
         {
-            monsterState = NORMAL;
-            deltatDistance = 10.0f;
-            lampManager.SetMonsterTargetToRandomLamp();
+            if (CheckSight() == false)
+            {
+                monsterState = NORMAL;
+                deltatDistance = 10.0f;
+                lampManager.SetMonsterTargetToRandomLamp();
+            }
         }
 
         currentPauseCoroutine = null;
