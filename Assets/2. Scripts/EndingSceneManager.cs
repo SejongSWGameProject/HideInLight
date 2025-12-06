@@ -28,6 +28,9 @@ public class EndingSceneManager : MonoBehaviour
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.None; // 마우스를 자유롭게 풀어줌
+        Cursor.visible = true;
+
         // 1. 시작할 때 메인 메뉴 버튼은 숨김
         if (mainMenuButton != null)
             mainMenuButton.SetActive(false);

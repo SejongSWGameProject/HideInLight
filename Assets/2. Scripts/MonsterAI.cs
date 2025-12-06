@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class MonsterAI : MonoBehaviour
 {
@@ -316,7 +317,7 @@ public class MonsterAI : MonoBehaviour
 
         // 5. 게임 오버 처리 (아래 3단계 참고)
         // (이벤트 또는 Invoke 사용)
-        float killAnimationLength = 1.5f; // 예: 킬 애니메이션의 총 길이 (초)
+        float killAnimationLength = 2f; // 예: 킬 애니메이션의 총 길이 (초)
         Invoke("ShowGameOver", killAnimationLength);
 
     }
@@ -333,6 +334,9 @@ public class MonsterAI : MonoBehaviour
         {
             jumpscareLight.enabled = false;
         }
+
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentSceneName);
     }
     
     public void setMonsterState(int state)  //NORMAL(1), CHASE(2), STUN(3)
