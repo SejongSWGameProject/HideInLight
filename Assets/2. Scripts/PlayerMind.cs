@@ -15,7 +15,7 @@ public class PlayerMind : MonoBehaviour
     public RectTransform uiObjectA;             // 줄어드는 UI 오브젝트
 
     [Header("감소 속도")]
-    public float IncreaseSpeed = 20f;           // 외부 라이트에 비출 때
+    public float IncreaseSpeed = 50f;           // 외부 라이트에 비출 때
     public float autoDecreaseSpeed = 5f;        // 어둠에 있을 시 감소
     private float initialSizeY;           // 시작 정신력 최대수치
 
