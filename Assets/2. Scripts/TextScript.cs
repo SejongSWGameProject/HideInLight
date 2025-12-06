@@ -2,77 +2,67 @@
 using UnityEngine;
 using TMPro;
 
-public class TypeWriterTMP : MonoBehaviour
+public class FadeTMP : MonoBehaviour
 {
-    public TMP_Text uiText;       // TextMeshPro
-    public float delay = 0.5f;    // 글자 출력 간격
-    public float fadeDuration = 1.5f; // 서서히 사라지는 시간
+    public TMP_Text uiText;           // TextMeshProUGUI
+    public float fadeInDuration = 40f; // 서서히 나타나는 시간
+    public float stayDuration = 50f;   // 최대 밝기 유지 시간
+    public float fadeOutDuration = 50f; // 서서히 사라지는 시간
 
-    private string originalText;
+    private Color originalColor;
 
     void Awake()
     {
         if (uiText == null)
             uiText = GetComponent<TMP_Text>();
 
-        originalText = uiText.text;
-        uiText.text = "";
+        // Rich Text 활성화
+        uiText.richText = true;
+        uiText.ForceMeshUpdate();
+
+        originalColor = uiText.color;
+        // 처음에는 완전히 투명
+        uiText.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
     }
 
-    void Start()
+    IEnumerator Start()
     {
+        yield return new WaitForSeconds(2f); // 시작 전 대기
+        ShowText();
     }
 
-    public void ShowFindGeneratorText()
+    public void ShowText()
     {
-        StartCoroutine(ShowTextWithDelay());
-
+        StartCoroutine(FadeInStayFadeOut());
     }
 
-    IEnumerator ShowTextWithDelay()
-    {
-        yield return new WaitForSeconds(1f);
-
-        // 1) 타이핑 효과
-        foreach (char c in originalText)
-        {
-            uiText.text += c;
-            yield return new WaitForSeconds(delay);
-        }
-
-        // 2) 타이핑 끝난 뒤 2초 유지
-        yield return new WaitForSeconds(2f);
-
-        // 3) 페이드 아웃 시작
-        yield return StartCoroutine(FadeOut());
-    }
-
-    IEnumerator FadeOut()
+    IEnumerator FadeInStayFadeOut()
     {
         float time = 0f;
-        Color originalColor = uiText.color;
-
-        while (time < fadeDuration)
+        while (time < fadeInDuration)
         {
-            float t = time / fadeDuration;
-
-            uiText.color = new Color(
-                originalColor.r,
-                originalColor.g,
-                originalColor.b,
-                Mathf.Lerp(1f, 0f, t)
-            );
-
+            float t = Mathf.SmoothStep(0f, 10f, time / fadeInDuration); // 부드러운 easing
+            uiText.color = new Color(originalColor.r, originalColor.g, originalColor.b, t);
             time += Time.deltaTime;
             yield return null;
         }
+        uiText.color = originalColor;
 
-        // 완전히 투명하게
-        uiText.color = new Color(
-            originalColor.r,
-            originalColor.g,
-            originalColor.b,
-            0f
-        );
+        // ===== 2) 최대 밝기 유지 =====
+        yield return new WaitForSeconds(stayDuration);
+
+        // ===== 3) 페이드 아웃 =====
+        time = 0f;
+        while (time < fadeOutDuration)
+        {
+            float t = Mathf.SmoothStep(10f, 0f, time / fadeOutDuration); // 부드러운 easing
+            uiText.color = new Color(originalColor.r, originalColor.g, originalColor.b, t);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        uiText.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+
+        // 완전히 투명하게 마무리
+        uiText.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
     }
 }
