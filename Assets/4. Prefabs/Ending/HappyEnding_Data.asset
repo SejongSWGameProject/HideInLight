@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64027691895783843a3929e402b5caf2, type: 3}
+  m_Name: HappyEnding_Data
+  m_EditorClassIdentifier: Assembly-CSharp::EndingData
+  endingType: 1
+  backgroundImage: {fileID: 21300000, guid: 0529cdc837beeec4697297b87bc324fc, type: 3}
+  narrationLines:
+  - "\uD608\uC561 \uCC44\uCDE8\uAE30\uB97C \uC190\uC5D0 \uC954 \uCC44 \uC5F0\uAD6C\uC18C\uB97C
+    \uBE60\uC838\uB098\uC654\uB2E4.\r\n\uC2E4\uD5D8\uCCB4\uB294 \uB3C4\uC8FC\uD588\uC73C\uB098,
+    \uC0DD\uCCB4 \uB370\uC774\uD130\uAC00 \uC774\uBBF8 \uB0B4 \uC190 \uC548\uC5D0
+    \uC788\uC5C8\uB2E4.\n\uC2E4\uD5D8\uCCB4\uB294 \uC778\uADFC \uC57C\uC0B0\uC5D0\uC11C
+    \uD3EC\uD68D\uB418\uC5C8\uB2E4.\n\uC8FC\uBCC0 \uB9C8\uC744\uC740 \uC548\uC804\uD558\uB2E4."
