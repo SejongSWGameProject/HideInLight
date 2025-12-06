@@ -14,6 +14,8 @@ public class MonsterIncapsule : MonoBehaviour
 
     private void OnDisable()
     {
+        if (!this.gameObject.scene.isLoaded) return;
+
         if (capsuleBreakClip != null)
         {
             AudioSource.PlayClipAtPoint(capsuleBreakClip, transform.position, threshold);

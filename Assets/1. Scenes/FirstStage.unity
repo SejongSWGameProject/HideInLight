@@ -3231,6 +3231,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcdfc1acf812f6048aa5efda5b99d5d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterFollow
+--- !u!4 &1006752296 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5907741793566801884, guid: 590bc3ca6aac8fc4d9f9c107fa937cd8, type: 3}
+  m_PrefabInstance: {fileID: 1796094652575660891}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1029118437
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4209,6 +4214,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 877244113}
     - target: {fileID: 1902699482390769208, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
+      propertyPath: monster
+      value: 
+      objectReference: {fileID: 1006752296}
+    - target: {fileID: 1902699482390769208, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
       propertyPath: OnPuzzleSolved.m_PersistentCalls.m_Calls.Array.data[5].m_Mode
       value: 1
       objectReference: {fileID: 0}
@@ -4262,7 +4271,7 @@ PrefabInstance:
       objectReference: {fileID: 1271654011}
     - target: {fileID: 2734071633545699649, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -21
+      value: -139.7
       objectReference: {fileID: 0}
     - target: {fileID: 2734071633545699649, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4270,7 +4279,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2734071633545699649, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 588
+      value: 354.5
       objectReference: {fileID: 0}
     - target: {fileID: 2734071633545699649, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4396,7 +4405,9 @@ PrefabInstance:
       propertyPath: postProcessVolume
       value: 
       objectReference: {fileID: 1483927627737953419}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6619766722896699107, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
+    - {fileID: 8628666699289880680, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

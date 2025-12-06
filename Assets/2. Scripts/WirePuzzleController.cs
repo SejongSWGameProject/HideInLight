@@ -25,6 +25,8 @@ public class WirePuzzleController : MonoBehaviour
     public SoundManager sound;
     private AudioSource wireDragSound;
 
+    public Transform monster;
+
     private void Start()
     {
         wireDragSound = GetComponent<AudioSource>();
@@ -198,6 +200,8 @@ public class WirePuzzleController : MonoBehaviour
         else
         {
             Debug.Log("틀렸습니다! 리셋합니다.");
+            MonsterAI monsterAI = monster.GetComponent<MonsterAI>();
+            monsterAI.setMonsterState(2);
             StartCoroutine(ResetPuzzleRoutine());
             sound.WirePuzzleFailSound();
         }
