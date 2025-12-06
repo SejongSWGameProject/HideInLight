@@ -4436,10 +4436,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ceb5475eca151429eab0fec9c55b0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
-  settingsPanel: {fileID: 624372290}
-  resolutionDropdown: {fileID: 41069884}
-  brightnessOverlay: {fileID: 0}
-  audioMixer: {fileID: 24100000, guid: f08ba9e12bbcdd949ac8366911ef3270, type: 2}
+  horrorLight: {fileID: 4336697634976925039}
+  blackScreenPanel: {fileID: 467367499}
+  sfxPlayer: {fileID: 0}
+  breakSound: {fileID: 0}
+  gameLogo: {fileID: 2055991486}
+  lampRenderer: {fileID: 3625024775602810235}
+  intervalMin: 4
+  intervalMax: 6
 --- !u!4 &1479963269
 Transform:
   m_ObjectHideFlags: 0
@@ -4471,8 +4475,8 @@ MonoBehaviour:
   areaLight: {fileID: 4336697634976925039}
   lampRenderer: {fileID: 3625024775602810235}
   titleGroup: {fileID: 2055991486}
+  mainMenuController: {fileID: 1479963268}
   gameSceneName: FirstStage
-  flickerDuration: 2
   blackoutDuration: 3
   audioSource: {fileID: 0}
   breakSound: {fileID: 0}

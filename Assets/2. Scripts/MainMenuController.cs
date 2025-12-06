@@ -1,133 +1,106 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Audio;
-using UnityEngine.UI; // Image(밝기 조절용) 사용
-using TMPro; // Dropdown 사용
-using System.Collections.Generic; // 리스트 사용
 
 public class MainMenuController : MonoBehaviour
 {
-    [Header("UI Objects")]
-    public GameObject settingsPanel;        // 설정 창 패널
-    public TMP_Dropdown resolutionDropdown; // 해상도 드롭다운
-    public Image brightnessOverlay;         // 밝기 조절용 검은 막(Panel)
+    [Header("기본 연출 설정")]
+    public Light horrorLight;          
+    public GameObject blackScreenPanel; 
+    public AudioSource sfxPlayer;      
+    public AudioClip breakSound;       
 
-    [Header("Audio")]
-    public AudioMixer audioMixer;           // 오디오 믹서
+    [Header("추가 깜빡임 대상")]
+    public GameObject gameLogo;        
+    public MeshRenderer lampRenderer;  
 
-    Resolution[] resolutions; // 해상도 목록 저장 변수
+    [Header("발작(이벤트) 설정")]
+    [Tooltip("이벤트 사이의 최소 대기 시간 (초)")]
+    public float intervalMin = 4.0f;     
+    [Tooltip("이벤트 사이의 최대 대기 시간 (초)")]
+    public float intervalMax = 6.0f;      
+
+    private bool isGameStarted = false; 
+    private Color originalEmissionColor; 
 
     void Start()
     {
-        // 시작 시 해상도 목록 초기화
-        InitResolutionDropdown();
+        if (blackScreenPanel != null) 
+            blackScreenPanel.SetActive(false);
+
+        if (lampRenderer != null)
+            originalEmissionColor = lampRenderer.material.GetColor("_EmissiveColor");
+
+        StartCoroutine(EventFlickerRoutine());
     }
 
-    void Update()
+    // ★★★ [수정됨] 5초마다 한 번씩 발작하는 코루틴 ★★★
+    IEnumerator EventFlickerRoutine()
     {
-        // ESC 누르면 설정창 닫기
-        if (Input.GetKeyDown(KeyCode.Escape) && settingsPanel.activeSelf)
+        while (!isGameStarted)
         {
-            CloseOption();
-        }
-    }
+            // 1. 평소 상태: 불이 안정적으로 켜져 있음
+            SetFlickerState(true);
 
-    // --- [1] 해상도 설정 기능 ---
-    void InitResolutionDropdown()
-    {
-        resolutions = Screen.resolutions;
-        resolutionDropdown.ClearOptions();
+            // 5초 정도 대기 (4초 ~ 6초 사이 랜덤)
+            float waitTime = Random.Range(intervalMin, intervalMax);
+            yield return new WaitForSeconds(waitTime);
 
-        List<string> options = new List<string>();
-        int currentResolutionIndex = 0;
+            if (isGameStarted) break;
 
-        for (int i = 0; i < resolutions.Length; i++)
-        {
-            string option = resolutions[i].width + " x " + resolutions[i].height;
-            options.Add(option);
-
-            if (resolutions[i].width == Screen.width &&
-                resolutions[i].height == Screen.height)
-            {
-                currentResolutionIndex = i;
-            }
-        }
-
-        resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = currentResolutionIndex;
-        resolutionDropdown.RefreshShownValue();
-    }
-
-    public void SetResolution(int resolutionIndex)
-    {
-        Resolution resolution = resolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
-    }
-
-    // --- [2] 기본 메뉴 기능 ---
-    public void GameStart()
-    {
-        SceneManager.LoadScene("FirstStage");
-    }
-
-    public void OpenOption()
-    {
-        settingsPanel.SetActive(true);
-    }
-
-    public void CloseOption()
-    {
-        settingsPanel.SetActive(false);
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
-        Debug.Log("게임 종료");
-    }
-
-    // --- [3] 사운드 조절 기능 (Master, BGM, SFX 분리) ---
-    
-    // 전체 볼륨
-    public void SetVolume(float volume)
-    {
-        audioMixer.SetFloat("MasterVolume", Mathf.Log10(volume) * 20);
-    }
-
-    // 배경음악 (BGM) - [추가됨]
-    public void SetBGMVolume(float volume)
-    {
-        audioMixer.SetFloat("BGMParam", Mathf.Log10(volume) * 20);
-    }
-
-    // 효과음 (SFX) - [추가됨]
-    public void SetSFXVolume(float volume)
-    {
-        audioMixer.SetFloat("SFXParam", Mathf.Log10(volume) * 20);
-    }
-
-    // --- [4] 밝기 조절 기능 (검은 막 투명도) ---
-    public void SetBrightness(float value)
-    {
-        if (brightnessOverlay != null)
-        {
-            // 슬라이더(0~1): 1이면 밝음(투명), 0이면 어두움(검정)
-            float alpha = 1.0f - value; 
+            // 2. 발작 이벤트 발생! (지직거림)
+            // 영상처럼 불규칙하게 몇 번 따닥! 거립니다.
+            int flickerCount = Random.Range(3, 6); // 3~5번 정도 반복
             
-            // 너무 깜깜해지지 않게 최대 0.9까지만 어두워지게 제한
-            alpha = Mathf.Clamp(alpha, 0f, 0.9f); 
+            for (int i = 0; i < flickerCount; i++)
+            {
+                // 꺼짐 (아주 짧게)
+                SetFlickerState(false);
+                yield return new WaitForSeconds(Random.Range(0.05f, 0.1f));
 
-            Color c = brightnessOverlay.color;
-            c.a = alpha;
-            brightnessOverlay.color = c;
+                // 켜짐 (아주 짧게)
+                SetFlickerState(true);
+                yield return new WaitForSeconds(Random.Range(0.05f, 0.1f));
+            }
+            
+            // 발작이 끝나면 다시 루프 처음으로 돌아가서 5초 대기
         }
     }
 
-    // --- [5] 마우스 감도 조절 ---
-    public void SetSensitivity(float sens)
+    public void OnStartButtonPressed()
     {
-        PlayerPrefs.SetFloat("MouseSens", sens);
-        PlayerPrefs.Save();
-        Debug.Log("마우스 감도 변경됨: " + sens);
+        if (isGameStarted) return; 
+        isGameStarted = true;      
+
+        StartCoroutine(GameStartSequence());
+    }
+
+    IEnumerator GameStartSequence()
+    {
+        // 시작하면 즉시 끔
+        SetFlickerState(false); 
+
+        if (sfxPlayer != null && breakSound != null)
+        {
+            sfxPlayer.PlayOneShot(breakSound);
+        }
+
+        if (blackScreenPanel != null) 
+            blackScreenPanel.SetActive(true);
+
+        yield return new WaitForSeconds(2.0f); 
+        SceneManager.LoadScene("FirstStage"); 
+    }
+
+    void SetFlickerState(bool isOn)
+    {
+        if (horrorLight != null) horrorLight.enabled = isOn;
+        if (gameLogo != null) gameLogo.SetActive(isOn);
+
+        if (lampRenderer != null)
+        {
+            Color targetColor = isOn ? originalEmissionColor : Color.black;
+            lampRenderer.material.SetColor("_EmissiveColor", targetColor);
+        }
     }
 }

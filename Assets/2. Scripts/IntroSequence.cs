@@ -5,81 +5,77 @@ using UnityEngine.SceneManagement;
 public class IntroSequence : MonoBehaviour
 {
     [Header("오브젝트 연결")]
-    public Light spotLight;           // 메인 조명 (스포트라이트)
-    public Light areaLight;           // [추가됨] 은은하게 깔아둔 Area Light (혹은 Point Light)
+    public Light spotLight;           // 메인 조명
+    public Light areaLight;           // 보조 조명
     public MeshRenderer lampRenderer; // 형광등 모델
-    public GameObject titleGroup;     // 제목과 버튼
+    public GameObject titleGroup;     // 제목과 버튼 UI 그룹
+    
+    // 깜빡임을 담당하던 MainMenuController를 끄기 위해 연결
+    [Tooltip("깜빡임을 담당하는 MainMenuController가 붙은 오브젝트")]
+    public MainMenuController mainMenuController; 
 
     [Header("이동할 게임 씬 이름")]
     public string gameSceneName = "FirstScene";
 
     [Header("시간 설정")]
-    public float flickerDuration = 2.0f;
-    public float blackoutDuration = 3.0f; 
+    public float blackoutDuration = 2.0f; // 깨진 후 암전 유지 시간
 
-    [Header("효과음 (선택)")]
+    [Header("효과음")]
     public AudioSource audioSource;
-    public AudioClip breakSound;      
+    public AudioClip breakSound;       
 
-    private Color originalGlowColor;
+    private bool isSequenceStarted = false;
 
-    void Start()
-    {
-        if (lampRenderer != null) 
-            originalGlowColor = lampRenderer.material.GetColor("_EmissiveColor");
-        
-        // 시작할 때 다 켜두기
-        SetLightState(true); 
-        if(areaLight != null) areaLight.enabled = true; // Area Light도 켜기
-        titleGroup.SetActive(true); 
-    }
-
+    // ★ 버튼(Start)에 연결할 함수
     public void StartGameSequence()
     {
-        StartCoroutine(PlaySimpleSequence());
-    }
+        if (isSequenceStarted) return; // 중복 클릭 방지
+        isSequenceStarted = true;
 
-    IEnumerator PlaySimpleSequence()
-    {
-        // 1. 깜빡거림 (Spot Light만 깜빡임)
-        float totalTimer = 0f;
-        while (totalTimer < flickerDuration)
+        // 1. 깜빡임을 담당하던 MainMenuController 끄기 (더 이상 깜빡이면 안 되니까)
+        if (mainMenuController != null)
         {
-            bool isLightOn = !spotLight.enabled;
-            SetLightState(isLightOn);
-            
-            // (선택사항) Area Light도 같이 깜빡이게 하려면 아래 주석 해제
-            // if(areaLight != null) areaLight.enabled = isLightOn;
-
-            float waitTime = Random.Range(0.05f, 0.2f); 
-            yield return new WaitForSeconds(waitTime);
-            totalTimer += waitTime;
+            mainMenuController.StopAllCoroutines(); // 깜빡임 코루틴 중지
+            mainMenuController.enabled = false;     // 스크립트 비활성화
         }
 
-        // 2. 퍽! 하고 깨짐 (모든 빛 소멸)
-        SetLightState(false);         // Spot Light 끄고
-        if(areaLight != null) areaLight.enabled = false; // [핵심] Area Light도 끄기!
-        titleGroup.SetActive(false);  // 글자도 끄기
+        // 2. 파괴 연출 시작
+        StartCoroutine(BreakAndLoadRoutine());
+    }
 
+    // 쨍그랑! 하고 암전 후 이동하는 함수
+    IEnumerator BreakAndLoadRoutine()
+    {
+        // 1. 즉시 모든 불 끄기 (깨짐 연출)
+        TurnOffLights();             
+        
+        if (titleGroup != null) 
+            titleGroup.SetActive(false); // UI 숨기기
+
+        // 2. 깨지는 소리 재생
         if (audioSource != null && breakSound != null)
         {
             audioSource.PlayOneShot(breakSound);
         }
         
-        // 3. 완전한 암흑 상태로 대기
+        // 3. 암흑 속에서 대기 (여운 남기기)
         yield return new WaitForSeconds(blackoutDuration);
 
         // 4. 게임 씬으로 이동
         SceneManager.LoadScene(gameSceneName);
     }
 
-    void SetLightState(bool isOn)
+    // 조명을 끄고 전구 색을 검은색으로 바꾸는 함수
+    void TurnOffLights()
     {
-        spotLight.enabled = isOn;
+        // 조명 컴포넌트 끄기
+        if(spotLight != null) spotLight.enabled = false;
+        if(areaLight != null) areaLight.enabled = false;
+
+        // 전구 모델의 빛나는 재질(Emission)을 검은색으로 변경
         if (lampRenderer != null)
         {
-            Color targetColor = isOn ? originalGlowColor : Color.black;
-            lampRenderer.material.SetColor("_EmissiveColor", targetColor);
+            lampRenderer.material.SetColor("_EmissiveColor", Color.black);
         }
     }
 }
