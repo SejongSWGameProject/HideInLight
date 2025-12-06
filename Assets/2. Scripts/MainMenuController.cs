@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -30,7 +30,7 @@ public class MainMenuController : MonoBehaviour
 
         if (lampRenderer != null)
             originalEmissionColor = lampRenderer.material.GetColor("_EmissiveColor");
-
+        sfxPlayer = GetComponent<AudioSource>();
         StartCoroutine(EventFlickerRoutine());
     }
 

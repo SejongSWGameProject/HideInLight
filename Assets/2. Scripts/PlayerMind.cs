@@ -51,6 +51,8 @@ public class PlayerMind : MonoBehaviour
 
     public float minFocusDistance = 0.5f;
 
+    public MonsterAI monster;
+
     void Start()
     {
         initialSizeY = uiObjectA.sizeDelta.y; // 시작 길이 저장
@@ -89,7 +91,7 @@ public class PlayerMind : MonoBehaviour
     }
 
     
-
+    
     void Update()
     {
         if (uiObjectA == null) return;
@@ -162,10 +164,18 @@ public class PlayerMind : MonoBehaviour
 
         float originY = size.y;
         size.y = initialSizeY * (mindValue / 100.0f);
-        if (size.y < 0f)
+        if (size.y <= 0f)
+        {
             size.y = 0;
+            monster.isCrazy = true;
+            monster.setMonsterState(2);
+            Debug.Log("정신력 바닥");
+        }
         if (size.y > initialSizeY)
+        {
             size.y = initialSizeY;
+
+        }
         pos.y += (size.y-originY) / 2f;
         
 
