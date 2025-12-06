@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class MonsterAI : MonoBehaviour
 {
@@ -42,6 +43,18 @@ public class MonsterAI : MonoBehaviour
 
     private Coroutine currentPauseCoroutine;
 
+    public AudioClip[] footstepClips;
+    public float stepInterval = 1f;
+    private float stepTimer = 0f;
+
+    public AudioClip sufferSound;
+    public AudioClip growlClip;
+    private AudioSource fadeOutAudioSource;
+
+    public bool chasePlayer = false;
+    public bool isCrazy = false;
+
+
     // �÷��̾ �ô��� ����
     public bool canSeePlayer { get; private set; }
 
@@ -56,6 +69,8 @@ public class MonsterAI : MonoBehaviour
         animator = GetComponent<Animator>();
         StartCoroutine(CalculateDeltaDistance(0.5f));
         audioSource = GetComponent<AudioSource>();
+        fadeOutAudioSource = gameObject.AddComponent<AudioSource>();
+        fadeOutAudioSource.playOnAwake = false;
         //this.gameObject.SetActive(false);
 
         if (monster == null)
@@ -102,6 +117,13 @@ public class MonsterAI : MonoBehaviour
         if (monster.velocity.magnitude > 0.1f)
         {
             animator.SetBool("isWalking", true);
+            stepTimer -= Time.deltaTime;
+            if (stepTimer <= 0f)
+            {
+                PlayRandomFootStep();
+                stepTimer = stepInterval; // 타이머 리셋
+
+            }
         }
         else
         {
@@ -109,6 +131,7 @@ public class MonsterAI : MonoBehaviour
         }
         if (monsterState == NORMAL)
         {
+            stepInterval = 1.1f;
             monster.speed = 10;
             animator.SetFloat("animSpeed", 1.0f);
             CheckSight();
@@ -120,15 +143,17 @@ public class MonsterAI : MonoBehaviour
         }
         else if (monsterState == CHASE)
         {
+            stepInterval = 0.7f;
             monster.speed = 30;
             animator.SetFloat("animSpeed", 3.0f);
             target = player;
 
-            if (Input.GetKeyDown(KeyCode.P) && !isPaused)
-            {
-                StartCoroutine(PauseMonster(3.0f));
-            }
+            //if (Input.GetKeyDown(KeyCode.P) && !isPaused)
+            //{
+            //    StartCoroutine(PauseMonster(3.0f));
+            //}
         }
+
         //Debug.Log(Vector3.Distance(this.transform.position, this.target.transform.position));
 
         // 2. 죽이기 공격 제어 (예시: 특정 조건이 만족되면)
@@ -139,6 +164,41 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
+    IEnumerator PlayAndFadeOut(AudioClip clip, float playDuration, float fadeDuration)
+    {
+        fadeOutAudioSource.volume = 1f;
+        fadeOutAudioSource.PlayOneShot(clip);
+
+        yield return new WaitForSeconds(playDuration);
+
+        float startVolume = fadeOutAudioSource.volume;
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            fadeOutAudioSource.volume = Mathf.Lerp(startVolume, 0f, elapsed / fadeDuration);
+            yield return null;
+        }
+
+        fadeOutAudioSource.Stop();
+        fadeOutAudioSource.volume = 1f; // 다음 재생을 위해 볼륨 복구
+    }
+
+    void PlayRandomFootStep()
+    {
+        // 4. 소리 재생 (랜덤 클립, 랜덤 피치)
+        if (footstepClips.Length == 0) return;
+
+        // 랜덤 클립 선택
+        AudioClip clip = footstepClips[Random.Range(0, footstepClips.Length)];
+
+        // 랜덤 피치 설정
+        //audioSource.pitch = Random.Range(minPitch, maxPitch);
+
+        // 재생
+        audioSource.PlayOneShot(clip);
+    }
     public void StartMove()
     {
         this.gameObject.SetActive(true);
@@ -160,10 +220,10 @@ public class MonsterAI : MonoBehaviour
     bool CanKillPlayer()
     {
         // 예: 플레이어와의 거리가 1미터 미만이고 공격 쿨타임이 지났다면
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            return true;
-        }
+        //if (Input.GetKeyDown(KeyCode.K))
+        //{
+        //    return true;
+        //}
         return false;
     }
 
@@ -252,12 +312,12 @@ public class MonsterAI : MonoBehaviour
 
         if (jumpscareSound != null && audioSource != null)
         {
-            audioSource.PlayOneShot(jumpscareSound);
+            fadeOutAudioSource.PlayOneShot(jumpscareSound);
         }
 
         // 5. 게임 오버 처리 (아래 3단계 참고)
         // (이벤트 또는 Invoke 사용)
-        float killAnimationLength = 1.5f; // 예: 킬 애니메이션의 총 길이 (초)
+        float killAnimationLength = 2f; // 예: 킬 애니메이션의 총 길이 (초)
         Invoke("ShowGameOver", killAnimationLength);
 
     }
@@ -274,6 +334,9 @@ public class MonsterAI : MonoBehaviour
         {
             jumpscareLight.enabled = false;
         }
+
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentSceneName);
     }
     
     public void setMonsterState(int state)  //NORMAL(1), CHASE(2), STUN(3)
@@ -315,6 +378,9 @@ public class MonsterAI : MonoBehaviour
     // 4. ���͸� ���� �ð� ���߰� �ϴ� �ڷ�ƾ
     private IEnumerator PauseMonster(float duration)
     {
+        StartCoroutine(PlayAndFadeOut(sufferSound, 3f, 0.5f));
+        
+
         // 5. ���� ���·� ����
         isPaused = true;
         float originspeed = monster.speed;
@@ -328,16 +394,6 @@ public class MonsterAI : MonoBehaviour
             monster.isStopped = true;
         }
 
-        // --- (����) �ִϸ��̼ǵ� ���߱� ---
-        // Animator animator = GetComponent<Animator>();
-        // if (animator != null)
-        // {
-        //     animator.speed = 0; // �ִϸ��̼� �ӵ��� 0���� ����� ����
-        // }
-        // ---------------------------------
-
-        Debug.Log("���� ����!");
-
         // 7. ������ �ð�(duration)��ŭ ���
         yield return new WaitForSeconds(duration);
 
@@ -347,14 +403,14 @@ public class MonsterAI : MonoBehaviour
             monster.isStopped = false;
         }
 
+        Debug.Log(Vector3.Distance(this.transform.position, player.position));
+
         // --- (����) �ִϸ��̼� �ٽ� ��� ---
         // if (animator != null)
         // {
         //     animator.speed = 1; // �ִϸ��̼� �ӵ��� �ٽ� 1��
         // }
         // ---------------------------------
-
-        Debug.Log("���� �ٽ� ������!");
 
         // 9. ���� ���� ����
         isPaused = false;
@@ -487,6 +543,10 @@ public class MonsterAI : MonoBehaviour
         {
             StopCoroutine(currentPauseCoroutine);
         }
-        currentPauseCoroutine = StartCoroutine(PauseMonster(duration));
+        if(monster != null)
+        {
+            currentPauseCoroutine = StartCoroutine(PauseMonster(duration));
+
+        }
     }
 }

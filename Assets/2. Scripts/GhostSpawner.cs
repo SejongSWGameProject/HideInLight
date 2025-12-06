@@ -44,9 +44,15 @@ public class GhostSpawner : MonoBehaviour
         if (GameObject.FindGameObjectsWithTag("Ghost").Length >= maxGhosts)
             return false;
 
+        PlayerMind playerMind = player.GetComponent<PlayerMind>();
+        //정신력 체크
+        if(playerMind.GetPlayerMind() > 50)
+        {
+            return false;
+        }
+
         //어둠 조건 체크
-        PlayerMove playerMove = player.GetComponent<PlayerMove>();
-        return playerMove.getIsInDarkness();
+        return playerMind.getIsInDarkness();
     }
 
     void SpawnGhost()
@@ -103,6 +109,6 @@ public class GhostSpawner : MonoBehaviour
 
         // 다 죽였으니 명단 초기화
         activeGhosts.Clear();
-        Debug.Log("모든 유령 제거 완료");
+        //Debug.Log("모든 유령 제거 완료");
     }
 }

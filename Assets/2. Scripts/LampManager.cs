@@ -12,7 +12,7 @@ public class LampManager : MonoBehaviour
 
     [Header("전등 배열")]
     public List<LampController> lamps = new List<LampController>();
-    public List<LampController> arrangedLamps = new List<LampController>();
+    public List<LampController> allLamps = new List<LampController>();
 
     [Header("플레이어")]
     public Transform player;
@@ -25,7 +25,13 @@ public class LampManager : MonoBehaviour
     public List<LampSwitch> switches = new List<LampSwitch>();
     private LampSwitch nearSwitch;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("총 전력 UI")]
+    public RectTransform elecPowerUI;             // 줄어드는 UI 오브젝트
+    private float initHeight;
+    private float initPower = 1000f;
+    private float curPower = 1000f;
+    private float decreaseSpeed = 1f;
+    private int activeLampCount;
 
     void Awake()
     {
@@ -62,37 +68,83 @@ public class LampManager : MonoBehaviour
 
     void Start()
     {
-
+        initHeight = elecPowerUI.sizeDelta.y; // 시작 길이 저장
+        Debug.Log(initHeight);
         if (monster == null) return;
 
         targetLamp = SetMonsterTargetToRandomLamp();
         Debug.Log("켜져있는 전등 개수: "+lamps.Count);
-
+        UpdateActiveLampCount();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            targetLamp = SetMonsterTargetToRandomLamp();
-        }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            targetLamp = SetMonsterTargetToRandomLamp();
-        }
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    targetLamp = SetMonsterTargetToRandomLamp();
+        //}
+        //if (Input.GetKeyDown(KeyCode.N))
+        //{
+        //    targetLamp = SetMonsterTargetToRandomLamp();
+        //}
         if (lamps.Count == 0)
         {
             Debug.Log("모든 전등 깨짐");
             monster.setTarget(player.transform);
         }
-        //if (Input.GetKeyDown(KeyCode.E))
-        //{
-        //    nearSwitch = GetNearSwitch();
-        //    nearSwitch.ToggleLights();
-        //    Debug.Log("켜져있는 전등 개수: " + lamps.Count);
+        
+        if(elecPowerUI.gameObject.activeInHierarchy)
+        {
+            curPower -= decreaseSpeed * Time.deltaTime;
+            if (curPower <= 0) {
+                curPower = 0;
+                DisableAllLamps();
+            }
+            UpdateElectricPowerUI();
+            //Debug.Log(curPower);
+        }
 
+        //if (Input.GetKeyDown(KeyCode.M))
+        //{
+        //    curPower -= 100f;
         //}
+    }
+
+    public void UpdateActiveLampCount()
+    {
+        activeLampCount = lamps.Count;
+        decreaseSpeed = 1f + (activeLampCount / 75f);
+        Debug.Log("activeLampCount:" + activeLampCount);
+    }
+
+    public void DisableAllLamps()
+    {
+        foreach(LampController l in allLamps)
+        {
+            if (l != null)
+            {
+                l.TurnOff();
+                l.isBroken = true;
+            }
+        }
+        allLamps.Clear();
+        lamps.Clear();
+    }
+
+    public void UpdateElectricPowerUI()
+    {
+        Vector2 size = elecPowerUI.sizeDelta;
+        Vector3 pos = elecPowerUI.localPosition;
+
+        float originY = size.y;
+        size.y = initHeight * (curPower / initPower);
+        
+        pos.y += (size.y - originY) / 2f;
+
+
+        elecPowerUI.sizeDelta = size;
+        elecPowerUI.localPosition = pos;
     }
 
     public void RegisterLamp(LampController lamp)
@@ -107,9 +159,9 @@ public class LampManager : MonoBehaviour
     {
         if (insertArranged)
         {
-            if (!arrangedLamps.Contains(lamp))
+            if (!allLamps.Contains(lamp))
             {
-                arrangedLamps.Add(lamp);
+                allLamps.Add(lamp);
             }
         }
         else
@@ -255,7 +307,7 @@ public class LampManager : MonoBehaviour
 
     public void SortLampListByDistance()
     {
-        if (player == null || arrangedLamps == null || arrangedLamps.Count == 0)
+        if (player == null || allLamps == null || allLamps.Count == 0)
         {
             Debug.LogWarning("플레이어 Transform 또는 램프 리스트가 설정되지 않았습니다.");
             return;
@@ -265,7 +317,7 @@ public class LampManager : MonoBehaviour
 
         // 람다식을 사용하여 리스트를 정렬합니다.
         // (a, b) => ... 부분은 두 요소 a와 b를 비교하는 로직입니다.
-        arrangedLamps.Sort((a, b) =>
+        allLamps.Sort((a, b) =>
         {
             // 1. 플레이어와 각 램프 사이의 벡터를 구합니다.
             Vector3 diffA = a.transform.position - playerPos;
