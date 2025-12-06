@@ -91,7 +91,7 @@ public class PlayerMind : MonoBehaviour
     }
 
     
-
+    
     void Update()
     {
         if (uiObjectA == null) return;
@@ -169,6 +169,7 @@ public class PlayerMind : MonoBehaviour
             size.y = 0;
             monster.isCrazy = true;
             monster.setMonsterState(2);
+            Debug.Log("정신력 바닥");
         }
         if (size.y > initialSizeY)
         {

@@ -14,7 +14,7 @@ public class MonsterAI : MonoBehaviour
     public const int CHASE = 2;
     public const int STUN = 3;
     public const int BREAK = 4;
-    int monsterState = NORMAL;           //1:����(��������ٴϴ���)   2:�÷��̾��Ѵ���   3:���ϸ���
+    public int monsterState;           //1:����(��������ٴϴ���)   2:�÷��̾��Ѵ���   3:���ϸ���
 
     public Transform player;         // �÷��̾� Transform
     public float viewRadius = 80f; // �þ� �ݰ� (�Ÿ�)
@@ -70,7 +70,6 @@ public class MonsterAI : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         fadeOutAudioSource = gameObject.AddComponent<AudioSource>();
         fadeOutAudioSource.playOnAwake = false;
-        //this.gameObject.SetActive(false);
 
         if (monster == null)
         {
@@ -78,6 +77,12 @@ public class MonsterAI : MonoBehaviour
             return;
         }
 
+    }
+
+    private void OnEnable()
+    {
+        monsterState = NORMAL;
+        Debug.Log("노말로 변경");
     }
 
     void Update()
