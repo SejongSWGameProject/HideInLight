@@ -1,68 +1,78 @@
-ï»¿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
-public class FadeTMP : MonoBehaviour
+public class TypeWriterTMP : MonoBehaviour
 {
-    public TMP_Text uiText;           // TextMeshProUGUI
-    public float fadeInDuration = 40f; // ì„œì„œíˆ ë‚˜íƒ€ë‚˜ëŠ” ì‹œê°„
-    public float stayDuration = 50f;   // ìµœëŒ€ ë°ê¸° ìœ ì§€ ì‹œê°„
-    public float fadeOutDuration = 50f; // ì„œì„œíˆ ì‚¬ë¼ì§€ëŠ” ì‹œê°„
+    public TMP_Text uiText;       // TextMeshPro
+    public float delay = 0.5f;    // ±ÛÀÚ Ãâ·Â °£°İ
+    public float fadeDuration = 1.5f; // ¼­¼­È÷ »ç¶óÁö´Â ½Ã°£
 
-    private Color originalColor;
+    private string originalText;
 
     void Awake()
     {
         if (uiText == null)
             uiText = GetComponent<TMP_Text>();
 
-        // Rich Text í™œì„±í™”
-        uiText.richText = true;
-        uiText.ForceMeshUpdate();
-
-        originalColor = uiText.color;
-        // ì²˜ìŒì—ëŠ” ì™„ì „íˆ íˆ¬ëª…
-        uiText.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+        originalText = uiText.text;
+        uiText.text = "";
     }
 
-    IEnumerator Start()
+    void Start()
     {
-        yield return new WaitForSeconds(2f); // ì‹œì‘ ì „ ëŒ€ê¸°
-        ShowText();
     }
 
-    public void ShowText()
+    public void ShowFindGeneratorText()
     {
-        StartCoroutine(FadeInStayFadeOut());
+        StartCoroutine(ShowTextWithDelay());
+
     }
 
-    IEnumerator FadeInStayFadeOut()
+    IEnumerator ShowTextWithDelay()
+    {
+        yield return new WaitForSeconds(1f);
+
+        // 1) Å¸ÀÌÇÎ È¿°ú
+        foreach (char c in originalText)
+        {
+            uiText.text += c;
+            yield return new WaitForSeconds(delay);
+        }
+
+        // 2) Å¸ÀÌÇÎ ³¡³­ µÚ 2ÃÊ À¯Áö
+        yield return new WaitForSeconds(2f);
+
+        // 3) ÆäÀÌµå ¾Æ¿ô ½ÃÀÛ
+        yield return StartCoroutine(FadeOut());
+    }
+
+    IEnumerator FadeOut()
     {
         float time = 0f;
-        while (time < fadeInDuration)
+        Color originalColor = uiText.color;
+
+        while (time < fadeDuration)
         {
-            float t = Mathf.SmoothStep(0f, 10f, time / fadeInDuration); // ë¶€ë“œëŸ¬ìš´ easing
-            uiText.color = new Color(originalColor.r, originalColor.g, originalColor.b, t);
+            float t = time / fadeDuration;
+
+            uiText.color = new Color(
+                originalColor.r,
+                originalColor.g,
+                originalColor.b,
+                Mathf.Lerp(1f, 0f, t)
+            );
+
             time += Time.deltaTime;
             yield return null;
         }
-        uiText.color = originalColor;
 
-        // ===== 2) ìµœëŒ€ ë°ê¸° ìœ ì§€ =====
-        yield return new WaitForSeconds(stayDuration);
-
-        // ===== 3) í˜ì´ë“œ ì•„ì›ƒ =====
-        time = 0f;
-        while (time < fadeOutDuration)
-        {
-            float t = Mathf.SmoothStep(10f, 0f, time / fadeOutDuration); // ë¶€ë“œëŸ¬ìš´ easing
-            uiText.color = new Color(originalColor.r, originalColor.g, originalColor.b, t);
-            time += Time.deltaTime;
-            yield return null;
-        }
-        uiText.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
-
-        // ì™„ì „íˆ íˆ¬ëª…í•˜ê²Œ ë§ˆë¬´ë¦¬
-        uiText.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+        // ¿ÏÀüÈ÷ Åõ¸íÇÏ°Ô
+        uiText.color = new Color(
+            originalColor.r,
+            originalColor.g,
+            originalColor.b,
+            0f
+        );
     }
 }
