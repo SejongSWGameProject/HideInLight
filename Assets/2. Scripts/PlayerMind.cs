@@ -52,6 +52,7 @@ public class PlayerMind : MonoBehaviour
     public float minFocusDistance = 0.5f;
 
     public MonsterAI monster;
+    public bool isStart = false;
 
     void Start()
     {
@@ -94,7 +95,7 @@ public class PlayerMind : MonoBehaviour
     
     void Update()
     {
-        if (uiObjectA == null) return;
+        if (uiObjectA == null || !isStart) return;
 
         // 빛을 받을 때 증가
         if (!isInDarkness)
@@ -120,6 +121,17 @@ public class PlayerMind : MonoBehaviour
         //Debug.Log(mindValue);
 
         SetSightEffect();
+
+        if(mindValue <= 0f)
+        {
+            monster.isCrazy = true;
+            monster.setMonsterState(2);
+        }
+    }
+
+    public void setStart()
+    {
+        isStart = true;
     }
     public void SetSightEffect()
     {
@@ -167,9 +179,7 @@ public class PlayerMind : MonoBehaviour
         if (size.y <= 0f)
         {
             size.y = 0;
-            monster.isCrazy = true;
-            monster.setMonsterState(2);
-            Debug.Log("정신력 바닥");
+            
         }
         if (size.y > initialSizeY)
         {
