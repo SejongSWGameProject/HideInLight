@@ -8,6 +8,7 @@ public class PlayerScriptsAcitvator : MonoBehaviour
     public GameObject mindUI;
     public GameObject elecPowerUI;
     public GameObject batteryUI;
+    public GameObject howtouseUI;
     
     private bool isActivated = false;
 
@@ -32,7 +33,10 @@ public class PlayerScriptsAcitvator : MonoBehaviour
         {
             batteryUI.SetActive(false);
         }
-
+        if (howtouseUI != null)
+        {
+            howtouseUI.SetActive(false);
+        }
     }
 
     void Update()
@@ -66,6 +70,10 @@ public class PlayerScriptsAcitvator : MonoBehaviour
         if (batteryUI != null)
         {
             batteryUI.SetActive(true);
+        }
+        if (howtouseUI != null)
+        {
+            howtouseUI.SetActive(true);
         }
 
         isActivated = true;

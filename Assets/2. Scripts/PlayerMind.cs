@@ -51,8 +51,17 @@ public class PlayerMind : MonoBehaviour
 
     public float minFocusDistance = 0.5f;
 
+    public AudioClip mindSoundClip;
+    private AudioSource audioSource;
+
+    private bool isConditionMet = false;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.loop = true;
+        audioSource.playOnAwake = false;
+        audioSource.clip = mindSoundClip;
         initialSizeY = uiObjectA.sizeDelta.y; // 시작 길이 저장
         // 컴포넌트 가져오기
         // Volume에서 Vignette와 Depth of Field 컴포넌트 가져오기
@@ -114,16 +123,29 @@ public class PlayerMind : MonoBehaviour
         }
 
         SetUIByMind();
-
-        //Debug.Log(mindValue);
-
         SetSightEffect();
+    }
+
+    void StartLoop()
+    {
+        isConditionMet = true;
+
+        if (!audioSource.isPlaying)
+            audioSource.Play();   // Loop ON 이므로 자동 반복
+    }
+
+    void StopLoop()
+    {
+        isConditionMet = false;
+
+        if (audioSource.isPlaying)
+            audioSource.Stop();
     }
     public void SetSightEffect()
     {
         if (mindValue < 50f)
         {
-
+            StartLoop();
             // 1. 현재 진행률을 0(정상) ~ 1(완전 미침) 사이 값으로 변환
             // mindValue가 50이면 t = 0, mindValue가 0이면 t = 1
             float t = 1f - (mindValue / 50f);
@@ -153,6 +175,10 @@ public class PlayerMind : MonoBehaviour
 
             // 디버그로 수치 변화 확인해보세요 (초반엔 수치가 아주 천천히 오를 겁니다)
             Debug.Log($"Mind: {mindValue} | Linear(t): {t:F2} | Curved(t^2): {curveT:F2}");
+        }
+        else
+        {
+            StopLoop();
         }
     }
     public void SetUIByMind()
