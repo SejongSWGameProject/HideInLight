@@ -2664,6 +2664,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcdfc1acf812f6048aa5efda5b99d5d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterFollow
+--- !u!114 &1006752297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154269836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec813befd7b482442a81868a6c969440, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClosePuzzleOnHit
+  puzzlePopupAnchor: {fileID: 326164678}
 --- !u!1001 &1029118437
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6457,6 +6470,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: mimmic_walk
       objectReference: {fileID: 0}
+    - target: {fileID: 6536785128091772262, guid: 590bc3ca6aac8fc4d9f9c107fa937cd8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8995814020729014302, guid: 590bc3ca6aac8fc4d9f9c107fa937cd8, type: 3}
       propertyPath: player
       value: 
@@ -6476,7 +6493,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6536785128091772262, guid: 590bc3ca6aac8fc4d9f9c107fa937cd8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1006752297}
   m_SourcePrefab: {fileID: 100100000, guid: 590bc3ca6aac8fc4d9f9c107fa937cd8, type: 3}
 --- !u!1001 &1811857866164803107
 PrefabInstance:
