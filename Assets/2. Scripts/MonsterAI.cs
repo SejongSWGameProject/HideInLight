@@ -218,7 +218,12 @@ public class MonsterAI : MonoBehaviour
         PlayerMove playerMovement = player.GetComponent<PlayerMove>();
         SlopeStabilizer playerMovement2 = player.GetComponent<SlopeStabilizer>();
         PlayerLight playerLight = player.GetComponentInChildren<PlayerLight>();
-        
+        PlayerMind playerMind = player.GetComponent<PlayerMind>();
+        playerMind.ResetVisualEffects();
+        if(playerMind != null)
+        {
+            playerMind.enabled = false;
+        }
         if (playerMovement != null)
         {
             playerMovement.moveSpeed = 0f;

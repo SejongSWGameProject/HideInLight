@@ -92,7 +92,7 @@ public class TextScript : MonoBehaviour
         }
 
         // 2) 타이핑 끝난 뒤 2초 유지
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(stayDuration);
 
         // 3) 페이드 아웃 시작
         yield return StartCoroutine(FadeOut());

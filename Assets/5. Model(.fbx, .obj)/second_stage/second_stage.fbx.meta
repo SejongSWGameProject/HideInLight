@@ -3,7 +3,122 @@ guid: c2449c2004a20a54f8cded213d45bfd0
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Genirator
+    second: {fileID: 2100000, guid: 5b9a850eeb94b904f99910717a0fbe1a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Genirator.001
+    second: {fileID: 2100000, guid: ebddcebaf2a286141a0e2b93c3d7c5e2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Genirator.002
+    second: {fileID: 2100000, guid: bf76e835fecf6594cb0ffef33ab5adfb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass
+    second: {fileID: 2100000, guid: f32014482f4e603479ba8caccec9349b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: battery_mate
+    second: {fileID: 2100000, guid: 0bf05bbb8f7b9e24fabe052060028def, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bigbox_mate
+    second: {fileID: 2100000, guid: ec99d03dd2dae5b41a0453af856bdff1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bombe_mate
+    second: {fileID: 2100000, guid: aec3c209639ead346b139725042264a9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: boxcarrier_mate
+    second: {fileID: 2100000, guid: e39ecac74ff32a1479eb330df5492fe8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: deskchair_mate
+    second: {fileID: 2100000, guid: d8c0a18d220a9fe47a0026303a5292fa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: deskdesk_mate
+    second: {fileID: 2100000, guid: 3b355db664f12414fb093de8339d3ae9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: deskthing_mate
+    second: {fileID: 2100000, guid: 678ea2aab487a994d9a720038310d71c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: elec_mate
+    second: {fileID: 2100000, guid: edaa3a0f3bae70d4d97025fc7ebec3b0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: floor_mate
+    second: {fileID: 2100000, guid: 6f17004e582c90f41b6f9796d554fa37, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: glass
+    second: {fileID: 2100000, guid: eb40695bb0d2bd74d9193ab754b6f24b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lightguide_mate
+    second: {fileID: 2100000, guid: 92fa44f152e103247a0d2d68be974f59, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: metalshelf_mate
+    second: {fileID: 2100000, guid: dd661c8c27543a84b8d5da324b383504, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: midbox_mate
+    second: {fileID: 2100000, guid: 93a8352b75be013468822e9bdddeeb27, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: originalfloor_mate
+    second: {fileID: 2100000, guid: f0416173c02665a43aa2021657b0bba3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pillar_mate
+    second: {fileID: 2100000, guid: d1fbcd2c45a2210428710808a1fdb784, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pipe_mate
+    second: {fileID: 2100000, guid: aa23ce758dd8e6947bc189ffb9377f71, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: server_mate
+    second: {fileID: 2100000, guid: e5392e48cfd1fce45b4714bf233b91f8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tank_mate
+    second: {fileID: 2100000, guid: 1b9cffb1324ce094991099fb12240024, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_mate
+    second: {fileID: 2100000, guid: 84646ee320a34db47aa27caad1f7a13f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
