@@ -21,6 +21,7 @@ public class TypeWriterTMP : MonoBehaviour
 
     void Start()
     {
+        ShowFindGeneratorText();
     }
 
     public void ShowFindGeneratorText()
@@ -37,6 +38,13 @@ public class TypeWriterTMP : MonoBehaviour
         foreach (char c in originalText)
         {
             uiText.text += c;
+
+            // TMP 강제 렌더링
+            uiText.ForceMeshUpdate();
+
+            // UI 레이아웃 즉시 갱신
+            UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(uiText.rectTransform);
+
             yield return new WaitForSeconds(delay);
         }
 

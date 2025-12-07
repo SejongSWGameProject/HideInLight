@@ -3501,6 +3501,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1568895487269883651, guid: 8c8da285b5eea9748b2d39bf605d8d2a, type: 3}
   m_PrefabInstance: {fileID: 8107790499366431703}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1137316303 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3495595152172766488, guid: b74d1a88c59c8234292aa3ddb8a02891, type: 3}
+  m_PrefabInstance: {fileID: 1489559549}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1150244148 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8528857800930905379, guid: 2ab82392fe4d71c4f8ceb11f0790fba2, type: 3}
@@ -4517,16 +4522,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: QuestText
       objectReference: {fileID: 0}
+    - target: {fileID: 7035837229622825937, guid: b74d1a88c59c8234292aa3ddb8a02891, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3495595152172766488, guid: b74d1a88c59c8234292aa3ddb8a02891, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1489559554}
   m_SourcePrefab: {fileID: 100100000, guid: b74d1a88c59c8234292aa3ddb8a02891, type: 3}
 --- !u!224 &1489559550 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1674610338501472446, guid: b74d1a88c59c8234292aa3ddb8a02891, type: 3}
   m_PrefabInstance: {fileID: 1489559549}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1489559554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137316303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17831ceb35804434daf928c060195640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypeWriterTMP
+  uiText: {fileID: 0}
+  delay: 0.1
+  fadeDuration: 6
 --- !u!1001 &1503293774
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7809,6 +7836,18 @@ PrefabInstance:
     - target: {fileID: 1626182234144497159, guid: 981164492da10c441a34f32cbffc5e05, type: 3}
       propertyPath: m_margin.x
       value: -466.4184
+      objectReference: {fileID: 0}
+    - target: {fileID: 4168411873504590486, guid: 981164492da10c441a34f32cbffc5e05, type: 3}
+      propertyPath: stayDuration
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4168411873504590486, guid: 981164492da10c441a34f32cbffc5e05, type: 3}
+      propertyPath: fadeInDuration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4168411873504590486, guid: 981164492da10c441a34f32cbffc5e05, type: 3}
+      propertyPath: fadeOutDuration
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6198631836760112975, guid: 981164492da10c441a34f32cbffc5e05, type: 3}
       propertyPath: m_Name
