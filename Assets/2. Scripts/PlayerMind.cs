@@ -167,6 +167,18 @@ public class PlayerMind : MonoBehaviour
         isStart = true;
     }
 
+    public void ResetVisualEffects()
+    {
+        if (vignette != null)
+        {
+            vignette.intensity.value = 0f;
+        }
+        if (depthOfField != null)
+        {
+            depthOfField.farMaxBlur = 0f;
+        }
+    }
+
     // 효과음 제어 함수
     private void HandleMindAudio(bool isMindDecreasing)
     {

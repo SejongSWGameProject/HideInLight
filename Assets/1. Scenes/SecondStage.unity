@@ -11724,7 +11724,6 @@ MonoBehaviour:
   m_Script: {fileID: 1642155417}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Entries: []
 --- !u!4 &1045504575
 Transform:
   m_ObjectHideFlags: 19
@@ -15097,6 +15096,18 @@ PrefabInstance:
       propertyPath: ghostSpawner
       value: 
       objectReference: {fileID: 1213076443}
+    - target: {fileID: 8225212027028624040, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
+      propertyPath: IncreaseSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8225212027028624040, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
+      propertyPath: mindEffectClip
+      value: 
+      objectReference: {fileID: 8300000, guid: ed837b2343cadc54b8e27f7b046fcc19, type: 3}
+    - target: {fileID: 8225212027028624040, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
+      propertyPath: autoDecreaseSpeed
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8225212027028624040, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
       propertyPath: postProcessVolume
       value: 
