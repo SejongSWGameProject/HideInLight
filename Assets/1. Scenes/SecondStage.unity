@@ -11728,6 +11728,7 @@ MonoBehaviour:
   m_Script: {fileID: 1642155417}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Entries: []
 --- !u!4 &1045504575
 Transform:
   m_ObjectHideFlags: 19
@@ -24621,7 +24622,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5047148389931854942, guid: 2ea017a68a8f96943ae22e403033f321, type: 3}
       propertyPath: currentCount
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5047148389931854942, guid: 2ea017a68a8f96943ae22e403033f321, type: 3}
       propertyPath: leverCntText
