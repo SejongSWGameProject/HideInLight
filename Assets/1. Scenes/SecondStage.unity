@@ -9338,7 +9338,7 @@ MonoBehaviour:
   hasFlare: 0
   happyEndingSceneName: HappyEnding
   badEndingSceneName: BadEnding
-  getBloodSound: {fileID: 0}
+  getBloodSound: {fileID: 8300000, guid: aaefd2d0b54705c47a3ecf0ddbaa3943, type: 3}
 --- !u!4 &803882127
 Transform:
   m_ObjectHideFlags: 0
