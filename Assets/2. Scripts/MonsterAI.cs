@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class MonsterAI : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class MonsterAI : MonoBehaviour
     public const int CHASE = 2;
     public const int STUN = 3;
     public const int BREAK = 4;
-    int monsterState = NORMAL;           //1:배회 2:추격 3:기절
+    public int monsterState;           //1:����(��������ٴϴ���)   2:�÷��̾��Ѵ���   3:���ϸ���
 
     public Transform player;         // 플레이어 Transform
     public float viewRadius = 80f; // 시야 반경
@@ -49,7 +50,6 @@ public class MonsterAI : MonoBehaviour
     public AudioClip growlClip;
     private AudioSource fadeOutAudioSource;
 
-    public bool chasePlayer = false;
     public bool isCrazy = false;
 
     // 플레이어를 봤는지 여부
@@ -74,6 +74,12 @@ public class MonsterAI : MonoBehaviour
             Debug.LogError("NavMeshAgent 컴포넌트를 찾을 수 없습니다!");
             return;
         }
+    }
+
+    private void OnEnable()
+    {
+        monsterState = NORMAL;
+        Debug.Log("노말로 변경");
     }
 
     void Update()
@@ -287,7 +293,9 @@ public class MonsterAI : MonoBehaviour
             fadeOutAudioSource.PlayOneShot(jumpscareSound);
         }
 
-        float killAnimationLength = 1.5f; 
+        // 5. 게임 오버 처리 (아래 3단계 참고)
+        // (이벤트 또는 Invoke 사용)
+        float killAnimationLength = 2f; // 예: 킬 애니메이션의 총 길이 (초)
         Invoke("ShowGameOver", killAnimationLength);
     }
     // ▲▲▲▲▲▲ [수정 끝] ▲▲▲▲▲▲
@@ -299,6 +307,9 @@ public class MonsterAI : MonoBehaviour
         {
             jumpscareLight.enabled = false;
         }
+
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentSceneName);
     }
     
     public void setMonsterState(int state)
@@ -361,11 +372,14 @@ public class MonsterAI : MonoBehaviour
         animator.SetFloat("Speed", originspeed);
         animator.SetBool("isStunned", false);
 
-        if (CheckSight() == false)
+        if (!isCrazy)
         {
-            monsterState = NORMAL;
-            deltatDistance = 10.0f;
-            lampManager.SetMonsterTargetToRandomLamp();
+            if (CheckSight() == false)
+            {
+                monsterState = NORMAL;
+                deltatDistance = 10.0f;
+                lampManager.SetMonsterTargetToRandomLamp();
+            }
         }
 
         currentPauseCoroutine = null;

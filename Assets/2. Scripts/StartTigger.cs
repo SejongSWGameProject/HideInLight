@@ -52,6 +52,8 @@ public class StartTigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         ActivateObjects();
+        PlayerMind playerMind = other.GetComponent<PlayerMind>();
+        playerMind.isStart = true;
     }
 
     public void ActivateObjects()

@@ -15,7 +15,7 @@ public class PlayerMind : MonoBehaviour
     public RectTransform uiObjectA;             // 줄어드는 UI 오브젝트
 
     [Header("감소 속도")]
-    public float IncreaseSpeed = 20f;           // 외부 라이트에 비출 때
+    public float IncreaseSpeed = 50f;           // 외부 라이트에 비출 때
     public float autoDecreaseSpeed = 5f;        // 어둠에 있을 시 감소
     private float initialSizeY;           // 시작 정신력 최대수치
 
@@ -50,6 +50,9 @@ public class PlayerMind : MonoBehaviour
     public float blurryFarEnd = 5f;
 
     public float minFocusDistance = 0.5f;
+
+    public MonsterAI monster;
+    public bool isStart = false;
 
     void Start()
     {
@@ -89,10 +92,10 @@ public class PlayerMind : MonoBehaviour
     }
 
     
-
+    
     void Update()
     {
-        if (uiObjectA == null) return;
+        if (uiObjectA == null || !isStart) return;
 
         // 빛을 받을 때 증가
         if (!isInDarkness)
@@ -118,6 +121,17 @@ public class PlayerMind : MonoBehaviour
         //Debug.Log(mindValue);
 
         SetSightEffect();
+
+        if(mindValue <= 0f)
+        {
+            monster.isCrazy = true;
+            monster.setMonsterState(2);
+        }
+    }
+
+    public void setStart()
+    {
+        isStart = true;
     }
     public void SetSightEffect()
     {
@@ -162,10 +176,16 @@ public class PlayerMind : MonoBehaviour
 
         float originY = size.y;
         size.y = initialSizeY * (mindValue / 100.0f);
-        if (size.y < 0f)
+        if (size.y <= 0f)
+        {
             size.y = 0;
+            
+        }
         if (size.y > initialSizeY)
+        {
             size.y = initialSizeY;
+
+        }
         pos.y += (size.y-originY) / 2f;
         
 

@@ -101,6 +101,7 @@ public class PlayerLight : MonoBehaviour
                 if (isMonsterInSight())
                 {
                     monster.setMonsterState(2);
+                    Debug.Log("pL103");
                 }
             }
         }
@@ -131,6 +132,7 @@ public class PlayerLight : MonoBehaviour
                 else
                 {
                     monster.setMonsterState(2);
+                    Debug.Log("pl133");
                 }
             }
             else

@@ -37,11 +37,16 @@ public class EndingManager : MonoBehaviour
         if (hasMonsterBlood)
         {
             Debug.Log("해피 엔딩: 백신을 가지고 탈출 성공!");
-            //SceneManager.LoadScene(happyEndingSceneName);
+            PlayerPrefs.SetString("EndingResult", "Happy");
+            PlayerPrefs.Save();
+            SceneManager.LoadScene("EndingScene");
         }
         else
         {
             Debug.Log("탈출 실패: 아직 괴물의 피가 없습니다.");
+            PlayerPrefs.SetString("EndingResult", "Normal");
+            PlayerPrefs.Save();
+            SceneManager.LoadScene("EndingScene");
             // 여기에 "피를 뽑아야 해" 같은 UI 메시지를 띄우면 좋습니다.
         }
     }
@@ -50,8 +55,9 @@ public class EndingManager : MonoBehaviour
     public void TriggerExplosionEnding()
     {
         Debug.Log("폭사 엔딩: 다 같이 죽자!");
-        // 바로 씬을 넘기기보다, 펑 터지는 효과 후 넘기는 게 좋으므로 코루틴 등 사용 권장
-        //Invoke("LoadBadEndingScene", 2.0f); // 2초 뒤 이동
+        PlayerPrefs.SetString("EndingResult", "Bad");
+        PlayerPrefs.Save();
+        SceneManager.LoadScene("EndingScene");
     }
 
     void LoadBadEndingScene()
@@ -60,7 +66,15 @@ public class EndingManager : MonoBehaviour
         //SceneManager.LoadScene(badEndingSceneName);
     }
 
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            //NextStage();
+            Debug.Log("스테이지 클리어!");
+            TryEscape();
+        }
+    }
 
     public void GetBlood()
     {
