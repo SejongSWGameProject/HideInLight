@@ -5496,6 +5496,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7742501169089508870, guid: dbf97839af517f845b5041c08fe07788, type: 3}
+      propertyPath: m_fontSize
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742501169089508870, guid: dbf97839af517f845b5041c08fe07788, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 36
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 771363005376547815, guid: dbf97839af517f845b5041c08fe07788, type: 3}

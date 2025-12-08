@@ -8,8 +8,8 @@ public class PlayerLight : MonoBehaviour
 
     [Header("UI Settings")]
     public RectTransform uiObjectA;
-    public float decreaseSpeed = 20f;
-    public float decreasesize = 30f;
+    public float decreaseSpeed = 0.5f;
+    public float decreasesize = 10f;
 
     [Header("Initial Settings")]
     public float initialRange = 80f;
@@ -218,9 +218,22 @@ public class PlayerLight : MonoBehaviour
 
     public void UpdateCullingMask()
     {
-        if (colorIndex == 0) mainCamera.cullingMask = defaultLayer;
-        else if (colorIndex == 1) mainCamera.cullingMask = defaultLayer | redHiddenLayer;
-        else if (colorIndex == 2) mainCamera.cullingMask = defaultLayer | greenHiddenLayer;
+        if (colorIndex == 0)
+        {
+            mainCamera.cullingMask = defaultLayer;
+            decreaseSpeed = 0.5f;
+        }
+        else if (colorIndex == 1)
+        {
+            mainCamera.cullingMask = defaultLayer | redHiddenLayer;
+            decreaseSpeed = 1f;
+
+        }
+        else if (colorIndex == 2) { 
+            mainCamera.cullingMask = defaultLayer | greenHiddenLayer;
+            decreaseSpeed = 1f;
+
+        }
     }
 
     public void ScrollableLight()
