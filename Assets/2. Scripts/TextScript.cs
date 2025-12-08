@@ -19,6 +19,7 @@ public class TextScript : MonoBehaviour
 
         originalText = uiText.text;
         uiText.text = "";
+        gameObject.SetActive(true);
     }
 
     void Start()
