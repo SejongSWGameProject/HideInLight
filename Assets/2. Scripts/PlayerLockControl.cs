@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerLockControl : MonoBehaviour
 {
@@ -9,12 +9,16 @@ public class PlayerLockControl : MonoBehaviour
     [Tooltip("카메라 회전 스크립트 (예: MouseLook, CameraController)")]
     public MonoBehaviour cameraScript;
 
+    [Tooltip("카메라 회전 스크립트 (예: MouseLook, CameraController)")]
+    public MonoBehaviour tutorialScript;
+
     // 퍼즐 시작할 때 부를 함수
     public void FreezePlayer()
     {
         // 1. 이동/회전 스크립트 끄기
         if (movementScript != null) movementScript.enabled = false;
         if (cameraScript != null) cameraScript.enabled = false;
+        if (tutorialScript != null) tutorialScript.enabled = false;
 
         // 2. 마우스 커서 보이게 하고 가두기 풀기 (퍼즐 클릭해야 하니까)
         Cursor.lockState = CursorLockMode.None;
@@ -27,6 +31,7 @@ public class PlayerLockControl : MonoBehaviour
         // 1. 이동/회전 스크립트 다시 켜기
         if (movementScript != null) movementScript.enabled = true;
         if (cameraScript != null) cameraScript.enabled = true;
+        if (tutorialScript != null) tutorialScript.enabled = true;
 
         // 2. 마우스 커서 다시 숨기고 잠그기 (게임 플레이로 복귀)
         Cursor.lockState = CursorLockMode.Locked;

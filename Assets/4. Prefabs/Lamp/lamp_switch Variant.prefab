@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: ea801079576aa7f469650dc0d45802da, type: 3}
     - target: {fileID: 2330503813293384872, guid: 857b7a0e5a4f1ff4dba58cad404eedc0, type: 3}
       propertyPath: targetLights.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5102250700497301240, guid: 857b7a0e5a4f1ff4dba58cad404eedc0, type: 3}
       propertyPath: m_LocalScale.x
@@ -38,15 +38,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5102250700497301240, guid: 857b7a0e5a4f1ff4dba58cad404eedc0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 159.66731
+      value: -11.16
       objectReference: {fileID: 0}
     - target: {fileID: 5102250700497301240, guid: 857b7a0e5a4f1ff4dba58cad404eedc0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 5102250700497301240, guid: 857b7a0e5a4f1ff4dba58cad404eedc0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.2
+      value: 69.81999
       objectReference: {fileID: 0}
     - target: {fileID: 5102250700497301240, guid: 857b7a0e5a4f1ff4dba58cad404eedc0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -74,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5102250700497301240, guid: 857b7a0e5a4f1ff4dba58cad404eedc0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 6218115092753328400, guid: 857b7a0e5a4f1ff4dba58cad404eedc0, type: 3}
       propertyPath: m_Size.x

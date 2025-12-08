@@ -13,9 +13,14 @@ public class GameMenuController : MonoBehaviour
     public GameObject settingsPanel;    // 설정 창 (큰 창)
     public GameObject quitConfirmPanel; // 종료 확인 창
 
+    // ▼▼▼ [추가됨] 숨기고 싶은 게임 내 UI들 ▼▼▼
+    [Header("In-Game HUD (Hide on Pause)")]
+    public GameObject canvasUI;    // 배터리 UI (CanvasBattery 등)
+    // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
     [Header("Settings UI")]
     public TMP_Dropdown resolutionDropdown; // 해상도 드롭다운
-    public Image brightnessOverlay;         // [추가됨] 밝기 조절용 검은 막(Panel)
+    public Image brightnessOverlay;         // 밝기 조절용 검은 막(Panel)
 
     [Header("Audio")]
     public AudioMixer audioMixer;       // 오디오 믹서
@@ -102,6 +107,11 @@ public class GameMenuController : MonoBehaviour
         settingsPanel.SetActive(false);
         quitConfirmPanel.SetActive(false);
         playerLight.gameObject.SetActive(false);
+
+        // ▼▼▼ [추가] 일시정지 시 HUD 숨기기 ▼▼▼
+        if (canvasUI != null) canvasUI.SetActive(false);
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
         Time.timeScale = 0f; // 시간 멈춤
         isPaused = true;
         Cursor.visible = true;
@@ -114,6 +124,10 @@ public class GameMenuController : MonoBehaviour
         settingsPanel.SetActive(false);
         quitConfirmPanel.SetActive(false);
         playerLight.gameObject.SetActive(true);
+
+        // ▼▼▼ [추가] 게임 재개 시 HUD 다시 보이기 ▼▼▼
+        if (canvasUI != null) canvasUI.SetActive(true);
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
         Time.timeScale = 1f; // 시간 다시 흐름
         isPaused = false;
@@ -177,7 +191,7 @@ public class GameMenuController : MonoBehaviour
         {
             // 슬라이더(0~1): 1이면 밝음(투명), 0이면 어두움(검정)
             float alpha = 1.0f - value; 
-            
+             
             // 너무 깜깜해지지 않게 최대 0.9까지만 어두워지게 제한
             alpha = Mathf.Clamp(alpha, 0f, 0.9f); 
 
@@ -192,7 +206,7 @@ public class GameMenuController : MonoBehaviour
     {
         PlayerPrefs.SetFloat("MouseSens", sens);
         PlayerPrefs.Save();
-        
+         
         // 게임 중이므로 플레이어에게 즉시 적용하라고 명령
         PlayerMove player = FindObjectOfType<PlayerMove>();
         if (player != null) player.UpdateSensitivity();

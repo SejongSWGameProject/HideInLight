@@ -6,9 +6,6 @@ public class PlayerLight : MonoBehaviour
     public Transform cameraTransform; // 카메라 Transform
     public Camera mainCamera;
 
-    [Header("Battery UI Canvas")]
-    public GameObject BatteryUI;
-
     [Header("UI Settings")]
     public RectTransform uiObjectA;
     public float decreaseSpeed = 20f;
