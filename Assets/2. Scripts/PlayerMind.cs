@@ -152,7 +152,7 @@ public class PlayerMind : MonoBehaviour
         // 효과음 제어
         HandleMindAudio(isMindDecreasing);
 
-        if (mindValue <= 0f || Input.GetKeyDown(KeyCode.L))
+        if (mindValue <= 0f)
         {
             foreach (MonsterAI m in MonsterAI.allMonsters)
             {
