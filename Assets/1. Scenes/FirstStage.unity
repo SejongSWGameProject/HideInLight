@@ -5560,6 +5560,10 @@ PrefabInstance:
       propertyPath: flashImage
       value: 
       objectReference: {fileID: 3385741186785435113}
+    - target: {fileID: 6598716510391159121, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
+      propertyPath: mouseSpeed
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 7604075459020125365, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
       propertyPath: m_ShadowRadius
       value: 0.1
@@ -7522,7 +7526,7 @@ PrefabInstance:
       objectReference: {fileID: 8392253750944724830}
     - target: {fileID: 1336209675134130866, guid: 9e8a700c5e7f07e46b69d21f6383fe3e, type: 3}
       propertyPath: multipleValue
-      value: 10
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1941802992952081023, guid: 9e8a700c5e7f07e46b69d21f6383fe3e, type: 3}
       propertyPath: m_Name
