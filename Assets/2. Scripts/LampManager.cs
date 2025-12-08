@@ -25,7 +25,8 @@ public class LampManager : MonoBehaviour
     private float initHeight;
     private float initPower = 1000f;
     private float curPower = 1000f;
-    private float decreaseSpeed = 1f;
+    public float decreaseSpeed = 1f;
+    public float multipleValue = 4f;
     private int activeLampCount;
 
     void Awake()
@@ -83,7 +84,7 @@ public class LampManager : MonoBehaviour
     public void UpdateActiveLampCount()
     {
         activeLampCount = lamps.Count;
-        decreaseSpeed = 1f + (activeLampCount / 75f);
+        decreaseSpeed = 1f + (1.0f * activeLampCount / allLamps.Count) * multipleValue;
         Debug.Log("activeLampCount:" + activeLampCount);
     }
 
