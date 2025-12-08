@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerLight : MonoBehaviour
 {
@@ -44,6 +45,8 @@ public class PlayerLight : MonoBehaviour
     public LayerMask redHiddenLayer;
     public LayerMask greenHiddenLayer;
 
+    private Image gaugeImg;
+
     void Start()
     {
         if (flashlight == null) return;
@@ -66,6 +69,9 @@ public class PlayerLight : MonoBehaviour
         flashlight.spotAngle = angle;
 
         flashlight.enabled = false;
+
+        gaugeImg = uiObjectA.GetComponent<Image>();
+        gaugeImg.color = Color.orange;
     }
 
 
@@ -89,6 +95,7 @@ public class PlayerLight : MonoBehaviour
             if (!flashlight.enabled)
             {
                 mainCamera.cullingMask = defaultLayer;
+                gaugeImg.color = Color.orange;
             }
 
             audioSource.PlayOneShot(toggleLight);
@@ -218,20 +225,24 @@ public class PlayerLight : MonoBehaviour
 
     public void UpdateCullingMask()
     {
+        
         if (colorIndex == 0)
         {
             mainCamera.cullingMask = defaultLayer;
             decreaseSpeed = 0.5f;
+            gaugeImg.color = Color.orange;
         }
         else if (colorIndex == 1)
         {
             mainCamera.cullingMask = defaultLayer | redHiddenLayer;
             decreaseSpeed = 1f;
+            gaugeImg.color = Color.red;
 
         }
         else if (colorIndex == 2) { 
             mainCamera.cullingMask = defaultLayer | greenHiddenLayer;
             decreaseSpeed = 1f;
+            gaugeImg.color = Color.red;
 
         }
     }
