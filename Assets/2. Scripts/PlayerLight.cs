@@ -47,6 +47,8 @@ public class PlayerLight : MonoBehaviour
 
     private Image gaugeImg;
 
+    public bool getFlashlight = true;
+
     void Start()
     {
         if (flashlight == null) return;
@@ -74,18 +76,9 @@ public class PlayerLight : MonoBehaviour
         gaugeImg.color = Color.orange;
     }
 
-
     void Update()
     {
-        if (flashlight.enabled && Input.GetKeyDown(KeyCode.E))
-        {
-            if (flashlight.color == originalColor)
-                flashlight.color = Color.red;
-            else if (flashlight.color == Color.red)
-                flashlight.color = Color.green;
-            else
-                flashlight.color = originalColor;
-        }
+        if (!getFlashlight) return;
 
         // 마우스 왼쪽 클릭 시 토글
         if (Input.GetMouseButtonDown(0) && uiObjectA.sizeDelta.x > 0)
@@ -186,6 +179,11 @@ public class PlayerLight : MonoBehaviour
             uiObjectA.sizeDelta = size;
             uiObjectA.localPosition = pos;
         }
+    }
+
+    public void GetFlashlight()
+    {
+        getFlashlight = true;
     }
 
     // [함수 수정] 특정 괴물을 매개변수로 받아서 그 놈이 보이는지 체크

@@ -5508,6 +5508,10 @@ PrefabInstance:
       propertyPath: decreaseSpeed
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4304078985655236899, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
+      propertyPath: getFlashlight
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4382522877837737960, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
       propertyPath: m_OcclusionCulling
       value: 1
@@ -5562,7 +5566,7 @@ PrefabInstance:
       objectReference: {fileID: 3385741186785435113}
     - target: {fileID: 6598716510391159121, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
       propertyPath: mouseSpeed
-      value: 20
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7604075459020125365, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
       propertyPath: m_ShadowRadius
@@ -11589,7 +11593,7 @@ PrefabInstance:
       objectReference: {fileID: 1498888492}
     - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
       propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
       propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
@@ -11601,6 +11605,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
       propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[5].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[6].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
@@ -11620,6 +11628,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1228361363}
     - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[6].m_Target
+      value: 
+      objectReference: {fileID: 1379866192}
+    - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
       propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -11629,6 +11641,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
       propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[5].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[6].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
@@ -11644,6 +11660,10 @@ PrefabInstance:
       value: ShowTextInstantly
       objectReference: {fileID: 0}
     - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[6].m_MethodName
+      value: GetFlashlight
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
       propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
       value: LampManager, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -11656,6 +11676,10 @@ PrefabInstance:
       value: TextScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[6].m_TargetAssemblyTypeName
+      value: PlayerLight, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
       propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -11665,6 +11689,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
       propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986139878708529489, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[6].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7782543635756471268, guid: 8b09c8337fcc92343b5afecdfdaea5c8, type: 3}
@@ -14080,6 +14108,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 771363005376547815, guid: dbf97839af517f845b5041c08fe07788, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2628285432252021300, guid: dbf97839af517f845b5041c08fe07788, type: 3}
       propertyPath: m_Name
       value: Canvas
