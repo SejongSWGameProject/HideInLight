@@ -41,6 +41,7 @@ public class StartTigger : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
@@ -48,6 +49,7 @@ public class StartTigger : MonoBehaviour
             ActivateObjects();
         }
     }
+#endif
 
     private void OnTriggerEnter(Collider other)
     {
@@ -87,6 +89,7 @@ public class StartTigger : MonoBehaviour
         {
             monster.SetActive(true);
         }
+        LampManager.Instance.powerInit();
         Destroy(this.gameObject);
     }
 

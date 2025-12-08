@@ -61,20 +61,25 @@ public class LampManager : MonoBehaviour
         Debug.Log("켜져있는 전등 개수: "+lamps.Count);
     }
 
+    public void powerInit()
+    {
+        curPower = initPower;
+        UpdateActiveLampCount();
+    }
+
     // Update is called once per frame
     void Update()
     {
         
-        if(elecPowerUI.gameObject.activeInHierarchy)
-        {
-            curPower -= decreaseSpeed * Time.deltaTime;
-            if (curPower <= 0) {
-                curPower = 0;
-                DisableAllLamps();
-            }
-            UpdateElectricPowerUI();
-            //Debug.Log(curPower);
+        
+        curPower -= decreaseSpeed * Time.deltaTime;
+        if (curPower <= 0) {
+            curPower = 0;
+            DisableAllLamps();
         }
+        UpdateElectricPowerUI();
+        //Debug.Log(curPower);
+        
 
         //if (Input.GetKeyDown(KeyCode.M))
         //{
@@ -84,9 +89,16 @@ public class LampManager : MonoBehaviour
 
     public void UpdateActiveLampCount()
     {
+
         activeLampCount = lamps.Count;
-        decreaseSpeed = addValue + (multipleValue * activeLampCount / allLamps.Count);
-        Debug.Log("activeLampCount:" + activeLampCount);
+        if (allLamps.Count > 0)
+        {
+            decreaseSpeed = addValue + (multipleValue * activeLampCount / allLamps.Count);
+        }
+        else
+        {
+            decreaseSpeed = addValue; // 기본 속도로 설정
+        }
     }
 
     public void DisableAllLamps()
@@ -105,6 +117,12 @@ public class LampManager : MonoBehaviour
 
     public void UpdateElectricPowerUI()
     {
+        if (initPower <= Mathf.Epsilon)
+        {
+            return;
+        }
+        if (elecPowerUI == null) return;
+
         Vector2 size = elecPowerUI.sizeDelta;
         Vector3 pos = elecPowerUI.localPosition;
 

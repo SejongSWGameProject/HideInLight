@@ -74,6 +74,8 @@ public class PlayerLight : MonoBehaviour
 
         gaugeImg = uiObjectA.GetComponent<Image>();
         gaugeImg.color = Color.orange;
+
+        mainCamera.cullingMask = defaultLayer;
     }
 
     void Update()
