@@ -28,7 +28,7 @@ public class ExitManager : MonoBehaviour
     public void OpenExit()
     {
         StartCoroutine(OpenDoorsRoutine());
-
+        isOpen = true;
         // 소리는 열리기 시작할 때 재생
         if (moveSound != null && audioSource != null)
         {

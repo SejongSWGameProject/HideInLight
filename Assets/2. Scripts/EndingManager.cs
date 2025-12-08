@@ -5,12 +5,12 @@ using UnityEngine.SceneManagement;
 public class EndingManager : MonoBehaviour
 {
     public static EndingManager Instance; // 어디서든 접근 가능하게 싱글톤 처리
-    public NavMeshAgent agent;
 
     [Header("Inventory Flags")]
     public bool hasInjector = false;      // 주사기 보유 여부
     public bool hasMonsterBlood = false; // 괴물 피 보유 여부
     public bool hasFlare = false;        // 조명탄 보유 여부
+    public float canUseFlareDistance = 30f;
 
     [Header("Ending UI / Scenes")]
     public string happyEndingSceneName = "HappyEnding";
@@ -19,6 +19,9 @@ public class EndingManager : MonoBehaviour
     public AudioClip getBloodSound;
 
     private AudioSource audioSource;
+
+    public Transform player;
+    public GameObject cannotBoomText;
 
     void Awake()
     {
@@ -29,6 +32,10 @@ public class EndingManager : MonoBehaviour
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        if(cannotBoomText != null)
+        {
+            cannotBoomText.SetActive(true);
+        }
     }
 
     // 1. 해피 엔딩 조건 체크 (탈출구에서 호출)
@@ -54,10 +61,27 @@ public class EndingManager : MonoBehaviour
     // 2. 폭사 엔딩 실행 (드럼통에서 호출)
     public void TriggerExplosionEnding()
     {
-        Debug.Log("폭사 엔딩: 다 같이 죽자!");
-        PlayerPrefs.SetString("EndingResult", "Bad");
-        PlayerPrefs.Save();
-        SceneManager.LoadScene("EndingScene");
+        bool canBoom = false;
+        foreach(MonsterAI monster in MonsterAI.allMonsters)
+        {
+            Debug.Log(Vector3.Distance(player.transform.position, monster.transform.position) < canUseFlareDistance);
+            if(Vector3.Distance(player.transform.position, monster.transform.position) < canUseFlareDistance)
+            {
+                canBoom = true;
+            }
+        }
+        if (canBoom)
+        {
+            Debug.Log("폭사 엔딩: 다 같이 죽자!");
+            PlayerPrefs.SetString("EndingResult", "Bad");
+            PlayerPrefs.Save();
+            SceneManager.LoadScene("EndingScene");
+        }
+        else
+        {
+            TextScript ts = cannotBoomText.GetComponent<TextScript>();
+            ts.ShowTextInstantly();
+        }
     }
 
     void LoadBadEndingScene()
@@ -80,8 +104,11 @@ public class EndingManager : MonoBehaviour
     {
         EndingManager.Instance.hasMonsterBlood = true;
 
-        InteractableObject monsterInteractor = agent.GetComponent<InteractableObject>();
-        monsterInteractor.canInteract = false;
+        foreach (MonsterAI m in MonsterAI.allMonsters)
+        {
+            InteractableObject monsterInteractor = m.GetComponent<InteractableObject>();
+            monsterInteractor.canInteract = false;
+        }
 
         if(getBloodSound != null)
         {

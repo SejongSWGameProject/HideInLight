@@ -1,22 +1,62 @@
-﻿using System.Threading;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections;
 using UnityEngine.SceneManagement;
+
+public enum MonsterState
+{
+    NORMAL,
+    CHASE,
+    STUN,
+    BREAK
+}
 
 public class MonsterAI : MonoBehaviour
 {
+    public static List<MonsterAI> allMonsters = new List<MonsterAI>();
+    private void Awake()
+    {
+        // 괴물이 태어날 때 명단에 자기 자신 등록
+        if (!allMonsters.Contains(this))
+        {
+            allMonsters.Add(this);
+        }
+    }
+    public static void NotifyLampBroken(LampController brokenLamp)
+    {
+        // 명단에 있는 모든 몬스터를 검사
+        foreach (MonsterAI monster in allMonsters)
+        {
+            // 1. 몬스터가 '보통' 상태이고
+            // 2. 몬스터의 현재 타겟이 '방금 깨진 그 전등'이라면
+            if (monster.monsterState == MonsterState.NORMAL && monster.targetLamp == brokenLamp)
+            {
+                // "어? 내 타겟 깨졌네? 딴 거 찾자!"
+                monster.SetTargetToRandomLamp();
+            }
+        }
+    }
+    private void OnDestroy()
+    {
+        // 괴물이 죽거나 사라질 때 명단에서 제거 (에러 방지)
+        if (allMonsters.Contains(this))
+        {
+            allMonsters.Remove(this);
+        }
+    }
+
+    [Header("핵심 속성")]
     public Transform target;         // 플레이어 Transform
+    public Transform player;         // 플레이어 Transform
+    public LampController targetLamp;
+
     private NavMeshAgent monster;      // 몬스터 이동 에이전트
     private Animator animator;
 
-    public const int NORMAL = 1;
-    public const int CHASE = 2;
-    public const int STUN = 3;
-    public const int BREAK = 4;
-    public int monsterState;           //1:����(��������ٴϴ���)   2:�÷��̾��Ѵ���   3:���ϸ���
+    public MonsterState monsterState;           //1:����(��������ٴϴ���)   2:�÷��̾��Ѵ���   3:���ϸ���
 
-    public Transform player;         // 플레이어 Transform
     public float viewRadius = 80f; // 시야 반경
     [Range(0, 360)]
     public float viewAngle = 300f;  // 시야각
@@ -75,13 +115,21 @@ public class MonsterAI : MonoBehaviour
             return;
         }
 
-        LampManager.Instance.SetMonsterTargetToRandomLamp();
+        if (targetLamp == null && LampManager.Instance != null)
+        {
+            SetTargetToRandomLamp();
+        }
     }
 
     private void OnEnable()
     {
-        monsterState = NORMAL;
+        monsterState = MonsterState.NORMAL;
         Debug.Log("노말로 변경");
+        
+        if(LampManager.Instance != null)
+        {
+            SetTargetToRandomLamp();
+        }
     }
 
     void Update()
@@ -96,6 +144,15 @@ public class MonsterAI : MonoBehaviour
         if (!isPaused)
         {
             animator.SetFloat("Speed", monster.speed);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SetTargetToRandomLamp();
+        }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            SetTargetToNearLamp();
         }
 
         Vector3 targetPosWithoutY = new Vector3(target.position.x, 0f, target.position.z);
@@ -124,7 +181,7 @@ public class MonsterAI : MonoBehaviour
             animator.SetBool("isWalking", false);
         }
 
-        if (monsterState == NORMAL)
+        if (monsterState == MonsterState.NORMAL)
         {
             stepInterval = 1.1f;
             monster.speed = 10;
@@ -133,20 +190,53 @@ public class MonsterAI : MonoBehaviour
             
             if(monster.velocity.magnitude < 1f && Vector3.Distance(this.transform.position, this.target.transform.position) < 20)
             {
-                StartCoroutine(BreakLamp());
+                StartCoroutine(BreakLamp(targetLamp));
             }
         }
-        else if (monsterState == CHASE)
+        else if (monsterState == MonsterState.CHASE)
         {
+            target = player;
             stepInterval = 0.7f;
             monster.speed = 30;
             animator.SetFloat("animSpeed", 3.0f);
-            target = player;
         }
 
         if (CanKillPlayer()) 
         {
             StartJumpScare();
+        }
+    }
+
+    public void SetTargetToRandomLamp()
+    {
+        if(LampManager.Instance == null)
+        {
+            Debug.Log(this.name);
+        }
+        targetLamp = LampManager.Instance.GetRandomLamp();
+        if(targetLamp == null)  //GetRandomLamp return randomLamp from list. if list is clear, return null
+        {
+            setMonsterState(MonsterState.CHASE);
+        }
+        else
+        {
+            target = targetLamp.transform;
+        }
+    }
+    public void SetTargetToNearLamp()
+    {
+        if (LampManager.Instance == null)
+        {
+            Debug.Log(this.name);
+        }
+        targetLamp = LampManager.Instance.GetNearestLampToPlayer();
+        if (targetLamp == null)  //GetRandomLamp return randomLamp from list. if list is clear, return null
+        {
+            setMonsterState(MonsterState.CHASE);
+        }
+        else
+        {
+            target = targetLamp.transform;
         }
     }
 
@@ -190,7 +280,7 @@ public class MonsterAI : MonoBehaviour
             return;
         }
 
-        if (other.CompareTag("Player") && monsterState!=STUN)
+        if (other.CompareTag("Player") && monsterState != MonsterState.STUN)
         {
             StartJumpScare();
         }
@@ -319,12 +409,12 @@ public class MonsterAI : MonoBehaviour
         SceneManager.LoadScene(currentSceneName);
     }
     
-    public void setMonsterState(int state)
+    public void setMonsterState(MonsterState state)
     {
         monsterState = state;
     }
 
-    private IEnumerator BreakLamp()
+    private IEnumerator BreakLamp(LampController targetLamp)
     {
         float originspeed = monster.speed;
 
@@ -339,7 +429,7 @@ public class MonsterAI : MonoBehaviour
 
         if (target.CompareTag("Lamp"))
         {
-            LampManager.Instance.BreakLamp();
+            LampManager.Instance.BreakLamp(targetLamp);
         }
 
         yield return new WaitForSeconds(1.3f);
@@ -349,8 +439,7 @@ public class MonsterAI : MonoBehaviour
             monster.isStopped = false;
         }
         animator.SetFloat("Speed", originspeed);
-
-        monsterState = NORMAL;
+        monsterState = MonsterState.NORMAL;
     }
 
     private IEnumerator PauseMonster(float duration)
@@ -359,7 +448,7 @@ public class MonsterAI : MonoBehaviour
         
         isPaused = true;
         float originspeed = monster.speed;
-        monsterState = STUN;
+        monsterState = MonsterState.STUN;
         animator.SetFloat("Speed", 0f);
         animator.SetBool("isStunned", true);
         
@@ -383,9 +472,9 @@ public class MonsterAI : MonoBehaviour
         {
             if (CheckSight() == false)
             {
-                monsterState = NORMAL;
+                monsterState = MonsterState.NORMAL;
                 deltatDistance = 10.0f;
-                lampManager.SetMonsterTargetToRandomLamp();
+                SetTargetToRandomLamp();
             }
         }
 
@@ -421,7 +510,7 @@ public class MonsterAI : MonoBehaviour
         {
             canSeePlayer = true;
             Debug.Log("발견!");
-            setMonsterState(CHASE);
+            setMonsterState(MonsterState.CHASE);
             return true;
         }
     }

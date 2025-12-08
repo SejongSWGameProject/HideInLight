@@ -49,8 +49,6 @@ public class PlayerMind : MonoBehaviour
     public float blurryFarEnd = 5f;
 
     public float minFocusDistance = 0.5f;
-
-    public MonsterAI monster;
     public bool isStart = false;
 
     [Header("Audio Settings")]
@@ -154,10 +152,13 @@ public class PlayerMind : MonoBehaviour
         // 효과음 제어
         HandleMindAudio(isMindDecreasing);
 
-        if (mindValue <= 0f)
+        if (mindValue <= 0f || Input.GetKeyDown(KeyCode.L))
         {
-            monster.isCrazy = true;
-            monster.setMonsterState(2);
+            foreach (MonsterAI m in MonsterAI.allMonsters)
+            {
+                m.isCrazy = true;
+                m.setMonsterState(MonsterState.CHASE);
+            }
         }
     }
 
