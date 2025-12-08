@@ -15743,6 +15743,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 385adeedd9a5c924393b9d016cc7ecde, type: 2}
     - target: {fileID: 1734845427997605172, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
+      propertyPath: cameraScript
+      value: 
+      objectReference: {fileID: 1688191915}
+    - target: {fileID: 1734845427997605172, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
       propertyPath: tutorialScript
       value: 
       objectReference: {fileID: 1688191917}
@@ -16548,6 +16552,17 @@ Transform:
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7296574616675476403, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
   m_PrefabInstance: {fileID: 4275401917995845365}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8770fbe1cd3a39b4887d54341f185ddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
+--- !u!114 &1436094250 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 897127546514084931, guid: d8849e02302745b47ad4c258c7515f10, type: 3}
+  m_PrefabInstance: {fileID: 4716886726604322679}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -18138,10 +18153,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 877244113}
+        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
+        m_MethodName: WirePuzzleSuccessSound
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -18162,9 +18177,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 489186082}
-        m_TargetAssemblyTypeName: ExitManager, Assembly-CSharp
-        m_MethodName: OpenExit
+      - m_Target: {fileID: 1436094250}
+        m_TargetAssemblyTypeName: InteractableObject, Assembly-CSharp
+        m_MethodName: CannotInteract
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18174,10 +18189,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 877244113}
-        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
-        m_MethodName: WirePuzzleSuccessSound
-        m_Mode: 1
+      - m_Target: {fileID: 1456518905}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -18237,7 +18252,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1456518905}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -24835,6 +24850,58 @@ PrefabInstance:
       propertyPath: puzzlePopupModel_Check
       value: 
       objectReference: {fileID: 5711252130038463550}
+    - target: {fileID: 7296574616675476403, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7296574616675476403, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7296574616675476403, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7296574616675476403, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1688191913}
+    - target: {fileID: 7296574616675476403, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 1456518905}
+    - target: {fileID: 7296574616675476403, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7296574616675476403, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7296574616675476403, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: FreezePlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 7296574616675476403, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 7296574616675476403, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: PlayerLockControl, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7296574616675476403, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7296574616675476403, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7296574616675476403, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7654161207615707529, guid: a1ba6af53f96e864db361fb971b09928, type: 3}
       propertyPath: m_Name
       value: switchpuzzle_generator
@@ -25030,8 +25097,48 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1584508281}
     - target: {fileID: 897127546514084931, guid: d8849e02302745b47ad4c258c7515f10, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 897127546514084931, guid: d8849e02302745b47ad4c258c7515f10, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 897127546514084931, guid: d8849e02302745b47ad4c258c7515f10, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 897127546514084931, guid: d8849e02302745b47ad4c258c7515f10, type: 3}
       propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
+      objectReference: {fileID: 1688191913}
+    - target: {fileID: 897127546514084931, guid: d8849e02302745b47ad4c258c7515f10, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 1456518905}
+    - target: {fileID: 897127546514084931, guid: d8849e02302745b47ad4c258c7515f10, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 897127546514084931, guid: d8849e02302745b47ad4c258c7515f10, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: FreezePlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 897127546514084931, guid: d8849e02302745b47ad4c258c7515f10, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 897127546514084931, guid: d8849e02302745b47ad4c258c7515f10, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: PlayerLockControl, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 897127546514084931, guid: d8849e02302745b47ad4c258c7515f10, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 897127546514084931, guid: d8849e02302745b47ad4c258c7515f10, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2687531266917824099, guid: d8849e02302745b47ad4c258c7515f10, type: 3}
       propertyPath: m_LocalPosition.x
@@ -25198,6 +25305,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1456518905}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnPuzzleCancelled:
     m_PersistentCalls:
       m_Calls:
@@ -25249,7 +25368,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1456518905}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -25971,7 +26090,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5047148389931854942, guid: 2ea017a68a8f96943ae22e403033f321, type: 3}
       propertyPath: currentCount
-      value: 0
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5047148389931854942, guid: 2ea017a68a8f96943ae22e403033f321, type: 3}
       propertyPath: leverCntText
