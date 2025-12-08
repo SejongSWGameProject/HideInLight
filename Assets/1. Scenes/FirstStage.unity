@@ -9582,6 +9582,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6640727553304323760}
     - target: {fileID: 8995814020729014302, guid: 590bc3ca6aac8fc4d9f9c107fa937cd8, type: 3}
+      propertyPath: wirePuzzle
+      value: 
+      objectReference: {fileID: 326164678}
+    - target: {fileID: 8995814020729014302, guid: 590bc3ca6aac8fc4d9f9c107fa937cd8, type: 3}
       propertyPath: lampManager
       value: 
       objectReference: {fileID: 567210880}
