@@ -92,6 +92,10 @@ public class MonsterAI : MonoBehaviour
 
     public bool isCrazy = false;
 
+    public GameObject canvasUI;
+    public GameObject wirePuzzle;
+    public GameObject switchPuzzle;
+
     // 플레이어를 봤는지 여부
     public bool canSeePlayer { get; private set; }
 
@@ -305,6 +309,19 @@ public class MonsterAI : MonoBehaviour
         }
 
         animator.SetFloat("Speed", 0f);
+
+        if (canvasUI != null)
+        {
+            canvasUI.SetActive(false);
+        }
+        if (wirePuzzle != null)
+        {
+            wirePuzzle.SetActive(false);
+        }
+        if (switchPuzzle != null)
+        {
+            switchPuzzle.SetActive(false);
+        }
 
         // 2. 플레이어 컨트롤 정지
         PlayerMove playerMovement = player.GetComponent<PlayerMove>();

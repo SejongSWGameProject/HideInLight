@@ -82,6 +82,10 @@ public class WirePuzzleController : MonoBehaviour
                         ResetWire(draggingWireIndex);
                         isDragging = false;
                         draggingWireIndex = -1;
+                        if (wireDragSound.isPlaying)
+                        {
+                            wireDragSound.Stop();
+                        }
                     }
                 }
             }

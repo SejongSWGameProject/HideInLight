@@ -15,8 +15,7 @@ public class GameMenuController : MonoBehaviour
 
     // ▼▼▼ [추가됨] 숨기고 싶은 게임 내 UI들 ▼▼▼
     [Header("In-Game HUD (Hide on Pause)")]
-    public GameObject batteryUIPanel;    // 배터리 UI (CanvasBattery 등)
-    public GameObject leftSideUIPanel;   // 왼쪽 노란색 게이지 UI (CanvasElectricPower 등)
+    public GameObject canvasUI;    // 배터리 UI (CanvasBattery 등)
     // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
     [Header("Settings UI")]
@@ -110,8 +109,7 @@ public class GameMenuController : MonoBehaviour
         playerLight.gameObject.SetActive(false);
 
         // ▼▼▼ [추가] 일시정지 시 HUD 숨기기 ▼▼▼
-        if (batteryUIPanel != null) batteryUIPanel.SetActive(false);
-        if (leftSideUIPanel != null) leftSideUIPanel.SetActive(false);
+        if (canvasUI != null) canvasUI.SetActive(false);
         // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
         Time.timeScale = 0f; // 시간 멈춤
@@ -128,8 +126,7 @@ public class GameMenuController : MonoBehaviour
         playerLight.gameObject.SetActive(true);
 
         // ▼▼▼ [추가] 게임 재개 시 HUD 다시 보이기 ▼▼▼
-        if (batteryUIPanel != null) batteryUIPanel.SetActive(true);
-        if (leftSideUIPanel != null) leftSideUIPanel.SetActive(true);
+        if (canvasUI != null) canvasUI.SetActive(true);
         // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
         Time.timeScale = 1f; // 시간 다시 흐름
