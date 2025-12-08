@@ -12577,9 +12577,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1425225584}
     - target: {fileID: 3300474908429195342, guid: 5ba93040b41f8744db7484fa9afe5e61, type: 3}
+      propertyPath: batteryUIPanel
+      value: 
+      objectReference: {fileID: 489074000}
+    - target: {fileID: 3300474908429195342, guid: 5ba93040b41f8744db7484fa9afe5e61, type: 3}
       propertyPath: pauseMenuPanel
       value: 
       objectReference: {fileID: 658883139}
+    - target: {fileID: 3300474908429195342, guid: 5ba93040b41f8744db7484fa9afe5e61, type: 3}
+      propertyPath: leftSideUIPanel
+      value: 
+      objectReference: {fileID: 1105772481}
     - target: {fileID: 3300474908429195342, guid: 5ba93040b41f8744db7484fa9afe5e61, type: 3}
       propertyPath: quitConfirmPanel
       value: 
