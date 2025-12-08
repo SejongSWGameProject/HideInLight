@@ -201,7 +201,7 @@ public class WirePuzzleController : MonoBehaviour
         {
             Debug.Log("틀렸습니다! 리셋합니다.");
             MonsterAI monsterAI = monster.GetComponent<MonsterAI>();
-            monsterAI.setMonsterState(2);
+            monsterAI.setMonsterState(MonsterState.CHASE);
             StartCoroutine(ResetPuzzleRoutine());
             sound.WirePuzzleFailSound();
         }

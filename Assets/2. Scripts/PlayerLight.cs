@@ -10,24 +10,26 @@ public class PlayerLight : MonoBehaviour
     public GameObject BatteryUI;
 
     [Header("UI Settings")]
-    public RectTransform uiObjectA;   // Inspector에서 연결
-    public float decreaseSpeed = 20f; // 1초에 얼마나 감소할지
+    public RectTransform uiObjectA;
+    public float decreaseSpeed = 20f;
     public float decreasesize = 30f;
 
     [Header("Initial Settings")]
-    public float initialRange = 80f;  // Inspector에서 초기값 설정
-    public float initialAngle = 70f;   // Inspector에서 초기값 설정
+    public float initialRange = 80f;
+    public float initialAngle = 70f;
 
     [Header("Scroll Settings")]
-    public float scrollSpeed = 30f;         // 마우스 휠 감도
-    [Range(0f, 1f)] public float angleRangeFactor = 0.5f; // range 증가 시 angle 감소 비율
+    public float scrollSpeed = 30f;
+    [Range(0f, 1f)] public float angleRangeFactor = 0.5f;
 
     public PlayerMove playerMove;
-    public MonsterAI monster;
+
+    // [삭제됨] 이제 리스트를 쓰므로 단일 변수는 필요 없습니다.
+    // public MonsterAI monster; 
 
     private float range;
     private float angle;
-    private Color originalColor; // Start에서 초기값 저장
+    private Color originalColor;
 
     public LayerMask obstacleLayerMask;
     public AudioClip toggleLight;
@@ -38,15 +40,12 @@ public class PlayerLight : MonoBehaviour
     public Color hitColor = Color.green;
     public Color missColor = Color.red;
 
-    // 색상 목록을 배열로 관리 (인스펙터에서 설정 가능)
-    // 0: Original, 1: Red, 2: Green
     public Color[] lightColors;
-
     public int colorIndex = 0;
 
-    public LayerMask defaultLayer; // 기본적으로 비출 레이어 (Default, Player 등)
-    public LayerMask redHiddenLayer; // 빨간색 숨겨진 오브젝트 레이어
-    public LayerMask greenHiddenLayer; // 초록색 숨겨진 오브젝트 레이어
+    public LayerMask defaultLayer;
+    public LayerMask redHiddenLayer;
+    public LayerMask greenHiddenLayer;
 
     void Start()
     {
@@ -58,13 +57,12 @@ public class PlayerLight : MonoBehaviour
         }
         else
         {
-            // 배열의 첫 번째 색상을 현재 라이트 색상으로 저장 (OriginalColor)
             lightColors[0] = flashlight.color;
         }
 
         audioSource = GetComponent<AudioSource>();
 
-        range = initialRange;  // Inspector 값 그대로 초기값으로 사용
+        range = initialRange;
         angle = initialAngle;
 
         flashlight.range = range;
@@ -76,89 +74,100 @@ public class PlayerLight : MonoBehaviour
 
     void Update()
     {
-
         if (flashlight.enabled && Input.GetKeyDown(KeyCode.E))
         {
-            if(flashlight.color == originalColor)
-                flashlight.color = Color.red; // 빨간색으로 변경
+            if (flashlight.color == originalColor)
+                flashlight.color = Color.red;
             else if (flashlight.color == Color.red)
-                flashlight.color = Color.green; // 초록색으로 변경
+                flashlight.color = Color.green;
             else
-                flashlight.color = originalColor; // 기존색으로 변경
+                flashlight.color = originalColor;
         }
 
         // 마우스 왼쪽 클릭 시 토글
-        if (Input.GetMouseButtonDown(0) && uiObjectA.sizeDelta.x > 0) // 0 = 왼쪽 버튼
+        if (Input.GetMouseButtonDown(0) && uiObjectA.sizeDelta.x > 0)
         {
-            flashlight.enabled = !flashlight.enabled; // 켜져있으면 끄고, 꺼져있으면 켬
+            flashlight.enabled = !flashlight.enabled;
+
             if (!flashlight.enabled)
             {
                 mainCamera.cullingMask = defaultLayer;
             }
+
             audioSource.PlayOneShot(toggleLight);
+
+            // [수정된 부분] 켜는 순간 화면에 있는 '모든' 괴물을 자극함
             if (flashlight.enabled)
             {
-                if (isMonsterInSight())
+                foreach (MonsterAI m in MonsterAI.allMonsters)
                 {
-                    monster.setMonsterState(2);
-                    Debug.Log("pL103");
+                    if (IsSpecificMonsterInSight(m))
+                    {
+                        m.setMonsterState(MonsterState.CHASE);
+                        Debug.Log("빛으로 몬스터 발견: " + m.name);
+                    }
                 }
             }
         }
+
+        // 마우스 오른쪽 클릭 (섬광/스턴 기능)
         if (Input.GetMouseButtonDown(1) && uiObjectA != null && uiObjectA.sizeDelta.x >= decreasesize)
         {
-
             Vector2 size = uiObjectA.sizeDelta;
             Vector3 pos = uiObjectA.localPosition;
 
             size.x -= decreasesize;
+            if (size.x < 0f) size.x = 0f;
 
-            if (size.x < 0f) size.x = 0f; // 최소값 0 제한
-
-            // 왼쪽으로 이동: 줄어든 값의 절반만큼
             pos.x -= decreasesize / 2f;
 
             uiObjectA.sizeDelta = size;
             uiObjectA.localPosition = pos;
-            
 
-            if (isMonsterInSight())
-            {
-                Debug.Log(monster.name + "이(가) 화면에 보입니다. (벽 없음)");
-                if (monster.CheckSight())
-                {
-                    monster.RequestPause(3.0f);
-                }
-                else
-                {
-                    monster.setMonsterState(2);
-                    Debug.Log("pl133");
-                }
-            }
-            else
-            {
-                Debug.Log(monster.name + "이(가) 안 보입니다. (화면 밖이거나 벽에 가려짐)");
-
-            }
             playerMove.StartCoroutine(playerMove.FlashScreen());
+
+            // [수정된 부분] 모든 괴물에 대해 판정
+            bool anyMonsterStunned = false;
+
+            foreach (MonsterAI m in MonsterAI.allMonsters)
+            {
+                // 1. 내 화면(카메라)에 이 괴물이 보이는가?
+                if (IsSpecificMonsterInSight(m))
+                {
+                    // 2. 괴물도 나를 볼 수 있는가? (벽 뒤가 아닌지 등, MonsterAI의 CheckSight 활용)
+                    // 주의: MonsterAI의 CheckSight()가 현재 플레이어를 보고 있는지 내부적으로 판단함
+                    if (m.CheckSight())
+                    {
+                        m.RequestPause(3.0f); // 스턴
+                        anyMonsterStunned = true;
+                    }
+                    else
+                    {
+                        m.setMonsterState(MonsterState.CHASE); // 못 봤는데 빛 쐈으면 추격
+                    }
+                }
+            }
+
+            if (!anyMonsterStunned)
+            {
+                // 디버깅용 (필요 없으면 삭제)
+                // Debug.Log("화면 내에 스턴 걸린 몬스터가 없습니다.");
+            }
         }
 
         if (flashlight.enabled)
         {
             ScrollableLight();
             UpdateCullingMask();
-
         }
 
-        // **손전등이 켜져 있는 동안 UI 감소**
         if (flashlight.enabled && uiObjectA != null)
         {
             Vector2 size = uiObjectA.sizeDelta;
             Vector3 pos = uiObjectA.localPosition;
 
             float a = size.x;
-
-            float decreaseAmount = decreaseSpeed * Time.deltaTime; // 이번 프레임에 줄일 값
+            float decreaseAmount = decreaseSpeed * Time.deltaTime;
             size.x -= decreaseAmount;
 
             if (size.x < 0f)
@@ -168,7 +177,6 @@ public class PlayerLight : MonoBehaviour
             }
 
             float b = a - size.x;
-            // 왼쪽으로 이동: 줄어든 값의 절반만큼
             pos.x -= b / 2f;
 
             uiObjectA.sizeDelta = size;
@@ -176,130 +184,98 @@ public class PlayerLight : MonoBehaviour
         }
     }
 
-    public bool isMonsterInSight()
+    // [함수 수정] 특정 괴물을 매개변수로 받아서 그 놈이 보이는지 체크
+    public bool IsSpecificMonsterInSight(MonsterAI targetMonster)
     {
-        Vector3 viewportPos = mainCamera.WorldToViewportPoint(monster.transform.position);
-        // 2. 화면 안에 있는지 3가지 조건을 모두 검사
+        if (targetMonster == null) return false;
+
+        Vector3 viewportPos = mainCamera.WorldToViewportPoint(targetMonster.transform.position);
+
+        // 1. 화면(Viewport) 좌표계 안에 있는지 검사
         bool isInView = viewportPos.z > 0 &&
                         viewportPos.x >= 0 && viewportPos.x <= 1 &&
                         viewportPos.y >= 0 && viewportPos.y <= 1;
 
-        bool isVisible = false;
-
         if (isInView)
         {
-            // 카메라 위치에서 몬스터 위치로 향하는 방향과 거리 계산
-            Vector3 directionToMonster = (monster.eyePosition.position - mainCamera.transform.position);
+            // 2. 레이캐스트로 장애물 검사
+            Vector3 directionToMonster = (targetMonster.eyePosition.position - mainCamera.transform.position);
             float distanceToMonster = directionToMonster.magnitude;
 
-            // Raycast 실행
-            // Physics.Raycast()가 'true'를 반환하면 "장애물을 맞췄다"는 의미
+            // 괴물까지 거리가 너무 멀면(예: 안개 속) 못 본 것으로 처리하려면 여기서 거리 체크 추가 가능
+
             if (Physics.Raycast(mainCamera.transform.position,
                                 directionToMonster.normalized,
-                                distanceToMonster, // 몬스터까지만의 거리
-                                obstacleLayerMask)) // "Obstacle" 레이어만 감지
+                                distanceToMonster,
+                                obstacleLayerMask))
             {
-                // 장애물이 감지됨 (벽에 가려짐)
-                isVisible = false;
+                return false; // 벽에 막힘
             }
             else
             {
-                // 장애물이 감지되지 않음 (보임)
-                isVisible = true;
-
+                return true; // 벽 없음 = 보임
             }
         }
-        return isVisible;
+        return false; // 화면 밖
     }
 
     public void UpdateCullingMask()
     {
-        // 2. 보이는 레이어 변경 (비트 연산 | 을 사용하여 레이어 합치기)
-        if (colorIndex == 0) // 기본 (하얀 빛)
-        {
-            // 기본 레이어만 비춤
-            mainCamera.cullingMask = defaultLayer;
-        }
-        else if (colorIndex == 1) // 빨간 빛
-        {
-            // 기본 레이어 + 빨간 숨겨진 레이어를 같이 비춤
-            mainCamera.cullingMask = defaultLayer | redHiddenLayer;
-        }
-        else if (colorIndex == 2) // 초록 빛
-        {
-            // 기본 레이어 + 초록 숨겨진 레이어를 같이 비춤
-            mainCamera.cullingMask = defaultLayer | greenHiddenLayer;
-        }
+        if (colorIndex == 0) mainCamera.cullingMask = defaultLayer;
+        else if (colorIndex == 1) mainCamera.cullingMask = defaultLayer | redHiddenLayer;
+        else if (colorIndex == 2) mainCamera.cullingMask = defaultLayer | greenHiddenLayer;
     }
+
     public void ScrollableLight()
     {
-        // 마우스 휠 입력 처리
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
         if (scroll != 0)
         {
-            // 스크롤 방향에 따라 인덱스 증감
             if (scroll > 0) colorIndex++;
             else if (scroll < 0) colorIndex--;
 
-            // 배열 길이(Length)에 맞춰 안전하게 순환 계산
             int length = lightColors.Length;
             colorIndex = (colorIndex % length + length) % length;
 
-            // 색상 적용 (단 한 줄로 처리 가능)
             flashlight.color = lightColors[colorIndex];
         }
     }
 
     public bool IsObjectIlluminated(GameObject target)
     {
-
-        if (target == null || cameraTransform == null)
-            return false;
-
-        if (!flashlight.enabled)
-        {
-            return false;
-        }
+        if (target == null || cameraTransform == null) return false;
+        if (!flashlight.enabled) return false;
 
         Vector3 flashlightPosition = cameraTransform.position;
         Vector3 flashlightForward = cameraTransform.forward;
         Vector3 targetPosition = target.transform.position;
 
-        // 1. 거리 체크
         Vector3 directionToTarget = targetPosition - flashlightPosition;
         float distanceToTarget = directionToTarget.magnitude;
 
         if (distanceToTarget > initialRange)
         {
-            if (showDebugRays)
-                Debug.DrawRay(flashlightPosition, directionToTarget.normalized * initialRange, Color.gray);
+            if (showDebugRays) Debug.DrawRay(flashlightPosition, directionToTarget.normalized * initialRange, Color.gray);
             return false;
         }
 
-        // 2. 각도 체크 (원뿔 범위 내에 있는지)
         float angleToTarget = Vector3.Angle(flashlightForward, directionToTarget);
 
-        if (angleToTarget > initialAngle / 3f)
+        if (angleToTarget > initialAngle / 3f) // 스포트라이트 각도 체크 (조절 가능)
         {
-            if (showDebugRays)
-                Debug.DrawRay(flashlightPosition, directionToTarget.normalized * distanceToTarget, Color.yellow);
+            if (showDebugRays) Debug.DrawRay(flashlightPosition, directionToTarget.normalized * distanceToTarget, Color.yellow);
             return false;
         }
 
-        // 3. 장애물 체크 (Raycast)
         RaycastHit hit;
         if (Physics.Raycast(flashlightPosition, directionToTarget.normalized, out hit, distanceToTarget, obstacleLayerMask))
         {
-            // 중간에 장애물이 있음
-            if (showDebugRays)
-                Debug.DrawRay(flashlightPosition, directionToTarget.normalized * hit.distance, missColor);
+            if (showDebugRays) Debug.DrawRay(flashlightPosition, directionToTarget.normalized * hit.distance, missColor);
             return false;
         }
 
-        // 모든 조건 통과 - 객체가 빛을 받고 있음
-        if (showDebugRays)
-            Debug.DrawRay(flashlightPosition, directionToTarget.normalized * distanceToTarget, hitColor);
+        if (showDebugRays) Debug.DrawRay(flashlightPosition, directionToTarget.normalized * distanceToTarget, hitColor);
 
         return true;
     }

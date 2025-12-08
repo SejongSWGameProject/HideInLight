@@ -17,13 +17,8 @@ public class LampManager : MonoBehaviour
     [Header("플레이어")]
     public Transform player;
 
-    [Header("크리쳐")]
-    [SerializeField] private MonsterAI monster;
-    LampController targetLamp;
-
     [Header("전등 스위치 배열")]
     public List<LampSwitch> switches = new List<LampSwitch>();
-    private LampSwitch nearSwitch;
 
     [Header("총 전력 UI")]
     public RectTransform elecPowerUI;             // 줄어드는 UI 오브젝트
@@ -36,7 +31,10 @@ public class LampManager : MonoBehaviour
     void Awake()
     {
         if (Instance == null) Instance = this;
+    }
 
+    void Start()
+    {
         // Lights 배열 안전 체크
         if (lamps == null || lamps.Count == 0)
         {
@@ -56,43 +54,14 @@ public class LampManager : MonoBehaviour
             else Debug.LogError("Player Transform이 할당되지 않았고, 씬에 Player 태그 오브젝트도 없습니다!");
         }
 
-        // Monster 안전 체크
-        if (monster == null)
-        {
-            monster = GameObject.FindAnyObjectByType<MonsterAI>();
-            if (monster == null)
-                Debug.Log("MonsterFollow 객체를 찾을 수 없습니다!");
-        }
-
-    }
-
-    void Start()
-    {
         initHeight = elecPowerUI.sizeDelta.y; // 시작 길이 저장
-        Debug.Log(initHeight);
-        if (monster == null) return;
-
-        targetLamp = SetMonsterTargetToRandomLamp();
-        Debug.Log("켜져있는 전등 개수: "+lamps.Count);
         UpdateActiveLampCount();
+        Debug.Log("켜져있는 전등 개수: "+lamps.Count);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.R))
-        //{
-        //    targetLamp = SetMonsterTargetToRandomLamp();
-        //}
-        //if (Input.GetKeyDown(KeyCode.N))
-        //{
-        //    targetLamp = SetMonsterTargetToRandomLamp();
-        //}
-        if (lamps.Count == 0)
-        {
-            Debug.Log("모든 전등 깨짐");
-            monster.setTarget(player.transform);
-        }
         
         if(elecPowerUI.gameObject.activeInHierarchy)
         {
@@ -183,58 +152,55 @@ public class LampManager : MonoBehaviour
 
     public void BreakLamp(LampController lamp)
     {
-        if (System.Object.ReferenceEquals(lamp, targetLamp))
-        {
-            return;
-        }
-
         if (lamp != null)
         {
             lamp.BreakLamp();
             lamps.Remove(lamp);
+
+            MonsterAI.NotifyLampBroken(lamp);
         }
             
     }
-    public void BreakLamp()
-    {
-        if (targetLamp != null)
-        {
-            Debug.Log("램프매니저 BreakLamp()");
-            targetLamp.BreakLamp();
-            lamps.Remove(targetLamp);
+    //public void BreakLamp()
+    //{
+    //    if (targetLamp != null)
+    //    {
+    //        Debug.Log("램프매니저 BreakLamp()");
+    //        targetLamp.BreakLamp();
+    //        lamps.Remove(targetLamp);
 
-            targetLamp = SetMonsterTargetToRandomLamp();
-        }
-    }
+    //        targetLamp = SetMonsterTargetToRandomLamp();
+    //    }
+    //}
 
-    public LampController SetMonsterTargetToRandomLamp()
-    {
-        //남은 lamp가 하나도 없을 때 예외처리 해줘야함
-        if (monster == null || player == null || lamps == null || lamps.Count == 0)
-            return null;
+    //public LampController SetMonsterTargetToRandomLamp()
+    //{
+    //    //남은 lamp가 하나도 없을 때 예외처리 해줘야함
+    //    if (monster == null || player == null || lamps == null || lamps.Count == 0)
+    //        return null;
 
-        LampController randomLamp = GetRandomLamp();
-        if (randomLamp != null)
-            monster.setTarget(randomLamp.transform);
-        targetLamp = randomLamp;
-        Debug.Log("랜덤 전등 타겟설정");
-        return randomLamp;
-    }
+    //    LampController randomLamp = GetRandomLamp();
+    //    if (randomLamp != null)
+    //        monster.setTarget(randomLamp.transform);
+    //    targetLamp = randomLamp;
+    //    Debug.Log("랜덤 전등 타겟설정");
+    //    return randomLamp;
+    //}
 
-    public LampController SetMonsterTargetToNearestLight()
-    {
-        //남은 lamp가 하나도 없을 때 예외처리 해줘야함
-        if (monster == null || player == null || lamps == null || lamps.Count == 0)
-            return null;
+    //public LampController SetMonsterTargetToNearestLight()
+    //{
+    //    //남은 lamp가 하나도 없을 때 예외처리 해줘야함
+    //    if (monster == null || player == null || lamps == null || lamps.Count == 0)
+    //        return null;
 
-        LampController nearestLight = GetNearestLightToPlayer();
-        if (nearestLight != null)
-            monster.setTarget(nearestLight.transform);
+    //    LampController nearestLight = GetNearestLightToPlayer();
+    //    if (nearestLight != null)
+    //        monster.setTarget(nearestLight.transform);
 
-        return nearestLight;
-    }
+    //    return nearestLight;
+    //}
 
-    LampController GetNearestLightToPlayer()
+    public LampController GetNearestLampToPlayer()
     {
         if (lamps == null || lamps.Count == 0 || player == null)
             return null;
@@ -256,7 +222,7 @@ public class LampManager : MonoBehaviour
 
     
 
-    LampController GetRandomLamp()
+    public LampController GetRandomLamp()
     {
         if (lamps.Count > 0)
         {
@@ -270,7 +236,7 @@ public class LampManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("램프 리스트가 비어있습니다!");
+            Debug.Log("램프 리스트가 비어있습니다!");
             return null;
         }
 
