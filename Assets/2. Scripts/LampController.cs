@@ -6,6 +6,7 @@ public class LampController : MonoBehaviour
     public Light pointLight;
     public bool isTurnedOn = false;
     public bool isBroken = false;
+    public bool isValid = true;
     public AudioClip breakSound;       // 소리 (선택)
     private AudioSource audioSource;
     public ParticleSystem sparkEffect;   // 불꽃 (선택)
@@ -18,11 +19,14 @@ public class LampController : MonoBehaviour
         {
             pointLight = GetComponent<Light>();
         }
-        if (lamp.enabled)
+        if (isValid)
         {
-            LampManager.Instance.RegisterLamp(this);
+            if (lamp.enabled)
+            {
+                LampManager.Instance.RegisterLamp(this);
+            }
+            LampManager.Instance.RegisterLamp(this, true);
         }
-        LampManager.Instance.RegisterLamp(this, true);
     }
     void Update()
     {
