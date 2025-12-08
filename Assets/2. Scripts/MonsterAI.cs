@@ -150,6 +150,7 @@ public class MonsterAI : MonoBehaviour
             animator.SetFloat("Speed", monster.speed);
         }
 
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.R))
         {
             SetTargetToRandomLamp();
@@ -158,6 +159,7 @@ public class MonsterAI : MonoBehaviour
         {
             SetTargetToNearLamp();
         }
+#endif
 
         Vector3 targetPosWithoutY = new Vector3(target.position.x, 0f, target.position.z);
         
@@ -367,23 +369,12 @@ public class MonsterAI : MonoBehaviour
             jumpscareLight.enabled = true; 
         }
 
-        // ========================================================
-        // [핵심 변경 사항] 몬스터 위치 재설정 (옆에서 덮치는 연출)
-        // ========================================================
+        while (!CheckValidCamera())
+        {
+            Debug.Log(jumpScareCameraPos.position);
+            RotateMonster();
+        }
         
-        // 1. 플레이어 기준으로 "앞쪽 0.8m" + "오른쪽 0.5m" 위치 계산
-        // (오른쪽에서 덮치는 느낌을 주려면 player.right 값을 조절하세요)
-        Vector3 safeSpawnPos = player.position + (player.forward * 0.8f) + (player.right * 0.5f);
-        
-        // 2. 높이(Y)는 플레이어와 같게 하여 바닥 뚫림 방지
-        safeSpawnPos.y = player.position.y;
-
-        // 3. 몬스터 강제 이동 및 플레이어 바라보기
-        monster.transform.position = safeSpawnPos;
-        monster.transform.LookAt(player.position);
-
-        // 4. 카메라 위치 이동
-        // (몬스터를 먼저 이동시켰으므로, 몬스터 자식인 카메라도 적절한 위치로 따라옵니다)
         if(jumpScareCameraPos != null)
         {
              playerCamera.position = jumpScareCameraPos.position;
@@ -412,7 +403,39 @@ public class MonsterAI : MonoBehaviour
         float killAnimationLength = 2f; // 예: 킬 애니메이션의 총 길이 (초)
         Invoke("ShowGameOver", killAnimationLength);
     }
-    // ▲▲▲▲▲▲ [수정 끝] ▲▲▲▲▲▲
+    
+    public bool CheckValidCamera()
+    {
+        Vector3 startPos = (eyePosition != null) ? eyePosition.position : monster.transform.position + Vector3.up * 1.5f;
+        Vector3 endPos = jumpScareCameraPos.position;
+
+        // 1. 카메라 위치 자체가 벽 속에 있는지 검사 (작은 구체로 검사)
+        if (Physics.CheckSphere(endPos, 0.2f, obstacleMask))
+        {
+            // Debug.Log("카메라가 벽 속에 있음!");
+            return false;
+        }
+
+        // 2. 몬스터 눈(Start)과 카메라(End) 사이에 벽이 가로막고 있는지 레이캐스트 검사
+        // Linecast는 시작점과 끝점 사이에 충돌체가 있는지 확인합니다.
+        if (Physics.Linecast(startPos, endPos, obstacleMask))
+        {
+            // Debug.Log("몬스터와 카메라 사이에 장애물 있음!");
+            return false;
+        }
+
+        return true; // 장애물 없음, 통과!
+    }
+
+    void RotateMonster()
+    {
+        // 플레이어 위치를 중심으로, Y축(위쪽)을 기준으로 45도씩 회전
+        // 즉, 플레이어의 정면 -> 우측 대각선 -> 우측... 순서로 위치를 옮김
+        monster.transform.RotateAround(player.position, Vector3.up, 20f);
+
+        // 위치를 옮긴 후, 다시 플레이어를 바라보게 고개 돌림
+        monster.transform.LookAt(player.position);
+    }
 
     void ShowGameOver()
     {

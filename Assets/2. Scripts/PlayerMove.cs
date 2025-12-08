@@ -123,7 +123,7 @@ public class PlayerMove : MonoBehaviour
         // 감도 1 -> 1*1 * 5 = 5 (아주 느림)
         // 감도 5 -> 5*5 * 5 = 125 (보통)
         // 감도 10 -> 10*10 * 5 = 500 (아주 빠름)
-        mouseSpeed = Mathf.Pow(sens, 2) * 5.0f; 
+        mouseSpeed = sens * 5.0f; 
     }
 
     void PlayRandomFootStep()
@@ -295,26 +295,33 @@ public class PlayerMove : MonoBehaviour
     {
         if (!canLook) return;
 
-        float mouseX = Input.GetAxisRaw("Mouse X") * mouseSpeed * Time.deltaTime;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * mouseSpeed * Time.deltaTime;
+        // [추가된 방어 코드 1] 시간이 멈췄다면(일시정지) 아예 계산하지 않음
+        if (Time.timeScale == 0f) return;
 
+        // [추가된 방어 코드 2] 마우스 커서가 잠겨있지 않다면(메뉴 켜짐) 회전하지 않음
+        // 이 코드가 없으면 ESC를 눌러 커서를 풀 때 화면이 튀게 됩니다.
+        if (Cursor.lockState != CursorLockMode.Locked) return;
+
+        // [수정 1] 마우스 입력에는 Time.deltaTime을 곱하지 않는 것이 정석입니다.
+        // 마우스 이동값은 그 자체로 '거리'이기 때문입니다. deltaTime을 곱하면 프레임 드랍 시 입력이 씹히거나 튑니다.
+        // 주의: 이 변화로 인해 감도가 매우 빨라질 수 있으니 mouseSpeed 값을 많이 낮춰야 합니다.
+        float mouseX = Input.GetAxisRaw("Mouse X") * mouseSpeed * 0.05f;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * mouseSpeed * 0.05f ;
+
+        // 목표 회전값 계산
         yRotation += mouseX;
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        currentX = Mathf.SmoothDampAngle(currentX, xRotation, ref xVelocity, smoothTime);
-        currentY = Mathf.SmoothDampAngle(currentY, yRotation, ref yVelocity, smoothTime);
-
-        // [수정된 부분] smoothTime이 0이 되면 에러가 나므로, 최소 0.01f를 보장합니다.
+        // 부드러운 회전 계산 (최소 시간 보장)
         float safeSmoothTime = Mathf.Max(smoothTime, 0.01f);
 
         currentX = Mathf.SmoothDampAngle(currentX, xRotation, ref xVelocity, safeSmoothTime);
         currentY = Mathf.SmoothDampAngle(currentY, yRotation, ref yVelocity, safeSmoothTime);
 
-        // [추가 안전장치] 만약 계산 결과가 NaN(에러값)이라면 적용하지 않도록 방어합니다.
+        // NaN 방지
         if (float.IsNaN(currentX) || float.IsNaN(currentY))
         {
-            // NaN 발생 시, 값 초기화 (선택 사항)
             currentX = xRotation;
             currentY = yRotation;
             xVelocity = 0f;
@@ -322,11 +329,17 @@ public class PlayerMove : MonoBehaviour
             return;
         }
 
+        // [수정 2] 핵심 해결책: 역할 분담 (Body는 Y축, Camera는 X축)
+
+        // 1. 몸통(Player)은 좌우(Y축)로만 회전시킵니다.
+        transform.rotation = Quaternion.Euler(0, currentY, 0);
+
+        // 2. 카메라(Camera)는 상하(X축)로만 '로컬' 회전시킵니다.
+        // 기존 코드처럼 cam.transform.rotation(월드)을 쓰면 몸통 회전과 충돌이 나서 떨림이 발생합니다.
         if (cam != null)
         {
-            cam.transform.rotation = Quaternion.Euler(currentX, currentY, 0);
+            cam.transform.localRotation = Quaternion.Euler(currentX, 0, 0);
         }
-        transform.rotation = Quaternion.Euler(0, currentY, 0);
     }
 
     void RotateFlashlight()

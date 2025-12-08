@@ -46,7 +46,11 @@ public class TextScript : MonoBehaviour
 
     public void ShowFindGeneratorText()
     {
-        StartCoroutine(ShowTextWithDelay());
+        if (gameObject.activeSelf)
+        {
+            StartCoroutine(ShowTextWithDelay());
+
+        }
     }
 
     IEnumerator ShowInstantlyRoutine()

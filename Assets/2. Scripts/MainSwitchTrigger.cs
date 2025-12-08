@@ -6,6 +6,9 @@ public class MainSwitchTrigger : MonoBehaviour
     public GameObject wallHandleModel; 
     public GameObject puzzleSystemObject;
 
+    public GameObject canvasUI;
+    public PlayerLockControl playerLockControl;
+
     public TextScript noLeverText;
     public TextScript mainFirstText;
 
@@ -56,6 +59,14 @@ public class MainSwitchTrigger : MonoBehaviour
         if (puzzleSystemObject != null)
         {
             puzzleSystemObject.SetActive(true);
+        }
+        if(canvasUI != null)
+        {
+            canvasUI.SetActive(false);
+        }
+        if(playerLockControl != null)
+        {
+            playerLockControl.FreezePlayer();
         }
     }
     

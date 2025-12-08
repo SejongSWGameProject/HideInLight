@@ -106,7 +106,10 @@ public class GameMenuController : MonoBehaviour
         pauseMenuPanel.SetActive(true);
         settingsPanel.SetActive(false);
         quitConfirmPanel.SetActive(false);
-        playerLight.gameObject.SetActive(false);
+        if(playerLight != null)
+        {
+            playerLight.gameObject.SetActive(false);
+        }
 
         // ▼▼▼ [추가] 일시정지 시 HUD 숨기기 ▼▼▼
         if (canvasUI != null) canvasUI.SetActive(false);
@@ -123,7 +126,11 @@ public class GameMenuController : MonoBehaviour
         pauseMenuPanel.SetActive(false);
         settingsPanel.SetActive(false);
         quitConfirmPanel.SetActive(false);
-        playerLight.gameObject.SetActive(true);
+        if(playerLight != null)
+        {
+            playerLight.gameObject.SetActive(true);
+
+        }
 
         // ▼▼▼ [추가] 게임 재개 시 HUD 다시 보이기 ▼▼▼
         if (canvasUI != null) canvasUI.SetActive(true);

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerLight : MonoBehaviour
 {
@@ -44,6 +45,10 @@ public class PlayerLight : MonoBehaviour
     public LayerMask redHiddenLayer;
     public LayerMask greenHiddenLayer;
 
+    private Image gaugeImg;
+
+    public bool getFlashlight = true;
+
     void Start()
     {
         if (flashlight == null) return;
@@ -66,20 +71,16 @@ public class PlayerLight : MonoBehaviour
         flashlight.spotAngle = angle;
 
         flashlight.enabled = false;
-    }
 
+        gaugeImg = uiObjectA.GetComponent<Image>();
+        gaugeImg.color = Color.orange;
+
+        mainCamera.cullingMask = defaultLayer;
+    }
 
     void Update()
     {
-        if (flashlight.enabled && Input.GetKeyDown(KeyCode.E))
-        {
-            if (flashlight.color == originalColor)
-                flashlight.color = Color.red;
-            else if (flashlight.color == Color.red)
-                flashlight.color = Color.green;
-            else
-                flashlight.color = originalColor;
-        }
+        if (!getFlashlight) return;
 
         // 마우스 왼쪽 클릭 시 토글
         if (Input.GetMouseButtonDown(0) && uiObjectA.sizeDelta.x > 0)
@@ -89,6 +90,7 @@ public class PlayerLight : MonoBehaviour
             if (!flashlight.enabled)
             {
                 mainCamera.cullingMask = defaultLayer;
+                gaugeImg.color = Color.orange;
             }
 
             audioSource.PlayOneShot(toggleLight);
@@ -181,6 +183,11 @@ public class PlayerLight : MonoBehaviour
         }
     }
 
+    public void GetFlashlight()
+    {
+        getFlashlight = true;
+    }
+
     // [함수 수정] 특정 괴물을 매개변수로 받아서 그 놈이 보이는지 체크
     public bool IsSpecificMonsterInSight(MonsterAI targetMonster)
     {
@@ -218,20 +225,24 @@ public class PlayerLight : MonoBehaviour
 
     public void UpdateCullingMask()
     {
+        
         if (colorIndex == 0)
         {
             mainCamera.cullingMask = defaultLayer;
             decreaseSpeed = 0.5f;
+            gaugeImg.color = Color.orange;
         }
         else if (colorIndex == 1)
         {
             mainCamera.cullingMask = defaultLayer | redHiddenLayer;
             decreaseSpeed = 1f;
+            gaugeImg.color = Color.red;
 
         }
         else if (colorIndex == 2) { 
             mainCamera.cullingMask = defaultLayer | greenHiddenLayer;
             decreaseSpeed = 1f;
+            gaugeImg.color = Color.red;
 
         }
     }
