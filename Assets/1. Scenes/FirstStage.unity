@@ -5416,7 +5416,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &486736313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16035,6 +16035,10 @@ PrefabInstance:
       propertyPath: postProcessVolume
       value: 
       objectReference: {fileID: 1483927627737953419}
+    - target: {fileID: 8225212027028624040, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
+      propertyPath: effectStartThreshold
+      value: 60
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6619766722896699107, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
     - {fileID: 8628666699289880680, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
@@ -30757,6 +30761,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 84646ee320a34db47aa27caad1f7a13f, type: 2}
+    - target: {fileID: 8935916177288535859, guid: 8c8da285b5eea9748b2d39bf605d8d2a, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8935916177288535859, guid: 8c8da285b5eea9748b2d39bf605d8d2a, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 7541448006398281565, guid: 202ab8eea259fee4c97f3d65d73fdde4, type: 3}
     - target: {fileID: 9126782588895183887, guid: 8c8da285b5eea9748b2d39bf605d8d2a, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
