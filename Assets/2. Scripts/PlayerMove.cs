@@ -11,6 +11,8 @@ using static UnityEngine.Rendering.HighDefinition.ProbeSettings;
 
 public class PlayerMove : MonoBehaviour
 {
+    public UISaveController uiSaver;
+
     CharacterController controller;
 
     [Header("Rotate")]
@@ -66,15 +68,17 @@ public class PlayerMove : MonoBehaviour
 
     private float stepTimer = 0f;
 
-
     void Start()
     {
+        if (uiSaver.state.length != 50.0)
+        {
+            uiSaver.LoadUIState();
+        }
         hiddenMouseCursor();
         audioSource = GetComponent<AudioSource>();
         audioSource.loop = false;
         audioSource.playOnAwake = false;
         controller = GetComponent<CharacterController>();
-
         if (controller == null)
         {
             Debug.LogError("CharacterController component not found!");
@@ -125,6 +129,7 @@ public class PlayerMove : MonoBehaviour
         // 감도 10 -> 10*10 * 5 = 500 (아주 빠름)
         mouseSpeed = sens * 5.0f; 
     }
+
 
     void PlayRandomFootStep()
     {

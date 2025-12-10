@@ -12472,7 +12472,6 @@ MonoBehaviour:
   m_Script: {fileID: 1642155417}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Entries: []
 --- !u!4 &1045504575
 Transform:
   m_ObjectHideFlags: 19
@@ -15799,6 +15798,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6598716510391159121, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
+      propertyPath: uiSaver
+      value: 
+      objectReference: {fileID: 1447830450}
+    - target: {fileID: 6598716510391159121, guid: a3f4091132cfeb44486faf183d0a2507, type: 3}
       propertyPath: flashClip
       value: 
       objectReference: {fileID: 8300000, guid: 410260dba84572b4495b5f7b42b1eff7, type: 3}
@@ -16700,6 +16703,52 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1446540790}
   m_Mesh: {fileID: 6603593750382947014, guid: a2ae21457c3a52b4d9d2bc6a47be7c58, type: 3}
+--- !u!1 &1447830447
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1447830449}
+  - component: {fileID: 1447830450}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1447830449
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1447830447}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1656, y: 1037.6001, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1447830450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1447830447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f73fd6755dd16dd4eba75ad0bf459c67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UISaveController
+  state: {fileID: 11400000, guid: 9a42f108cd8073640849e8256aafa1f2, type: 2}
+  shape: {fileID: 460275456}
 --- !u!1 &1456518904 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7526633794074811276, guid: dbf97839af517f845b5041c08fe07788, type: 3}
@@ -27228,3 +27277,4 @@ SceneRoots:
   - {fileID: 535905522}
   - {fileID: 406022785}
   - {fileID: 943758185}
+  - {fileID: 1447830449}
