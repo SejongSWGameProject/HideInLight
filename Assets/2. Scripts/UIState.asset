@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 274a3318814794b4e8a73db993c2fc4a, type: 3}
   m_Name: UIState
   m_EditorClassIdentifier: Assembly-CSharp::UIState
-  length: 63.5
+  length: 50

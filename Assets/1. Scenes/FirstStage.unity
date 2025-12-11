@@ -29767,10 +29767,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 771363005376547815, guid: dbf97839af517f845b5041c08fe07788, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2628285432252021300, guid: dbf97839af517f845b5041c08fe07788, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -29854,34 +29850,6 @@ PrefabInstance:
     - target: {fileID: 2748640508526928071, guid: dbf97839af517f845b5041c08fe07788, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4081990259385309603, guid: dbf97839af517f845b5041c08fe07788, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 400
-      objectReference: {fileID: 0}
-    - target: {fileID: 4081990259385309603, guid: dbf97839af517f845b5041c08fe07788, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4081990259385309603, guid: dbf97839af517f845b5041c08fe07788, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7178034935865922292, guid: dbf97839af517f845b5041c08fe07788, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: f9bcb68d80cd0034282bb3136fe3ded5, type: 3}
-    - target: {fileID: 7526633794074811276, guid: dbf97839af517f845b5041c08fe07788, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7742501169089508870, guid: dbf97839af517f845b5041c08fe07788, type: 3}
-      propertyPath: m_fontSize
-      value: 36
-      objectReference: {fileID: 0}
-    - target: {fileID: 7742501169089508870, guid: dbf97839af517f845b5041c08fe07788, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 36
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
